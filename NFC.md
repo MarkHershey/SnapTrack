@@ -97,4 +97,4 @@ Reading and writing to an NFC tag involves obtaining the tag from the intent and
 - [The NFC Data Exchange Format (NDEF)](https://www.dummies.com/consumer-electronics/nfc-data-exchange-format-ndef/)
 - [YouTube - Create a NFC Reader Application for Android](https://www.youtube.com/watch?v=TPR2FnrJHz4)
 - [YouTube - NFCTutorials](https://www.youtube.com/c/NFCTutorials/videos)
-
+- [GitHub - Simple NFC Reader for Android](https://github.com/nadam/nfc-reader)
