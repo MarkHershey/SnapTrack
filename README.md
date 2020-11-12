@@ -7,14 +7,14 @@
 
 ## Scope Of Work
 
-- [] User sign up and sign in
-- [] User create / edit UserActivity
-- [] User create / edit Label
-- [] User link / unlink NFC tag to UserActivity
-- [] User manually start / end Event
-- [] NFC tag start / end Event
-- [] daily / weekly / monthly Overview
-- [] other data analytics
+- [ ] User sign up and sign in
+- [ ] User create / edit UserActivity
+- [ ] User create / edit Label
+- [ ] User link / unlink NFC tag to UserActivity
+- [ ] User manually start / end Event
+- [ ] NFC tag start / end Event
+- [ ] daily / weekly / monthly Overview
+- [ ] other data analytics
 
 
 
