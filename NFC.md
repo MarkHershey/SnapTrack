@@ -179,7 +179,9 @@ private void resolveIntent(Intent intent) {
 ```
 #### Read and write to tags 
 Background 
+
 ![](imgs/1D_java_memory_block.png)
+
 From the Specs of our NFC Tags (https://www.nxp.com/docs/en/data-sheet/MF0ICU2.pdf) 
 We can only use the 4th to 39th page address (Each page is 4 btyes thus we have max 140 bytes) 
 From an external app extension, it seems like we only have 137 bytes, since each String letter in UTF-8 takes up 1 btye, 
