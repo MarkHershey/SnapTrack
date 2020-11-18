@@ -88,7 +88,7 @@ If a tag contains an AAR, the tag dispatch system dispatches in the following ma
 
 Reading and writing to an NFC tag involves obtaining the tag from the intent and opening communication with the tag. You must define your own protocol stack to read and write data to the tag. 
 
-#### Reading
+#### Detection
 Step 1: First of all you have to initialize the NFC adapter and define Pending Intent in onCreate callback: 
 ```java
 private NfcAdapter nfcAdapter;
@@ -177,7 +177,66 @@ private void resolveIntent(Intent intent) {
     }
 }
 ```
+#### Read and write to tags 
+Background 
+![](imgs/1D_java_memory_block.png)
+From the Specs of our NFC Tags (https://www.nxp.com/docs/en/data-sheet/MF0ICU2.pdf) 
+We can only use the 4th to 39th page address (Each page is 4 btyes thus we have max 140 bytes) 
+From an external app extension, it seems like we only have 137 bytes, since each String letter in UTF-8 takes up 1 btye, 
+We only have 137 words to work with. (Maybe need to gzip to compress data) 
 
+
+To read and write we can use this simple guide https://developer.android.com/guide/topics/connectivity/nfc/advanced-nfc#read-write
+```java
+
+public class MifareUltralightTagTester {
+
+    private static final String TAG = MifareUltralightTagTester.class.getSimpleName();
+
+    public void writeTag(Tag tag, String tagText) {
+        MifareUltralight ultralight = MifareUltralight.get(tag);
+        try {
+            ultralight.connect();
+            ultralight.writePage(4, "abcd".getBytes(Charset.forName("US-ASCII")));
+            ultralight.writePage(5, "efgh".getBytes(Charset.forName("US-ASCII")));
+            ultralight.writePage(6, "ijkl".getBytes(Charset.forName("US-ASCII")));
+            ultralight.writePage(7, "mnop".getBytes(Charset.forName("US-ASCII")));
+        } catch (IOException e) {
+            Log.e(TAG, "IOException while writing MifareUltralight...", e);
+        } finally {
+            try {
+                ultralight.close();
+            } catch (IOException e) {
+                Log.e(TAG, "IOException while closing MifareUltralight...", e);
+            }
+        }
+    }
+
+    public String readTag(Tag tag) {
+        MifareUltralight mifare = MifareUltralight.get(tag);
+        try {
+            mifare.connect();
+            byte[] payload = mifare.readPages(4);
+            return new String(payload, Charset.forName("US-ASCII"));
+        } catch (IOException e) {
+            Log.e(TAG, "IOException while reading MifareUltralight message...", e);
+        } finally {
+            if (mifare != null) {
+               try {
+                   mifare.close();
+               }
+               catch (IOException e) {
+                   Log.e(TAG, "Error closing tag...", e);
+               }
+            }
+        }
+        return null;
+    }
+}
+```
+
+
+ 
 
 ---
 
