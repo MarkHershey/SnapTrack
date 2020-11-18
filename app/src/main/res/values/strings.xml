@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SnapTrack</string>
+    <string name="home_name">Home</string>
+    <string name="addchangetag_name">Add/Change Tag</string>
+    <string name="dataanalytics_name">Data Analytics</string>
+    <string name="scan_note">Please Scan your NFC Tag Now</string>
+</resources>
