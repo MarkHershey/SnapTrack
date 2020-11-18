@@ -16,12 +16,20 @@
 - [ ] daily / weekly / monthly Overview
 - [ ] other data analytics
 
+## User
+
+- Attributes
+    - email
+    - password
+    - Display Name
+    - UID
 
 
 ## UserActivity
 
-- UserActivity is user-customised activities for time tracking, it is tied to each User's database. 
+- UserActivity is the user-defined activity (e.g. "Work out", "Study", "CompStruct", "Entertainment", etc) for time tracking, it is tied to each User's ID in the database. 
 - Attributes
+    - **AID**: Primary key, hidden to user
     - **activity_name**: requires uniqueness within the user scope 
     - **short_display_name**: requires uniqueness within the user scope 
     - **color**: requires uniqueness within the user scope.
@@ -35,16 +43,20 @@
 
 ## Label
 
-- Label is a string object used to label UserActivity, it provides the user the flexibilty to view data analystics grouped by custom tags.
+- Label is a string object used to label UserActivity, it provides the user the flexibility to view data analytics grouped by custom tags.
 - Attributes
+    - **LID**: Primary key, hidden to user
     - **tag_name**: a unique String
     - **color**: requires uniqueness within the user scope for all tags
         - system will assign random color as default value.
 
 
-## Event (the tracking object)
+## Event
 
+- Event is the object being created when a User start doing a `UserActivity`, either using NFC tapping or manual creation.
 - Attributes
-    - `UserActivity`
-    - time_start
-    - time_end
+    - **EID**: Primary key, hidden to user
+    - **User**: UID
+    - **UserActivity**: UserActivity ID
+    - **time_start**: DateTime Object 
+    - **time_end**: DateTime Object 
