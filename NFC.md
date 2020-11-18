@@ -59,8 +59,7 @@ protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
     ...
     if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
-        Parcelable[] rawMessages =
-            intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if (rawMessages != null) {
             NdefMessage[] messages = new NdefMessage[rawMessages.length];
             for (int i = 0; i < rawMessages.length; i++) {

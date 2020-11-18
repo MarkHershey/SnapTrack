@@ -14,16 +14,17 @@
 - [ ] User manually start / end Event
 - [ ] NFC tag start / end Event
 - [ ] daily / weekly / monthly Overview
+    - [ ] Group by Activity / Label (Dropdown Selection)
 - [ ] other data analytics
 
 ## User
 
 - Attributes
-    - email
-    - password
-    - Display Name
-    - UID
-
+    - **UID**: Primary key, hidden to user
+    - **email**: for login
+    - **password**: for login
+    - **display_name**: User name for display
+    
 
 ## UserActivity
 
