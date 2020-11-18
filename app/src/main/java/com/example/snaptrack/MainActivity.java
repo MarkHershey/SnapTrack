@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAddChangeTag = findViewById(R.id.buttonAddChangeTag);
         buttonDataAnalytics = findViewById(R.id.buttonDataAnalytics);
 
-        //Bring user to tag modification screen
+        //Bring user to AddChangeTag screen
         buttonAddChangeTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

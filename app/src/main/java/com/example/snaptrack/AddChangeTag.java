@@ -28,11 +28,15 @@ import android.widget.Toast;
 import com.example.snaptrack.record.NdefMessageParser;
 import com.example.snaptrack.record.ParsedNdefRecord;
 
+import java.io.IOException;
 import java.util.List;
 
 public class AddChangeTag extends AppCompatActivity {
+    //Load buttons to leave AddChangeTag screen
     Button buttonDataAnalytics_ACT;
     Button buttonMainActivity_ACT;
+
+    // Create NfcAdapter
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
     TextView text;
@@ -49,13 +53,11 @@ public class AddChangeTag extends AppCompatActivity {
             Toast.makeText(this,"NO NFC Capabilities",Toast.LENGTH_SHORT).show();
             finish();
         }
+        //Create a PendingIntent object so the Android system can populate it with the details of the tag when it is scanned.
         pendingIntent = PendingIntent.getActivity(this,0,new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
 
         //Ask to scan tag
-
-
         //if tag set before bring to change tag settings
-
         //if tag not set before bring up new tag settings
 
         buttonMainActivity_ACT = findViewById(R.id.buttonMainActivity_ACT);
@@ -83,13 +85,16 @@ public class AddChangeTag extends AppCompatActivity {
         super.onResume();
         if (nfcAdapter != null){
             if (!nfcAdapter.isEnabled()){
-                showWirelessSettings();
+                showBluetoothSettings();
             }
         }
+        //Enables foreground dispatch which handles NFC intents (waiting for NFC card to be tapped)
+        //The foreground dispatch system allows an activity to intercept an intent and
+        // claim priority over other activities that handle the same intent.
         nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);
     }
 
-    private void showWirelessSettings() {
+    private void showBluetoothSettings() {
         Toast.makeText(this, "You need to enable NFC", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
         startActivity(intent);
@@ -100,11 +105,17 @@ public class AddChangeTag extends AppCompatActivity {
         super.onPause();
         if (nfcAdapter != null) {
             if (!nfcAdapter.isEnabled()) {
-                nfcAdapter.disableForegroundDispatch(this);
+                try {
+                    nfcAdapter.disableForegroundDispatch(this);
+                }
+                catch(Exception IllegalStateException) {
+                    Log.e("NFC", "Error disabling NFC foreground dispatch");
+                }
             }
         }
     }
 
+    //New NFC Intent (NFC Card detected)
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -220,6 +231,7 @@ public class AddChangeTag extends AppCompatActivity {
                 sb.append('\n');
                 MifareUltralight mifareUlTag = MifareUltralight.get(tag);
                 String type = "Unknown";
+                byte[] data = new byte[0];
                 switch (mifareUlTag.getType()) {
                     case MifareUltralight.TYPE_ULTRALIGHT:
                         type = "Ultralight";
