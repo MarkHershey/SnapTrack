@@ -84,9 +84,99 @@ If a tag contains an AAR, the tag dispatch system dispatches in the following ma
 
 
 
-#### [Read and Write](https://developer.android.com/guide/topics/connectivity/nfc/advanced-nfc#read-write)
+# [Read and Write](https://developer.android.com/guide/topics/connectivity/nfc/advanced-nfc#read-write)
 
 Reading and writing to an NFC tag involves obtaining the tag from the intent and opening communication with the tag. You must define your own protocol stack to read and write data to the tag. 
+
+#### Reading
+Step 1: First of all you have to initialize the NFC adapter and define Pending Intent in onCreate callback: 
+```java
+private NfcAdapter nfcAdapter;
+private PendingIntent pendingIntent;
+
+
+        nfcAdapter = NfcAdapter.getDefaultAdapter((this));
+        if (nfcAdapter == null){
+            Toast.makeText(this,"NO NFC Capabilities",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        //Create a PendingIntent object so the Android system can populate it with the details of the tag when it is scanned.
+        pendingIntent = PendingIntent.getActivity(this,0,new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
+```
+Step 2: onResume() Call back enable the Foreground Dispatch to detect NFC intent. (waiting for NFC card to be tapped)
+```java
+if (nfcAdapter != null){
+    if (!nfcAdapter.isEnabled()){
+        //If NFC capable device but NFC not turned on, on users settings
+        showBluetoothSettings();
+    }
+}
+//Enables foreground dispatch which handles NFC intents (waiting for NFC card to be tapped)
+//The foreground dispatch system allows an activity to intercept an intent and
+// claim priority over other activities that handle the same intent.
+nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);
+
+private void showBluetoothSettings() {
+        //Tell user to turn on NFC
+        Toast.makeText(this, "You need to enable NFC", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+        startActivity(intent);
+}   
+```
+Step 3: In onPause() callback you have to disable the forground dispatch:
+```java 
+if (nfcAdapter != null) {
+    if (!nfcAdapter.isEnabled()) {
+        try {
+        nfcAdapter.disableForegroundDispatch(this);
+        }
+        catch(Exception IllegalStateException) {
+            Log.e("NFC", "Error disabling NFC foreground dispatch");
+        }
+    }
+}
+```
+Step 4: In onNewIntent() call back method, you will get the new Nfc Intent (Card detected)
+. After getting The Intent , you have to parse the intent to detect the card: 
+Code here for external helper functions. https://github.com/Cawinchan/SnapTrack
+```java 
+@Override
+protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
+    resolveIntent(intent);
+}
+
+private void resolveIntent(Intent intent) {
+    String action = intent.getAction();
+
+    if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+            || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+            || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+        Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        NdefMessage[] msgs;
+
+        if (rawMsgs != null) {
+            msgs = new NdefMessage[rawMsgs.length];
+
+            for (int i = 0; i < rawMsgs.length; i++) {
+                msgs[i] = (NdefMessage) rawMsgs[i];
+            }
+
+        } else {
+            byte[] empty = new byte[0];
+            byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            byte[] payload = dumpTagData(tag).getBytes();
+            NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
+            NdefMessage msg = new NdefMessage(new NdefRecord[] {record});
+            msgs = new NdefMessage[] {msg};
+        }
+
+        displayMsgs(msgs);
+    }
+}
+```
 
 
 ---
