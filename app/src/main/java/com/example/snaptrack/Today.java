@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class Today extends AppCompatActivity {
 
-    Button buttonAddChangeTag;
+    Button buttonCreateActivity;
     Button buttonDataAnalytics;
-    Button buttonMainActivity;
+    Button buttonToday;
     EditText editTextValue;
     TextView textViewResult;
     TextView textViewExchangeRate;
@@ -27,18 +27,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_main);
+        setContentView(R.layout.today_main);
 
-        buttonMainActivity = findViewById(R.id.buttonMainActivity);
-        buttonAddChangeTag = findViewById(R.id.buttonAddChangeTag);
+        buttonCreateActivity = findViewById(R.id.buttonCreateActivity);
+        buttonToday = findViewById(R.id.buttonToday);
         buttonDataAnalytics = findViewById(R.id.buttonDataAnalytics);
 
         //Bring user to AddChangeTag screen
-        buttonAddChangeTag.setOnClickListener(new View.OnClickListener() {
+        buttonCreateActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO 3.4 Write an Explicit Intent to get to SubActivity
-                Intent intent = new Intent(MainActivity.this , AddChangeTag.class);
+                Intent intent = new Intent(Today.this , CreateActivity.class);
                 startActivity(intent);
             }
         });

@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.snaptrack">
     <uses-permission android:name="android.permission.NFC" />
-    <uses-sdk android:minSdkVersion="10"/>
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
     <application
@@ -12,20 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Today">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddChangeTag"
-            android:parentActivityName= ".MainActivity"
-            android:label= "@string/addchangetag_name">
+        <activity android:name=".CreateActivity"
+            android:parentActivityName= ".Today"
+            android:label= "@string/create_activity_name">
         </activity>
 
         <activity android:name=".DataAnalytics"
-            android:parentActivityName= ".MainActivity"
+            android:parentActivityName= ".Today"
             android:label= "@string/dataanalytics_name">
         </activity>
     </application>

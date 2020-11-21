@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:orientation="horizontal"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/home_main">
+    tools:context=".Today">
 
     <Button
-        android:id="@+id/buttonMainActivity"
+        android:id="@+id/buttonToday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -18,19 +17,18 @@
         android:text="@string/home_name" />
 
     <Button
-    android:id="@+id/buttonAddChangeTag"
+    android:id="@+id/buttonCreateActivity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layout_weight="1"
-    android:text="@string/addchangetag_name" />
+    android:text="@string/create_activity_name" />
     <Button
         android:id="@+id/buttonDataAnalytics"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_weight="1"
-
         android:text="@string/dataanalytics_name" />
 
 </LinearLayout>
