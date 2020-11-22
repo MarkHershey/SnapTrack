@@ -35,22 +35,16 @@
     - **short_display_name**: requires uniqueness within the user scope 
     - **color**: requires uniqueness within the user scope.
         - system will assign random color as default value.
-    - **labels**: a list of tag object. 
-        - should contain at least one tag. 
-        - System will pre-define two tags: work & life. 
+    - **category**: CID of a Category. 
     - **nfc_tag_id**: UUID to identify NFC tags
 
+## Category
 
-
-## Label
-
-- Label is a string object used to label UserActivity, it provides the user the flexibility to view data analytics grouped by custom tags.
 - Attributes
-    - **LID**: Primary key, hidden to user
-    - **tag_name**: a unique String
-    - **color**: requires uniqueness within the user scope for all tags
+    - **CID**: Primary key, hidden to user
+    - **name**: name of category.
+    - **color**: requires uniqueness within the user scope.
         - system will assign random color as default value.
-
 
 ## Event
 

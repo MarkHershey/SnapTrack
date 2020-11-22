@@ -2,28 +2,41 @@
     "U100001": {
         "UID": "U100001",
         "user_display_name": "Mark Huang",
+        "Categories":{
+            "C1": {
+                "CID": "C1",
+                "name": "Work",
+                "color": "#781232"
+            }, 
+            "C2": {
+                "CID": "C2",
+                "name": "Life",
+                "color": "#781562"
+            }
+        },        
         "UserActivities": {
             "A1":{
                 "AID": "A1",
                 "activity_name": "Working",
                 "short_display_name": "W",
                 "color": "#781232",
-                "labels": ["work", "in office"]
+                "category": "C1"
             },
             "A2":{
                 "AID": "A2",
                 "activity_name": "Study",
                 "short_display_name": "S",
                 "color": "#FFFFFF",
-                "labels": ["study", "in school"]
+                "category": "C1"
+            },
+            "A3":{
+                "AID": "A3",
+                "activity_name": "Watch movie",
+                "short_display_name": "M",
+                "color": "#129F3D",
+                "category": "C2"
             }
         },
-        "Labels":[
-            "work", 
-            "study", 
-            "in office", 
-            "in school"
-        ],
         "Events": [
             {
                 "EID": "E000001",
@@ -40,7 +53,6 @@
                 "time_end": "102484953"
             }
         ]
-
     },
     "100002":{
     }
