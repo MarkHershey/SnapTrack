@@ -1,0 +1,40 @@
+com/example/snaptrack/data/DataUtils.java
+ com.example.snaptrack.data.DataUtils
+com/example/snaptrack/data/UserActivityInfo.java
+ com.example.snaptrack.data.UserActivityInfo
+ com.example.snaptrack.data.UserActivityInfo$1
+ com.example.snaptrack.data.UserActivityInfo$InsertUserActivityOrRetry
+com/example/snaptrack/record/TextRecord.java
+ com.example.snaptrack.record.TextRecord
+com/example/snaptrack/data/UserInfo.java
+ com.example.snaptrack.data.UserInfo
+ com.example.snaptrack.data.UserInfo$InsertUserInfoOrRetry
+com/example/snaptrack/record/UriRecord.java
+ com.example.snaptrack.record.UriRecord
+com/example/snaptrack/record/NdefMessageParser.java
+ com.example.snaptrack.record.NdefMessageParser
+ com.example.snaptrack.record.NdefMessageParser$1
+com/example/snaptrack/CreateActivity.java
+ com.example.snaptrack.CreateActivity
+ com.example.snaptrack.CreateActivity$1
+ com.example.snaptrack.CreateActivity$2
+com/example/snaptrack/DataAnalytics.java
+ com.example.snaptrack.DataAnalytics
+com/example/snaptrack/record/SmartPoster.java
+ com.example.snaptrack.record.SmartPoster
+ com.example.snaptrack.record.SmartPoster$RecommendedAction
+com/example/snaptrack/data/CategoryInfo.java
+ com.example.snaptrack.data.CategoryInfo
+com/example/snaptrack/Today.java
+ com.example.snaptrack.Today
+ com.example.snaptrack.Today$1
+com/example/snaptrack/BuildConfig.java
+ com.example.snaptrack.BuildConfig
+com/example/snaptrack/activities/LoginActivity.java
+ com.example.snaptrack.activities.LoginActivity
+ com.example.snaptrack.activities.LoginActivity$1
+ com.example.snaptrack.activities.LoginActivity$2
+com/example/snaptrack/record/ParsedNdefRecord.java
+ com.example.snaptrack.record.ParsedNdefRecord
+com/example/snaptrack/data/EventInfo.java
+ com.example.snaptrack.data.EventInfo
