@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.snaptrack">
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -11,22 +16,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.LoginActivity">
+            <intent-filter> <!-- TODO delete this later -->
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Today">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateActivity"
-            android:parentActivityName= ".Today"
-            android:label= "@string/create_activity_name">
-        </activity>
-
-        <activity android:name=".DataAnalytics"
-            android:parentActivityName= ".Today"
-            android:label= "@string/dataanalytics_name">
-        </activity>
+        <activity
+            android:name=".CreateActivity"
+            android:label="@string/create_activity_name"
+            android:parentActivityName=".Today"></activity>
+        <activity
+            android:name=".DataAnalytics"
+            android:label="@string/dataanalytics_name"
+            android:parentActivityName=".Today"></activity>
     </application>
 
 </manifest>

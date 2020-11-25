@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "363289512096",
+    "firebase_url": "https://snaptrack-8d688.firebaseio.com",
+    "project_id": "snaptrack-8d688",
+    "storage_bucket": "snaptrack-8d688.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363289512096:android:42b1abb6da682d3b4ea1c5",
+        "android_client_info": {
+          "package_name": "com.example.snaptrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363289512096-n80uaqieij54s3p8p2bvsib8sj5b885n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARSYGa33k09pc2AmYsY6aWQ1Md8RqOmkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363289512096-n80uaqieij54s3p8p2bvsib8sj5b885n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
