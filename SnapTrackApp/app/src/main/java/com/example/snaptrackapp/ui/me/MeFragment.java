@@ -33,6 +33,7 @@ public class MeFragment extends Fragment {
     private MeViewModel meViewModel;
 
     TextView userNameText;
+    TextView userEmailText;
     Button signOutButton;
 
     public static MeFragment newInstance() {
@@ -43,9 +44,14 @@ public class MeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_me, container, false);
-        userNameText = root.findViewById(R.id.userNameTextView);
 
+        // get text view reference
+        userNameText = root.findViewById(R.id.userNameTextView);
+        userEmailText = root.findViewById(R.id.userEmailTextView);
+        // get button
         signOutButton = root.findViewById(R.id.signOutButton);
+
+        // perform sign out on click
         signOutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -53,23 +59,31 @@ public class MeFragment extends Fragment {
                 signOut();
             }
         });
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Get View Model
         meViewModel = new ViewModelProvider(this).get(MeViewModel.class);
 
-
-        // Update User name
+        // Update User Name Text View
         meViewModel.getUserName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 userNameText.setText(s);
             }
         });
-
+        // Update User Email Text View
+        meViewModel.getUserEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                userEmailText.setText(s);
+            }
+        });
 
     }
 

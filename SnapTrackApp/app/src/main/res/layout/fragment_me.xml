@@ -28,13 +28,13 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-black"
-        android:text="User Name"
+        android:text="Chong Tow Chong"
         android:textSize="30sp"
         app:layout_constraintTop_toBottomOf="@+id/profile_image"
         tools:layout_editor_absoluteX="30dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/userEmailTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
