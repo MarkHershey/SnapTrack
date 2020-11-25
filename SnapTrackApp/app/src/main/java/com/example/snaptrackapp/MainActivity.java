@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.snaptrackapp.data.UserInfo;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,15 +80,17 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) { // logged in successfully
 
-                mAuth = FirebaseAuth.getInstance();
-
-                FirebaseUser user = mAuth.getCurrentUser();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
-                if (user != null) {
-                    Log.d(TAG, "User Exists, uid = " + user.getUid());
 
+                if (user != null) {
+                    String authID = user.getUid();
+                    String name = user.getDisplayName();
+                    // generate UID for new user
+                    UserInfo.createUIDIfNotExist(authID, name);
+                    Toast.makeText(MainActivity.this, "Howdy " + name + "!", Toast.LENGTH_LONG).show();
                 } else {
                     Log.e(TAG, "Unexpected: Somehow sign in worked but user doesn't exist.");
                     Toast.makeText(MainActivity.this, "Somehow sign in worked but user doesn't exist?", Toast.LENGTH_LONG).show();
