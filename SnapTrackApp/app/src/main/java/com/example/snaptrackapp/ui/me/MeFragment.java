@@ -3,12 +3,15 @@ package com.example.snaptrackapp.ui.me;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +22,14 @@ import android.widget.Toast;
 import com.example.snaptrackapp.MainActivity;
 import com.example.snaptrackapp.R;
 
-import org.w3c.dom.Text;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 
 public class MeFragment extends Fragment {
 
+    private static final String TAG = "MeFragment";
     private MeViewModel meViewModel;
 
     TextView userNameText;
@@ -37,11 +44,13 @@ public class MeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_me, container, false);
         userNameText = root.findViewById(R.id.userNameTextView);
+
         signOutButton = root.findViewById(R.id.signOutButton);
         signOutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Logging out", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Logging out", Toast.LENGTH_SHORT).show();
+                signOut();
             }
         });
         return root;
@@ -62,6 +71,23 @@ public class MeFragment extends Fragment {
         });
 
 
+    }
+
+    public void signOut() {
+        AuthUI.getInstance()
+                .signOut(getContext())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.e(TAG, "User Successfully Logged Out");
+                        Toast.makeText(getContext(), "Successfully logged out", Toast.LENGTH_LONG);
+                        Activity thisActivity = getActivity();
+                        Intent intent = thisActivity.getIntent();
+                        thisActivity.finish();
+                        startActivity(intent);
+                    }
+
+                });
     }
 
 }
