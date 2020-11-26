@@ -106,6 +106,7 @@ public class UserInfo {
                     Log.d(TAG, "Existing User Logged In");
                 } else {
                     Log.d(TAG, "New User Logged In");
+                    // create user and userID
                     UserInfo.add(name);
                     // create default categories for all user
                     CategoryInfo.add("Work", "#FF8888");
