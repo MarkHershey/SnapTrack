@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Log in
-        createSignInIntent();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) createSignInIntent();
 
 
         // Bottom Nav Bar
@@ -52,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_2, // Activities
                 R.id.navigation_3, // Analytics
                 R.id.navigation_4  // Me
-        )
-                .build();
+        ).build();
         // Set up Navigation Controller
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

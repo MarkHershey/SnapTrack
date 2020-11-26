@@ -85,7 +85,7 @@ public class UserActivityInfo {
             } else if (TRIES > 0) {
                 add(userActivityInfo.activity_name, userActivityInfo.categories, userActivityInfo.color, TRIES-1);
             } else {
-                Log.e(TAG, "Failed to add activity "+ userActivityInfo.activity_name);
+                Log.e(TAG, "Failed to add activity " + userActivityInfo.activity_name);
             }
         }
 

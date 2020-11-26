@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,8 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.snaptrackapp.R;
 import com.example.snaptrackapp.UserActivity;
+import com.example.snaptrackapp.data.UserActivityInfo;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ActivitiesFragment extends Fragment {
 
@@ -26,6 +30,7 @@ public class ActivitiesFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<UserActivity> activityList;
+    FloatingActionButton mFloatingActionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         activitiesViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
@@ -67,6 +72,15 @@ public class ActivitiesFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mFloatingActionButton = root.findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Create new activity", Toast.LENGTH_SHORT).show();
+                // TODO: jump to "create new activity" page
+            }
+        });
 
 
         return root;

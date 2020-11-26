@@ -107,6 +107,9 @@ public class UserInfo {
                 } else {
                     Log.d(TAG, "New User Logged In");
                     UserInfo.add(name);
+                    // create default categories for all user
+                    CategoryInfo.add("Work", "#FF8888");
+                    CategoryInfo.add("Life", "#FF72A2");
                 }
             }
 

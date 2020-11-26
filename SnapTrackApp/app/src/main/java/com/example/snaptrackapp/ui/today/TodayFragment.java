@@ -12,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.snaptrackapp.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class TodayFragment extends Fragment {
 
     private TodayViewModel todayViewModel;
+    FloatingActionButton mFloatingActionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +36,15 @@ public class TodayFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
+            }
+        });
+
+        mFloatingActionButton = root.findViewById(R.id.fab);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Start new event", Toast.LENGTH_SHORT).show();
+                // TODO: start new event tracking
             }
         });
 
