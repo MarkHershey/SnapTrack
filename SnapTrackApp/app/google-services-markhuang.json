@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "209868972577",
+    "firebase_url": "https://snaptrack-dedc6.firebaseio.com",
+    "project_id": "snaptrack-dedc6",
+    "storage_bucket": "snaptrack-dedc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209868972577:android:30cf00b6b2909726fb3960",
+        "android_client_info": {
+          "package_name": "com.example.snaptrackapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209868972577-5c9arc71ko9ljiqathhonpjglcnnen96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGtNTTz74Ep09e4KUrljdTwpIPuWa5Cvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209868972577-5c9arc71ko9ljiqathhonpjglcnnen96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209868972577:android:7d9e620191bc7d2efb3960",
+        "android_client_info": {
+          "package_name": "com.example.snaptracklogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209868972577-5c9arc71ko9ljiqathhonpjglcnnen96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGtNTTz74Ep09e4KUrljdTwpIPuWa5Cvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209868972577-5c9arc71ko9ljiqathhonpjglcnnen96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
