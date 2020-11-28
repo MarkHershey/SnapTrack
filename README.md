@@ -1,4 +1,4 @@
-# Work & Life
+# SnapTrack
 50.001 Introduction to Information Systems &amp; Programming - 1D Project
 
 ## Design MockUp
@@ -7,7 +7,7 @@
 
 ## Scope Of Work
 
-- [ ] User sign up and sign in
+- [x] User sign up and sign in
 - [ ] User create / edit UserActivity
 - [ ] User create / edit Label
 - [ ] User link / unlink NFC tag to UserActivity
@@ -20,10 +20,11 @@
 ## User
 
 - Attributes
-    - **UID**: Primary key, hidden to user
-    - **email**: for login
-    - **password**: for login
-    - **display_name**: User name for display
+    - `string` **AuthID**: generated and maintained by Firebase Authentication
+    - **email**: maintained by Firebase Authentication
+    - **password**: maintained by Firebase Authentication
+    - `string` **display_name**: User name for display
+    - `string` **UserID**: App generated UserID one-to-one maps to Firebase-generated AuthID. UserID will be written to NFC tags for user identification.
 
 
 ## UserActivity
