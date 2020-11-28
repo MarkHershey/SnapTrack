@@ -1,59 +1,43 @@
 {
-    "U100001": {
-        "UID": "U100001",
-        "user_display_name": "Mark Huang",
-        "Categories":{
-            "C1": {
-                "CID": "C1",
-                "name": "Work",
-                "color": "#781232"
-            }, 
-            "C2": {
-                "CID": "C2",
-                "name": "Life",
-                "color": "#781562"
-            }
-        },        
-        "UserActivities": {
-            "A1":{
-                "AID": "A1",
-                "activity_name": "Working",
-                "short_display_name": "W",
-                "color": "#781232",
-                "category": "C1"
-            },
-            "A2":{
-                "AID": "A2",
-                "activity_name": "Study",
-                "short_display_name": "S",
-                "color": "#FFFFFF",
-                "category": "C1"
-            },
-            "A3":{
-                "AID": "A3",
-                "activity_name": "Watch movie",
-                "short_display_name": "M",
-                "color": "#129F3D",
-                "category": "C2"
-            }
+  "nfc_uids" : {
+    "g2SWbRvHsouE" : true
+  },
+  "users" : {
+    "hfk1V22wIJMTDo1Ojv6432fsOXh1" : {
+      "activities" : {
+        "gAcxki3NcfQr" : {
+          "activity_name" : "sleep",
+          "categories" : [ "life" ],
+          "color" : -7829249
         },
-        "Events": [
-            {
-                "EID": "E000001",
-                "UID": "U100001",
-                "AID": "A2",
-                "time_start": "102480138",
-                "time_end": "102484902"
-            },
-            {
-                "EID": "E000001",
-                "UID": "U100001",
-                "AID": "A1",
-                "time_start": "102484953",
-                "time_end": "102484953"
-            }
-        ]
-    },
-    "100002":{
+        "gRmkU0RjAbvl" : {
+          "activity_name" : "shitpost",
+          "categories" : [ "work" ],
+          "color" : -21897
+        }
+      },
+      "categories" : {
+        "life" : {
+          "color" : -36190
+        },
+        "work" : {
+          "color" : -30584
+        }
+      },
+      "display_name" : "Example username",
+      "events" : {
+        "-JiGh_31GA20JabpZBfa" : {
+          "end_time" : 1606314833000,
+          "start_time" : 1606314832000,
+          "user_activity_id" : "Acxki3NcfQr"
+        },
+        "-MMzonhcZqZuefYdCrqN" : {
+          "end_time" : 1606314831809,
+          "start_time" : 1606314830809,
+          "user_activity_id" : "gRmkU0RjAbvl"
+        }
+      },
+      "nfc_uid" : "g2SWbRvHsouE"
     }
+  }
 }

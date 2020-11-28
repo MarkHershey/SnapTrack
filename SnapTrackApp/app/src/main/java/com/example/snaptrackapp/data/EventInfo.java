@@ -2,7 +2,9 @@ package com.example.snaptrackapp.data;
 
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.PropertyName;
 
 import java.util.Date;
 
@@ -33,22 +35,27 @@ public class EventInfo {
         this(user_activity_id, start_time.getTime(), end_time.getTime());
     }
 
-    public String getUser_activity_id() {
+    @PropertyName("user_activity_id")
+    public String getUserActivityId() {
         return user_activity_id;
     }
 
-    public long getStart_time() {
+    @PropertyName("start_time")
+    public long getStartTime() {
         return start_time;
     }
 
-    public long getEnd_time() {
+    @PropertyName("end_time")
+    public long getEndTime() {
         return end_time;
     }
 
+    @Exclude
     public Date getStartTimeAsDateTime(){
         return new Date(start_time);
     }
 
+    @Exclude
     public Date getEndTimeAsDateTime(){
         return new Date(end_time);
     }

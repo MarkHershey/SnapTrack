@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.database.PropertyName;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -32,11 +33,13 @@ public class UserInfo {
         this.nfc_uid=nfc_uid;
     }
 
-    public String getDisplay_name() {
+    @PropertyName("display_name")
+    public String getDisplayName() {
         return display_name;
     }
 
-    public String getNfc_uid() {
+    @PropertyName("nfc_uid")
+    public String getNfcUid() {
         return nfc_uid;
     }
 

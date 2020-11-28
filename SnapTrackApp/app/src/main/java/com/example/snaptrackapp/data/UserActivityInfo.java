@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.PropertyName;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public class UserActivityInfo {
         return categories;
     }
 
-    public String gatActivity_name() {
+    @PropertyName("activity_name")
+    public String getActivityName() {
         return activity_name;
     }
 

@@ -24,34 +24,101 @@
     - **email**: for login
     - **password**: for login
     - **display_name**: User name for display
-    
+
 
 ## UserActivity
 
-- UserActivity is the user-defined activity (e.g. "Work out", "Study", "CompStruct", "Entertainment", etc) for time tracking, it is tied to each User's ID in the database. 
+- UserActivity is the user-defined activity (e.g. "Work out", "Study", "CompStruct", "Entertainment", etc) for time tracking, it is tied to each User's ID in the database.
 - Attributes
-    - **AID**: Primary key, hidden to user
-    - **activity_name**: requires uniqueness within the user scope 
-    - **short_display_name**: requires uniqueness within the user scope 
-    - **color**: requires uniqueness within the user scope.
+    - `string` **AID**: Primary key, hidden to user. UUID used for NFC tags.
+    - `string` **activity_name**: requires uniqueness within the user scope
+    - `int` **color**: requires uniqueness within the user scope. Represented as int
         - system will assign random color as default value.
-    - **category**: CID of a Category. 
-    - **nfc_tag_id**: UUID to identify NFC tags
+    - `List<String>` **categories**: Names of categories.
+
+To fetch:
+
+```java
+string uid = DataUtils.getAuthID();
+FirebaseDatabase db = FirebaseDatabase.getInstance();
+DatabaseReference dbRef = db.getReference();
+dbRef = dbRef.child("users").child(uid).child("activities");
+dbRef.addValueEventListener(new ValueEventListener() {
+	@Override
+	public void onDataChange(@NonNull DataSnapshot snapshot) {
+        GenericTypeIndicator<Map<String, UserActivityInfo>> t = new GenericTypeIndicator<Map<String, UserActivityInfo>>() {};
+		Map<String, UserActivityInfo> activities = snapshot.getValue(t);
+		if(activities != null){
+			// do something
+			// key of the Map is the AID
+		}
+    }
+
+	@Override
+    public void onCancelled(@NonNull DatabaseError error) {
+		// maybe return an error message idk
+    }
+});
+```
 
 ## Category
 
 - Attributes
-    - **CID**: Primary key, hidden to user
-    - **name**: name of category.
-    - **color**: requires uniqueness within the user scope.
+    - `string` **name**: Primary key, name of category.
+    - `int` **color**: requires uniqueness within the user scope.
         - system will assign random color as default value.
+
+```java
+string uid = DataUtils.getAuthID();
+FirebaseDatabase db = FirebaseDatabase.getInstance();
+DatabaseReference dbRef = db.getReference();
+dbRef = dbRef.child("users").child(uid).child("activities");
+dbRef.addValueEventListener(new ValueEventListener() {
+	@Override
+	public void onDataChange(@NonNull DataSnapshot snapshot) {
+        GenericTypeIndicator<Map<String, CategoryInfo>> t = new GenericTypeIndicator<Map<String, CategoryInfo>>() {};
+		Map<String, CategoryInfo> categories = snapshot.getValue(t);
+		if(categories != null){
+			doSomething(categories);
+			// key of the Map is the category name
+		}
+    }
+
+	@Override
+    public void onCancelled(@NonNull DatabaseError error) {
+		// maybe return an error message idk
+    }
+});
+```
 
 ## Event
 
 - Event is the object being created when a User start doing a `UserActivity`, either using NFC tapping or manual creation.
 - Attributes
     - **EID**: Primary key, hidden to user
-    - **User**: UID
     - **UserActivity**: UserActivity ID
-    - **time_start**: DateTime Object 
-    - **time_end**: DateTime Object 
+    - **time_start**: DateTime Object
+      - **time_end**: DateTime Object
+
+```java
+string uid = DataUtils.getAuthID();
+FirebaseDatabase db = FirebaseDatabase.getInstance();
+DatabaseReference dbRef = db.getReference();
+dbRef = dbRef.child("users").child(uid).child("activities");
+// to get a range,
+dbRef.addValueEventListener(new ValueEventListener() {
+	@Override
+	public void onDataChange(@NonNull DataSnapshot snapshot) {
+        GenericTypeIndicator<List<EventInfo>> t = new GenericTypeIndicator<List<EventInfo>>() {};
+		List<EventInfo> events = snapshot.getValue(t);
+		if(events != null){
+			doSomething(events);
+		}
+    }
+
+	@Override
+    public void onCancelled(@NonNull DatabaseError error) {
+		// maybe return an error message idk
+    }
+});
+```
