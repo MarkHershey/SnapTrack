@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        // Allow only authenticated content owners access to their data
+        ".read": "auth.uid == $uid",
+        ".write": "auth.uid == $uid"
+      }
+    },
+    
+    "nfc_uids": {
+      "$id": {
+        // Cannot delete once written
+        ".read" : true,
+        ".write" : "!data.exists()"
+      }
+    }
+  }
+}
