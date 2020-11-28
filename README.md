@@ -72,7 +72,7 @@ dbRef.addValueEventListener(new ValueEventListener() {
 string uid = DataUtils.getAuthID();
 FirebaseDatabase db = FirebaseDatabase.getInstance();
 DatabaseReference dbRef = db.getReference();
-dbRef = dbRef.child("users").child(uid).child("activities");
+dbRef = dbRef.child("users").child(uid).child("categories");
 dbRef.addValueEventListener(new ValueEventListener() {
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -104,7 +104,7 @@ dbRef.addValueEventListener(new ValueEventListener() {
 string uid = DataUtils.getAuthID();
 FirebaseDatabase db = FirebaseDatabase.getInstance();
 DatabaseReference dbRef = db.getReference();
-dbRef = dbRef.child("users").child(uid).child("activities");
+dbRef = dbRef.child("users").child(uid).child("events");
 // to get a range,
 dbRef.addValueEventListener(new ValueEventListener() {
     @Override
