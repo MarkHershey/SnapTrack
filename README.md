@@ -113,7 +113,7 @@ dbRef.addValueEventListener(new ValueEventListener() {
 		List<EventInfo> events = snapshot.getValue(t);
 		if(events != null){
 			doSomething(events);
-		}
+        }
     }
 
 	@Override
