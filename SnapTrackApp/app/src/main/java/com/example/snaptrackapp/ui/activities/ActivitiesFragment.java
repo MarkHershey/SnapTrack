@@ -1,6 +1,8 @@
 package com.example.snaptrackapp.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +79,10 @@ public class ActivitiesFragment extends Fragment {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Create new activity", Toast.LENGTH_SHORT).show();
-                // TODO: jump to "create new activity" page
+                Log.v("ActivityAdapter","Create activity");
+//                Toast.makeText(getContext(), "Create new activity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity() , com.example.snaptrackapp.ui.create_activity.CreateActivity.class);
+                startActivity(intent);
             }
         });
 

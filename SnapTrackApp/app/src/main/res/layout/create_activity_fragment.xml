@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".ui.create_activity.CreateActivity">
+
+    <EditText
+        android:id="@+id/editNameOfActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name_of_activity"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/editShortName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/short_name"
+        android:layout_below="@+id/editNameOfActivity"
+        android:importantForAutofill="no"
+
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/editLabels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/labels"
+        android:layout_below="@+id/editShortName"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords" />
+
+    <EditText
+        android:id="@+id/editColour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/unique_colour"
+        android:layout_below="@+id/editLabels"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/editColour"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonPairAnNFC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:layout_gravity="bottom"
+        android:text="@string/pair_an_nfc_name"/>
+
+</RelativeLayout>

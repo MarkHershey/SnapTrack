@@ -15,12 +15,16 @@
         android:theme="@style/Theme.SnapTrackApp">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.create_activity.CreateActivity"
+            android:parentActivityName= ".MainActivity"
+            android:label= "@string/create_activity_name">
         </activity>
     </application>
 
