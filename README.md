@@ -20,18 +20,18 @@
 ## User
 
 - Attributes
-    - `string` **AuthID**: generated and maintained by Firebase Authentication
+    - `string` **authID**: generated and maintained by Firebase Authentication
     - **email**: maintained by Firebase Authentication
     - **password**: maintained by Firebase Authentication
-    - `string` **display_name**: User name for display
-    - `string` **UserID**: App generated UserID one-to-one maps to Firebase-generated AuthID. UserID will be written to NFC tags for user identification.
+    - `string` **userName**: User name for display
+    - `string` **userID**: App generated 16-char UserID one-to-one maps to Firebase-generated AuthID. UserID will be written to NFC tags for user identification.
 
 
 ## UserActivity
 
 - UserActivity is the user-defined activity (e.g. "Work out", "Study", "CompStruct", "Entertainment", etc) for time tracking, it is tied to each User's ID in the database.
 - Attributes
-    - `string` **AID**: Primary key, hidden to user. UUID used for NFC tags.
+    - `string` **AID**: App generated 16-char ID, hidden to user.
     - `string` **activity_name**: requires uniqueness within the user scope
     - `int` **color**: requires uniqueness within the user scope. Represented as int
         - system will assign random color as default value.

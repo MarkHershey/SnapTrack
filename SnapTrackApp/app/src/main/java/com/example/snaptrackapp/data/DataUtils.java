@@ -13,9 +13,10 @@ import java.util.Random;
 public class DataUtils {
 
     public static final int GENERATE_ID_TRIES = 100;
+    private static final String TAG = "DataUtils";
 
     public static void createExampleUser(){
-        UserInfo.add("Example username");
+        UserInfo.add("Example username", "xxxxxx");
         CategoryInfo.add("work", "#FF8888");
         CategoryInfo.add("life", "#FF72A2");
         UserActivityInfo.add("eat", Arrays.asList("life"), "#88FF88");
@@ -24,33 +25,45 @@ public class DataUtils {
     }
 
     /**
-     * Generates a random ID for NFC tags, guaranteed to be 12 characters.
+     * Generates a random ID, guaranteed to be 16 characters.
      * Not guaranteed to be unique,
-     * @return a 12 character ID.
+     * @return a 16 character ID.
      */
-    public static String generateIdForNFC(){
+    public static String generateRandomID(){
         String base64 = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-=";
-        char[] s = new char[12];
+        char[] s = new char[16];
         Random r = new Random(new Date().getTime());
-        for(int i = 0; i < 12; ++i){
+        for(int i = 0; i < 16; ++i){
             s[i] = base64.charAt(r.nextInt(64));
         }
         return new String(s);
     }
 
     /**
-     * Gets Auth UID from current user.
-     * @return Auth UID (a string).
+     * Gets current FirebaseUser object from Firebase Authentication
+     * @return userLoggedIn (FirebaseUser)
      */
-    public static String getAuthID(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        if (user == null){
-            Log.e("Utils", "getAuthID: User not logged in!");
+    public static FirebaseUser getCurrentUser() {
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
+        if (userLoggedIn == null){
+            Log.e(TAG, "getAuthID: User not logged in!");
             throw new RuntimeException("User not logged in");
         } else {
-            return user.getUid();
+            return userLoggedIn;
+        }
+    }
+
+    /**
+     * Gets Firebase-generated authID for currently logged-in user from Firebase.
+     * @return authID (a string).
+     */
+    public static String getCurrentUserAuthID(){
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
+        if (userLoggedIn == null){
+            Log.e(TAG, "getAuthID: User not logged in!");
+            throw new RuntimeException("User not logged in");
+        } else {
+            return userLoggedIn.getUid();
         }
     }
 

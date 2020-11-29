@@ -53,8 +53,8 @@ public class UserActivityInfo {
     }
 
     private static void add(String activityName, List<String> categories, int color, int tries){
-        String authID = DataUtils.getAuthID();
-        String nfc_id = DataUtils.generateIdForNFC();
+        String authID = DataUtils.getCurrentUserAuthID();
+        String nfc_id = DataUtils.generateRandomID();
         DatabaseReference activities = FirebaseDatabase.getInstance().getReference();
         activities = activities.child("users").child(authID).child("activities");
         UserActivityInfo info = new UserActivityInfo(categories, activityName, color);
@@ -82,7 +82,7 @@ public class UserActivityInfo {
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             if (!snapshot.exists()){
                 DatabaseReference dbr = FirebaseDatabase.getInstance().getReference();
-                dbr = dbr.child("users").child(DataUtils.getAuthID()).child("activities").child(nfc_id);
+                dbr = dbr.child("users").child(DataUtils.getCurrentUserAuthID()).child("activities").child(nfc_id);
                 dbr.setValue(userActivityInfo);
             } else if (TRIES > 0) {
                 add(userActivityInfo.activity_name, userActivityInfo.categories, userActivityInfo.color, TRIES-1);

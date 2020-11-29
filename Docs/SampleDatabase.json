@@ -1,5 +1,5 @@
 {
-  "nfc_uids" : {
+  "userIDs" : {
     "g2SWbRvHsouE" : true
   },
   "users" : {
@@ -37,7 +37,7 @@
           "user_activity_id" : "gRmkU0RjAbvl"
         }
       },
-      "nfc_uid" : "g2SWbRvHsouE"
+      "userID" : "g2SWbRvHsouE"
     }
   }
 }

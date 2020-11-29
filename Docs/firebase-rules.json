@@ -8,7 +8,7 @@
       }
     },
     
-    "nfc_uids": {
+    "userIDs": {
       "$id": {
         // Cannot delete once written
         ".read" : true,
