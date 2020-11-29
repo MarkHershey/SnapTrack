@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -97,6 +99,14 @@ public class UserInfo {
         }
     }
 
+    /**
+     * This static function checks with Firebase if the user already has a record in the database.
+     * If yes, this is an existing user, do nothing.
+     * If no, this is a newly signed up user, we initialise this user in Firebase.
+     *
+     * @param AuthID Firebase-generated UID of the User
+     * @param name Name of the User
+     */
     public static void createUIDIfNotExist(String AuthID, String name) {
 
         DatabaseReference userProfileRef = FirebaseDatabase.getInstance().getReference("users").child(AuthID);
@@ -124,9 +134,19 @@ public class UserInfo {
                 Log.e(TAG, errorMessage);
             }
         });
+    }
 
-
-
+    /**
+     *
+     * @return Firebase-generated AuthID of currently logged in user
+     */
+    public static String getCurrentUserAuthID() {
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
+        if (userLoggedIn != null) {
+            return userLoggedIn.getUid();
+        }else {
+            return "";
+        }
     }
 
 
