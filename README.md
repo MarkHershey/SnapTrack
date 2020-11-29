@@ -46,7 +46,7 @@ DataUtils.fetchActivities(new Listener<Map<String, UserActivityInfo>>(){
             // do Something
         }
     }
-}
+});
 ```
 
 ## Category
@@ -63,7 +63,7 @@ DataUtils.fetchCategories(new Listener<Map<String, CategoryInfo>>(){
             // do Something
         }
     }
-}
+});
 ```
 
 ## Event
@@ -83,5 +83,5 @@ DataUtils.fetchEvents(new Listener<List<EventInfo>>(){
             // do Something
         }
     }
-}
+});
 ```
