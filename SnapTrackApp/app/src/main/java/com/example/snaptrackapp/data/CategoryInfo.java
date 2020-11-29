@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CategoryInfo {
+    public static final String ALL_CATEGORY_PARENT = "categories";
     private int color;
 
     public static void add(String categoryName, String color) {
@@ -23,8 +24,8 @@ public class CategoryInfo {
         CategoryInfo info = new CategoryInfo();
         info.color = color;
         String authID = DataUtils.getCurrentUserAuthID();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("users").child(authID);
-        dbRef = dbRef.child("categories").child(categoryName);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(UserInfo.ALL_USER_PARENT).child(authID);
+        dbRef = dbRef.child(ALL_CATEGORY_PARENT).child(categoryName);
         dbRef.setValue(info);
     }
 

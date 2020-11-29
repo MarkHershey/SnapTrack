@@ -18,7 +18,6 @@ import com.google.firebase.database.PropertyName;
 import com.google.firebase.database.ValueEventListener;
 
 
-@IgnoreExtraProperties
 public class UserInfo {
 
     public static final String ALL_USER_PARENT = "users";

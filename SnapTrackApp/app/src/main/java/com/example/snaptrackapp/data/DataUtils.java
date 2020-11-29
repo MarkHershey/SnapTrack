@@ -87,7 +87,7 @@ public class DataUtils {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, String.format("Error fetching data"));
+                Log.e(TAG, "Error fetching data");
             }
         });
     }
@@ -102,7 +102,7 @@ public class DataUtils {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, String.format("Error fetching data"));
+                Log.e(TAG, "Error fetching data");
             }
         });
     }
@@ -177,25 +177,25 @@ public class DataUtils {
     public static String decodeFromFirebaseKey(String s) {
         int i = 0;
         int ni;
-        String res = "";
+        StringBuilder res = new StringBuilder();
         while ((ni = s.indexOf("_", i)) != -1) {
-            res += s.substring(i, ni);
+            res.append(s.substring(i, ni));
             if (ni + 1 < s.length()) {
                 char nc = s.charAt(ni + 1);
                 if (nc == '_') {
-                    res += '_';
+                    res.append('_');
                 } else if (nc == 'P') {
-                    res += '.';
+                    res.append('.');
                 } else if (nc == 'D') {
-                    res += '$';
+                    res.append('$');
                 } else if (nc == 'H') {
-                    res += '#';
+                    res.append('#');
                 } else if (nc == 'O') {
-                    res += '[';
+                    res.append('[');
                 } else if (nc == 'C') {
-                    res += ']';
+                    res.append(']');
                 } else if (nc == 'S') {
-                    res += '/';
+                    res.append('/');
                 } else {
                     // this case is due to bad encoding
                 }
@@ -205,8 +205,8 @@ public class DataUtils {
                 break;
             }
         }
-        res += s.substring(i);
-        return res;
+        res.append(s.substring(i));
+        return res.toString();
     }
 
 }

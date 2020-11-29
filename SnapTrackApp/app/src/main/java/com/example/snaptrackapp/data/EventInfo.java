@@ -9,7 +9,8 @@ import com.google.firebase.database.PropertyName;
 import java.util.Date;
 
 public class EventInfo {
-    public static final String ALL_EVENTS_PARENT = "events";
+    public static final String ALL_EVENT_PARENT = "events";
+    private static final String TAG = "EventInfo";
     private String user_activity_id;
     private long start_time;
     private long end_time;
@@ -23,7 +24,7 @@ public class EventInfo {
     public static void add(EventInfo info){
         String authID = DataUtils.getCurrentUserAuthID();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef.child(UserInfo.ALL_USER_PARENT).child(authID).child(ALL_EVENTS_PARENT).push().setValue(info);
+        dbRef.child(UserInfo.ALL_USER_PARENT).child(authID).child(ALL_EVENT_PARENT).push().setValue(info);
     }
 
     public EventInfo(String user_activity_id, long start_time, long end_time) {

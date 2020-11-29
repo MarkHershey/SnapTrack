@@ -18,10 +18,10 @@ import java.util.List;
 public class UserActivityInfo {
 
     public static final String ALL_USER_ACTIVITY_PARENT = "activities";
+    private final static String TAG = "UserActivityInfo";
     private String category;
     private String activity_name;
     private int color;
-    private final static String TAG = "UserActivityInfo";
 
     /**
      * Required for DataSnapshot.getValue()
