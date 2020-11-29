@@ -40,24 +40,11 @@
 To fetch:
 
 ```java
-string uid = DataUtils.getAuthID();
-FirebaseDatabase db = FirebaseDatabase.getInstance();
-DatabaseReference dbRef = db.getReference();
-dbRef = dbRef.child("users").child(uid).child("activities");
-dbRef.addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        GenericTypeIndicator<Map<String, UserActivityInfo>> t = new GenericTypeIndicator<Map<String, UserActivityInfo>>() {};
-        Map<String, UserActivityInfo> activities = snapshot.getValue(t);
-        if(activities != null){
-            // do something
-            // key of the Map is the AID
+DataUtils.fetchActivities(new Listener<Map<String, UserActivityInfo>>(){
+    void update(Map<String, UserActivityInfo> activities){
+        if (activities != null){
+            // do Something
         }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-        // maybe return an error message idk
     }
 });
 ```
@@ -70,24 +57,11 @@ dbRef.addValueEventListener(new ValueEventListener() {
         - system will assign random color as default value.
 
 ```java
-string uid = DataUtils.getAuthID();
-FirebaseDatabase db = FirebaseDatabase.getInstance();
-DatabaseReference dbRef = db.getReference();
-dbRef = dbRef.child("users").child(uid).child("categories");
-dbRef.addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        GenericTypeIndicator<Map<String, CategoryInfo>> t = new GenericTypeIndicator<Map<String, CategoryInfo>>() {};
-        Map<String, CategoryInfo> categories = snapshot.getValue(t);
-        if(categories != null){
-            doSomething(categories);
-            // key of the Map is the category name
+DataUtils.fetchCategories(new Listener<Map<String, CategoryInfo>>(){
+    void update(Map<String, CategoryInfo> categories){
+        if (categories != null){
+            // do Something
         }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-        // maybe return an error message idk
     }
 });
 ```
@@ -101,25 +75,13 @@ dbRef.addValueEventListener(new ValueEventListener() {
     - **time_start**: DateTime Object
       - **time_end**: DateTime Object
 
-```java
-string uid = DataUtils.getAuthID();
-FirebaseDatabase db = FirebaseDatabase.getInstance();
-DatabaseReference dbRef = db.getReference();
-dbRef = dbRef.child("users").child(uid).child("events");
-// to get a range,
-dbRef.addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        GenericTypeIndicator<List<EventInfo>> t = new GenericTypeIndicator<List<EventInfo>>() {};
-        List<EventInfo> events = snapshot.getValue(t);
-        if(events != null){
-            doSomething(events);
-        }
-    }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-        // maybe return an error message idk
+```java
+DataUtils.fetchEvents(new Listener<List<EventInfo>>(){
+    void update(List<EventInfo> events){
+        if (events != null){
+            // do Something
+        }
     }
 });
 ```

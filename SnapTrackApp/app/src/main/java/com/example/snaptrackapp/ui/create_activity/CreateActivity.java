@@ -1,8 +1,9 @@
 package com.example.snaptrackapp.ui.create_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
+import android.nfc.FormatException;
+import android.nfc.tech.Ndef;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -33,11 +34,11 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CreateActivity extends AppCompatActivity{
     Button buttonPairAnNFC;
+    Button buttonEraseNFCData;
 
     //Load Edittext to CreateActivity
     EditText editNameOfActivity;
@@ -47,21 +48,25 @@ public class CreateActivity extends AppCompatActivity{
 
     PopupWindow popupWindow;
     TextView text;
+
     // Create NfcAdapter
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
+
+    private String journey = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Log.e("AddChangeTag","Start AddChangeTag process");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_activity_fragment);
+        setContentView(R.layout.create_activity);
         //Initiate all findable ids
 
         text = findViewById(R.id.text);
         //Initiate buttons
         buttonPairAnNFC = findViewById(R.id.buttonPairAnNFC);
+        buttonEraseNFCData = findViewById(R.id.buttonEraseNFCData);
 
         //Initiate EditText
         editNameOfActivity = findViewById(R.id.editNameOfActivity);
@@ -83,14 +88,22 @@ public class CreateActivity extends AppCompatActivity{
         buttonPairAnNFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Check if the compulsory fields are completed
-                if (!editNameOfActivity.getText().toString().equals("") && !editColour.getText().toString().equals("")) {
-                    Log.e("logcat","compulsary completed");
-                    Log.e("logcat", "Start to show popup");
+                //Check if the compulsory fields are completed (To add if the activity is unique
+                if (!editNameOfActivity.getText().toString().isEmpty() && !editColour.getText().toString().isEmpty() ) {
+                    Log.v("logcat","compulsary completed");
+                    Log.v("logcat", "Start to show popup");
+                    journey = "Add";
                     onButtonShowPopupWindowClick(v);
                 } else {
                     Toast.makeText(com.example.snaptrackapp.ui.create_activity.CreateActivity.this,"Please specify the 'Name of the Activity' and a unique 'Colour' of the activity",Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+        buttonEraseNFCData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                journey = "Erase";
+                onButtonShowPopupWindowClick(v);
             }
         });
 
@@ -128,7 +141,7 @@ public class CreateActivity extends AppCompatActivity{
         super.onResume();
         if (nfcAdapter != null){
             if (!nfcAdapter.isEnabled()){
-                showBluetoothSettings();
+                showWirelessSettings();
             }
         }
         //Enables foreground dispatch which handles NFC intents (waiting for NFC card to be tapped)
@@ -138,7 +151,7 @@ public class CreateActivity extends AppCompatActivity{
         nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);
     }
 
-    private void showBluetoothSettings() {
+    private void showWirelessSettings() {
         Toast.makeText(this, "You need to enable NFC", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
         startActivity(intent);
@@ -172,34 +185,34 @@ public class CreateActivity extends AppCompatActivity{
 
     private void resolveIntent(Intent intent) {
         String action = intent.getAction();
-
         if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage[] msgs;
-
-
-            if (rawMsgs != null) {
-                msgs = new NdefMessage[rawMsgs.length];
-
-                for (int i = 0; i < rawMsgs.length; i++) {
-                    msgs[i] = (NdefMessage) rawMsgs[i];
-                }
-
-            } else {
+            Log.v("logcat",journey);
+            if (journey.equals("Add")) {
+                NdefMessage[] msgs;
                 byte[] empty = new byte[0];
                 byte[] id = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
                 Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                 assert tag != null;
                 byte[] payload = dumpTagData(tag).getBytes();
                 NdefRecord record = new NdefRecord(NdefRecord.TNF_UNKNOWN, empty, id, payload);
-                NdefMessage msg = new NdefMessage(new NdefRecord[] {record});
-                msgs = new NdefMessage[] {msg};
+                NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
+                msgs = new NdefMessage[]{msg};
+                displayMsgs(msgs);
+                Toast.makeText(this, "Successfully Paired NFC", Toast.LENGTH_LONG).show();
             }
-
-            displayMsgs(msgs);
-            Toast.makeText(this,"Successfully Paired NFC",Toast.LENGTH_LONG).show();
+            Log.v("logcat",journey);
+            if (journey.equals("Erase")) {
+                Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                for (String tech : tag.getTechList()) {
+                    if (tech.equals(MifareUltralight.class.getName())) {
+                        MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+                        eraseTagData(mifareUlTag);
+                        Toast.makeText(this, "Successfully Erased NFC Data", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
         }
     }
 
@@ -220,7 +233,6 @@ public class CreateActivity extends AppCompatActivity{
     }
 
 
-
     private String dumpTagData(Tag tag) {
         StringBuilder sb = new StringBuilder();
         byte[] id = tag.getId();
@@ -228,116 +240,92 @@ public class CreateActivity extends AppCompatActivity{
         for (String tech : tag.getTechList()) {
             if (tech.equals(MifareUltralight.class.getName())) {
                 MifareUltralight mifareUlTag = MifareUltralight.get(tag);
-                String payload_UUID = null;
-                String payload_AID = null;
-                try {
-                    mifareUlTag.connect();
-                    //Each read page reads the first 16 characters (16 bytes), with each subsequent read with a 4 char offset
-                    byte[] payload = mifareUlTag.readPages(4);
-                    byte[] payload2 = mifareUlTag.readPages(10);
-                    payload_UUID = new String(payload, Charset.forName("US-ASCII"));
-                    payload_AID = new String(payload2, Charset.forName("US-ASCII"));
-
-                    sb.append(payload_UUID);
-                    sb.append('\n');
-                    sb.append(payload_AID);
-                    Log.v("Final_payload_check", payload_UUID);
-                    Log.v("sb_check", sb.toString());
-                    // Add user id together with this to make it so that only that user can use this tag
-//                    if (UUID_existence == 1){
-//
-//                    }
-                } catch (IOException e) {
-                    Log.e("logcat", "IOException while reading MifareUltralight message...", e);
-                } finally {
-                    if (mifareUlTag != null) {
-                        try {
-                            mifareUlTag.close();
-                        } catch (IOException e) {
-                            Log.e("logcat", "Error closing tag...", e);
-                        }
-                    }
-                }
-
-                try {
-                    mifareUlTag.connect();
-                    //Write 1 page (4 bytes)
-                    //Storing Convention
-                    //Page 4-7: Signature
-                    //Page 8-11: userID
-                    //Page 12-15: AID
-                    mifareUlTag.writePage(4, "UUID".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(5, ":453".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(6, "ijkd".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(7, "asdf".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(8, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(9, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(10, "AID:".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(11, "dfas".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(12, "A342".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(13, "sdfs".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(14, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(15, "    ".getBytes(Charset.forName("US-ASCII")));
-                } catch (IOException e) {
-                    Log.e("logcat", "IOException while writing MifareUltralight...", e);
-                } finally {
-                    try {
-                        mifareUlTag.close();
-                    } catch (IOException e) {
-                        Log.e("logcat", "IOException while closing MifareUltralight...", e);
-                    }
-                }
+                readTag(mifareUlTag, sb);
+                writeTag(mifareUlTag);
             }
         }
-
         return sb.toString();
     }
 
-    public String readTag(Tag tag) {
-        for (String tech : tag.getTechList()) {
-            if (tech.equals(MifareUltralight.class.getName())) {
-                MifareUltralight mifare = MifareUltralight.get(tag);
-                try {
-                    mifare.connect();
-                    byte[] payload = mifare.readPages(4);
-                    return new String(payload, Charset.forName("US-ASCII"));
-                } catch (IOException e) {
-                    Log.e("logcat", "IOException while reading MifareUltralight message...", e);
-                } finally {
-                    if (mifare != null) {
-                        try {
-                            mifare.close();
-                        } catch (IOException e) {
-                            Log.e("logcat", "Error closing tag...", e);
-                        }
+    public StringBuilder readTag(MifareUltralight mifareUlTag, StringBuilder sb) {
+        String signature = null;
+        String userID = null;
+        String AID = null;
+        try {
+            mifareUlTag.connect();
+
+
+            //Each read page reads the first 16 characters (16 bytes), with each subsequent read with a 4 char offset
+            //Page 4-7: Signature
+            //Page 8-11: userID
+            //Page 12-15: AID
+            byte[] payload_signature = mifareUlTag.readPages(4);
+            byte[] payload_userID = mifareUlTag.readPages(8);
+            byte[] payload_AID = mifareUlTag.readPages(12);
+
+            //Gets the payload with empty trailing and leading spaces removed
+            signature = new String(payload_signature, Charset.forName("US-ASCII")).trim();
+            userID = new String(payload_userID, Charset.forName("US-ASCII")).trim();
+            AID = new String(payload_AID, Charset.forName("US-ASCII")).trim();
+
+            Log.v("payload_userID", signature);
+            Log.v("payload_userID", userID);
+            Log.v("payload_userID", AID);
+            sb.append("signature: "+signature);
+            sb.append('\n');
+            sb.append("userID: "+userID);
+            sb.append('\n');
+            sb.append("AID: "+AID);
+
+            // Add user id together with this to make it so that only that user can use this tag
+            if (signature.equals("HHCCJRDLZY2020ST")){
+                //TO-DO
+                Toast.makeText(this,"Bring up, pop up to confirm changes",Toast.LENGTH_LONG).show();
+            }
+            else {
+                for (int i = 8;i < 36; i+=4) {
+                    //If not empty, illegal NFC  pages 4-7 and pages 36-39 are skipped to ensure no jibberish values
+                    Log.v("Tag_data",new String(mifareUlTag.readPages(i), Charset.forName("US-ASCII")).trim() + i);
+                    if (!new String(mifareUlTag.readPages(i), Charset.forName("US-ASCII")).trim().isEmpty()) {
+                        Toast.makeText(this, "Non-snapTrack NFCs are not allowed, please reformat your NFC tag", Toast.LENGTH_LONG).show();
                     }
                 }
             }
-            return null;
+
+        } catch (IOException e) {
+            Log.e("logcat", "IOException while reading MifareUltralight message...", e);
+        } finally {
+
+            if (mifareUlTag != null) {
+                try {
+                    mifareUlTag.close();
+                } catch (IOException e) {
+                    Log.e("logcat", "Error closing tag...", e);
+                }
+            }
         }
-        return null;
+        return sb;
     }
 
-    public String WriteTag(Tag tag) {
-        for (String tech : tag.getTechList()) {
-            if (tech.equals(MifareUltralight.class.getName())) {
-                MifareUltralight mifareUlTag = MifareUltralight.get(tag);
+    public void writeTag(MifareUltralight mifareUlTag) {
                 try {
                     mifareUlTag.connect();
                     //Write 1 page (4 bytes)
-                    // UUID: (16 bytes, page 4 to page 7) AID :(16 bytes, page 10 to page 13)
-                    mifareUlTag.writePage(4, "UUID".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(5, ":453".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(6, "ijkd".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(7, "asdf".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(8, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(9, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(10, "AID:".getBytes(Charset.forName("US-ASCII")));
+                    //Page 4-7: Signature
+                    //Page 8-11: userID
+                    //Page 12-15: AID
+                    mifareUlTag.writePage(4, "HHCC".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(5, "JRDL".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(6, "ZY20".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(7, "20ST".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(8, "asdf".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(9, "tqet".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(10, "123s".getBytes(Charset.forName("US-ASCII")));
                     mifareUlTag.writePage(11, "dfas".getBytes(Charset.forName("US-ASCII")));
                     mifareUlTag.writePage(12, "A342".getBytes(Charset.forName("US-ASCII")));
                     mifareUlTag.writePage(13, "sdfs".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(14, "    ".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(15, "    ".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(14, "dsds".getBytes(Charset.forName("US-ASCII")));
+                    mifareUlTag.writePage(15, "rqwe".getBytes(Charset.forName("US-ASCII")));
                 } catch (IOException e) {
                     Log.e("logcat", "IOException while writing MifareUltralight...", e);
                 } finally {
@@ -348,9 +336,23 @@ public class CreateActivity extends AppCompatActivity{
                     }
                 }
             }
-            return null;
+
+    public void eraseTagData(MifareUltralight mifareUlTag) {
+        try {
+            mifareUlTag.connect();
+            //Write 1 page (4 bytes)
+            for (int i = 4; i<40;i++) {
+                mifareUlTag.writePage(i, "".getBytes(Charset.forName("US-ASCII")));
+            }
+        } catch (IOException e) {
+            Log.e("logcat", "IOException while writing MifareUltralight...", e);
+        } finally {
+            try {
+                mifareUlTag.close();
+            } catch (IOException e) {
+                Log.e("logcat", "IOException while closing MifareUltralight...", e);
+            }
         }
-        return null;
     }
 
     private long toDec(byte[] bytes) {
@@ -362,17 +364,5 @@ public class CreateActivity extends AppCompatActivity{
             factor *= 256l;
         }
         return result;
-    }
-
-    private ArrayList stringToPage(String input){
-        ArrayList<String> arr = new ArrayList();
-        int remainder = input.length() % 4;
-        for (int i = 0; i < remainder ;i++){
-            arr.add(input.substring(i*4,(i+4)*4));
-        }
-        if (remainder != 0){
-            arr.add(input.substring(remainder*4));
-        }
-        return arr;
     }
 }

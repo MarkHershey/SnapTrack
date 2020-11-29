@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     tools:context=".ui.create_activity.CreateActivity">
 
     <EditText
@@ -54,7 +53,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text"
-        android:layout_gravity="bottom"
         android:text="@string/pair_an_nfc_name"/>
+
+    <Button
+        android:id="@+id/buttonEraseNFCData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonPairAnNFC"
+        android:text="@string/erase_data_in_NFC" />
 
 </RelativeLayout>
