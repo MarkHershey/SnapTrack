@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,6 +16,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class UserActivityInfo {
+
+    public static final String ALL_USER_ACTIVITY_PARENT = "activities";
     private String category;
     private String activity_name;
     private int color;
@@ -54,11 +57,16 @@ public class UserActivityInfo {
 
     private static void add(String activityName, String category, int color, int tries){
         String authID = DataUtils.getCurrentUserAuthID();
-        String nfc_id = DataUtils.generateRandomID();
-        DatabaseReference activities = FirebaseDatabase.getInstance().getReference();
-        activities = activities.child("users").child(authID).child("activities");
+        String AID = DataUtils.generateRandomID();
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        dbRef = dbRef
+                .child(UserInfo.ALL_USER_PARENT)
+                .child(authID)
+                .child(ALL_USER_ACTIVITY_PARENT);
         UserActivityInfo info = new UserActivityInfo(category, activityName, color);
-        activities.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, nfc_id, info));
+        dbRef.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, AID, info));
+
     }
 
     /**
@@ -69,21 +77,25 @@ public class UserActivityInfo {
      */
     private static class InsertUserActivityOrRetry implements ValueEventListener {
         private final int TRIES;
-        private final String nfc_id;
+        private final String userID;
         private final UserActivityInfo userActivityInfo;
 
-        private InsertUserActivityOrRetry(int tries, String nfc_id, UserActivityInfo userActivityInfo) {
+        private InsertUserActivityOrRetry(int tries, String userID, UserActivityInfo userActivityInfo) {
             TRIES = tries;
-            this.nfc_id = nfc_id;
+            this.userID = userID;
             this.userActivityInfo = userActivityInfo;
         }
 
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             if (!snapshot.exists()){
-                DatabaseReference dbr = FirebaseDatabase.getInstance().getReference();
-                dbr = dbr.child("users").child(DataUtils.getCurrentUserAuthID()).child("activities").child(nfc_id);
-                dbr.setValue(userActivityInfo);
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                dbRef = dbRef
+                        .child(UserInfo.ALL_USER_PARENT)
+                        .child(DataUtils.getCurrentUserAuthID())
+                        .child(ALL_USER_ACTIVITY_PARENT)
+                        .child(userID);
+                dbRef.setValue(userActivityInfo);
             } else if (TRIES > 0) {
                 add(userActivityInfo.activity_name, userActivityInfo.category, userActivityInfo.color, TRIES-1);
             } else {
@@ -96,4 +108,13 @@ public class UserActivityInfo {
 
         }
     }
+
+
+
+
+
+
+
+
+
 }
