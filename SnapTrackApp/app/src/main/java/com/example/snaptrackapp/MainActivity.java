@@ -87,10 +87,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (user != null) {
                     String authID = user.getUid();
-                    String name = user.getDisplayName();
+                    String userName = user.getDisplayName();
                     // generate UID for new user
-                    UserInfo.createUIDIfNotExist(authID, name);
-                    Toast.makeText(MainActivity.this, "Howdy " + name + "!", Toast.LENGTH_LONG).show();
+                    UserInfo.createUIDIfNotExist(userName, authID);
+                    Toast.makeText(MainActivity.this, "Howdy " + userName + "!", Toast.LENGTH_LONG).show();
                 } else {
                     Log.e(TAG, "Unexpected: Somehow sign in worked but user doesn't exist.");
                     Toast.makeText(MainActivity.this, "Somehow sign in worked but user doesn't exist?", Toast.LENGTH_LONG).show();

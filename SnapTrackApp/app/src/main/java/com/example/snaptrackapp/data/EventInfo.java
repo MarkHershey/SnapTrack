@@ -20,7 +20,7 @@ public class EventInfo {
     }
 
     public static void add(EventInfo info){
-        String authID = DataUtils.getAuthID();
+        String authID = DataUtils.getCurrentUserAuthID();
         DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
         dbref.child("users").child(authID).child("events").push().setValue(info);
     }

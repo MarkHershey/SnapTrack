@@ -15,7 +15,7 @@ public class CategoryInfo {
     public static void add(String categoryName, int color) {
         CategoryInfo info = new CategoryInfo();
         info.color = color;
-        String authID = DataUtils.getAuthID();
+        String authID = DataUtils.getCurrentUserAuthID();
         DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("users").child(authID);
         dbref = dbref.child("categories").child(categoryName);
         dbref.setValue(info);

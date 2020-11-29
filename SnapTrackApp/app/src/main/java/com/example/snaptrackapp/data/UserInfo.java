@@ -22,45 +22,52 @@ import com.google.firebase.database.ValueEventListener;
 public class UserInfo {
 
     private static final String TAG = "UserInfo";
-    private String display_name;
-    private String nfc_uid;
+    private String userName;
+    private String userID;
+    private String authID;
 
     /**
      * Required for DataSnapshot.getValue(UserInfo.class) to work.
      */
     public UserInfo(){ }
 
-    public UserInfo(String display_name, String nfc_uid){
-        this.display_name=display_name;
-        this.nfc_uid=nfc_uid;
+    public UserInfo(String userName, String userID, String authID){
+        this.userName=userName;
+        this.userID=userID;
+        this.authID=authID;
     }
 
-    @PropertyName("display_name")
-    public String getDisplayName() {
-        return display_name;
+    @PropertyName("userName")
+    public String getUserName() {
+        return userName;
     }
 
-    @PropertyName("nfc_uid")
-    public String getNfcUid() {
-        return nfc_uid;
+    @PropertyName("userID")
+    public String getUserID() {
+        return userID;
+    }
+
+    @PropertyName("authID")
+    public String getAuthID() {
+        return authID;
     }
 
     /**
      * Initialises user info on firebase.
      * You will still need to fetch the data manually to access the info.
-     * @param display_name the user's display name.
+     * @param userName the user's display name.
      */
-    public static void add(String display_name){
-        add(DataUtils.GENERATE_ID_TRIES, display_name);
+    public static void add(String userName, String authID){
+        add(DataUtils.GENERATE_ID_TRIES, userName, authID);
     }
 
 
-    private static void add(int tries, String display_name){
-        // generate UID
-        String nfc_id = DataUtils.generateIdForNFC();
+    private static void add(int tries, String userName, String authID){
+        // generate userID
+        String userID = DataUtils.generateRandomID();
 
-        DatabaseReference nfcIdsRef = FirebaseDatabase.getInstance().getReference("nfc_uids").child(nfc_id);
-        nfcIdsRef.setValue(true, new InsertUserInfoOrRetry(tries, new UserInfo(display_name, nfc_id)));
+        DatabaseReference nfcIdsRef = FirebaseDatabase.getInstance().getReference("userIDs").child(userID);
+        nfcIdsRef.setValue(true, new InsertUserInfoOrRetry(tries, new UserInfo(userName, userID, authID)));
     }
 
 
@@ -74,6 +81,7 @@ public class UserInfo {
     private static class InsertUserInfoOrRetry implements DatabaseReference.CompletionListener {
         private final int TRIES;
         private final UserInfo userInfo;
+        private final String allUserParent = "users";
         public InsertUserInfoOrRetry(int TRIES, UserInfo userInfo) {
             this.TRIES = TRIES;
             this.userInfo = userInfo;
@@ -81,19 +89,21 @@ public class UserInfo {
         @Override
         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
             FirebaseDatabase db = FirebaseDatabase.getInstance();
-            if (error == null) { // we did it
+            if (error == null) {
 
                 // commit user
-                DatabaseReference userInfoRef = db.getReference("users").child(DataUtils.getAuthID());
-                userInfoRef.child("display_name").setValue(userInfo.display_name);
-                userInfoRef.child("nfc_uid").setValue(userInfo.nfc_uid);
+                DatabaseReference userInfoRef = db.getReference(allUserParent).child(DataUtils.getCurrentUserAuthID());
+                userInfoRef.child("userName").setValue(userInfo.getUserName());
+                userInfoRef.child("userID").setValue(userInfo.getUserID());
+                userInfoRef.child("authID").setValue(userInfo.getAuthID());
+
                 Log.d(TAG, "Added New User");
 
-            } else { // generate a new nfc tag and retry
+            } else {
                 if(TRIES > 1){
-                    add(TRIES-1, userInfo.display_name);
+                    add(TRIES-1, userInfo.userName, userInfo.authID);
                 } else {
-                    Log.e("UserInfo","add, couldn't insert nfc_uid");
+                    Log.e(TAG,"add, couldn't insert userID");
                 }
             }
         }
@@ -104,12 +114,12 @@ public class UserInfo {
      * If yes, this is an existing user, do nothing.
      * If no, this is a newly signed up user, we initialise this user in Firebase.
      *
-     * @param AuthID Firebase-generated UID of the User
-     * @param name Name of the User
+     * @param userName Name of the User
+     * @param authID Firebase-generated UID of the User
      */
-    public static void createUIDIfNotExist(String AuthID, String name) {
+    public static void createUIDIfNotExist(String userName, String authID) {
 
-        DatabaseReference userProfileRef = FirebaseDatabase.getInstance().getReference("users").child(AuthID);
+        DatabaseReference userProfileRef = FirebaseDatabase.getInstance().getReference("users").child(authID);
 
         userProfileRef.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
@@ -120,7 +130,7 @@ public class UserInfo {
                 } else {
                     Log.d(TAG, "New User Logged In");
                     // create user and userID
-                    UserInfo.add(name);
+                    UserInfo.add(userName, authID);
                     // create default categories for all user
                     CategoryInfo.add("Work", "#FF8888");
                     CategoryInfo.add("Life", "#FF72A2");
@@ -136,18 +146,6 @@ public class UserInfo {
         });
     }
 
-    /**
-     *
-     * @return Firebase-generated AuthID of currently logged in user
-     */
-    public static String getCurrentUserAuthID() {
-        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
-        if (userLoggedIn != null) {
-            return userLoggedIn.getUid();
-        }else {
-            return "";
-        }
-    }
 
 
 
