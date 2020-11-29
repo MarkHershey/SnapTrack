@@ -23,12 +23,14 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
     }
 
     public static class ActivityViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextView aTextView;
+        public TextView cTextView;
         public CardView mCardView;
 
         public ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTextView = itemView.findViewById(R.id.activityNameTextView);
+            aTextView = itemView.findViewById(R.id.activityNameTextView);
+            cTextView = itemView.findViewById(R.id.categoryTextView);
             mCardView = itemView.findViewById(R.id.cardView);
         }
     }
@@ -44,7 +46,8 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
     @Override
     public void onBindViewHolder(@NonNull ActivityViewHolder holder, int position) {
         UserActivityInfo currentItem = mActivityList.get(position);
-        holder.mTextView.setText(currentItem.getActivityName());
+        holder.aTextView.setText(currentItem.getActivityName());
+        holder.cTextView.setText(currentItem.getCategory());
         holder.mCardView.setCardBackgroundColor(currentItem.getColor());
 
     }

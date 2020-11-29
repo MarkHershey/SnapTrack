@@ -18,19 +18,15 @@ public class MeViewModel extends ViewModel {
     public MeViewModel() {
         // get current user
         userLoggedIn = DataUtils.getCurrentUser();
-        if (userLoggedIn != null) {
-            // get user name
-            String name = userLoggedIn.getDisplayName();
-            if (name != null && !name.trim().isEmpty()) userNameText.setValue(name);
-            else userNameText.setValue("User Name Not Set");
+        // get user name
+        String name = userLoggedIn.getDisplayName();
+        if (name != null && !name.trim().isEmpty()) userNameText.setValue(name);
+        else userNameText.setValue("User Name Not Set");
 
-            // get user email
-            String email = userLoggedIn.getEmail();
-            userEmailText.setValue(email);
+        // get user email
+        String email = userLoggedIn.getEmail();
+        userEmailText.setValue(email);
 
-        }else {
-            userNameText.setValue("Not Signed In");
-        }
     }
 
     public LiveData<String> getUserName() {
