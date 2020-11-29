@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 @IgnoreExtraProperties
 public class UserInfo {
 
+    public static final String ALL_USER_PARENT = "users";
     private static final String TAG = "UserInfo";
     private String userName;
     private String userID;
@@ -81,7 +82,7 @@ public class UserInfo {
     private static class InsertUserInfoOrRetry implements DatabaseReference.CompletionListener {
         private final int TRIES;
         private final UserInfo userInfo;
-        private final String allUserParent = "users";
+
         public InsertUserInfoOrRetry(int TRIES, UserInfo userInfo) {
             this.TRIES = TRIES;
             this.userInfo = userInfo;
@@ -92,7 +93,7 @@ public class UserInfo {
             if (error == null) {
 
                 // commit user
-                DatabaseReference userInfoRef = db.getReference(allUserParent).child(DataUtils.getCurrentUserAuthID());
+                DatabaseReference userInfoRef = db.getReference(ALL_USER_PARENT).child(DataUtils.getCurrentUserAuthID());
                 userInfoRef.child("userName").setValue(userInfo.getUserName());
                 userInfoRef.child("userID").setValue(userInfo.getUserID());
                 userInfoRef.child("authID").setValue(userInfo.getAuthID());
@@ -117,9 +118,9 @@ public class UserInfo {
      * @param userName Name of the User
      * @param authID Firebase-generated UID of the User
      */
-    public static void createUIDIfNotExist(String userName, String authID) {
+    public static void addUserInfoIfNotExist(String userName, String authID) {
 
-        DatabaseReference userProfileRef = FirebaseDatabase.getInstance().getReference("users").child(authID);
+        DatabaseReference userProfileRef = FirebaseDatabase.getInstance().getReference(ALL_USER_PARENT).child(authID);
 
         userProfileRef.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
