@@ -2,12 +2,22 @@ package com.example.snaptrackapp.data;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class DataUtils {
@@ -19,9 +29,82 @@ public class DataUtils {
         UserInfo.add("Example username", "xxxxxx");
         CategoryInfo.add("work", "#FF8888");
         CategoryInfo.add("life", "#FF72A2");
-        UserActivityInfo.add("eat", Arrays.asList("life"), "#88FF88");
-        UserActivityInfo.add("sleep", Arrays.asList("life"), "#8888FF");
-        UserActivityInfo.add("shitpost", Arrays.asList("work"), "#FFAA77");
+        UserActivityInfo.add("eat", "life", "#88FF88");
+        UserActivityInfo.add("sleep", "life", "#8888FF");
+        UserActivityInfo.add("shitpost", "work", "#FFAA77");
+    }
+
+    /**
+     * Fetches the Map from Activity ID to UserActivityInfo. Calls callback.update() whenever data changes.
+     * @param callback Listener for Activities map.
+     */
+    public static void fetchActivities(Listener<Map<String,UserActivityInfo>> callback){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("activities");
+        fetchData(callback, dbRef);
+    }
+
+    /**
+     * Fetches the List of EventInfo. Calls callback.update() whenever data changes.
+     * @param callback Listener for Event Info List.
+     */
+    public static void fetchEvents(Listener<List<EventInfo>> callback){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        fetchData(callback, dbRef);
+    }
+
+    /**
+     * Fetches the List of EventInfo within a certain time range.
+     * @param callback Listener for Event Info List.
+     * @param startTime Start time.
+     * @param endTime End time.
+     */
+    public static void fetchEvents(Listener<List<EventInfo>> callback, Date startTime, Date endTime){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        fetchData(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"));
+    }
+
+    /**
+     * Fetches the Map from Category name to CategoryInfo. Calls callback.update() whenever data changes.
+     * @param callback Listener for Category Info Map.
+     */
+    public static void fetchCategories(Listener<Map<String, CategoryInfo>> callback){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("categories");
+        fetchData(callback, dbRef);
+    }
+
+    private static <T> void fetchData(Listener<T> callback, Query q){
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                T t;
+                GenericTypeIndicator<T> gti = new GenericTypeIndicator<T>(){};
+                t = snapshot.getValue(gti);
+                callback.update(t);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, String.format("Error fetching data"));
+            }
+        });
+    }
+
+    private static <T> void fetchData(Listener<T> callback, Query q, Class<T> c){
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                T t;
+                t = snapshot.getValue(c);
+                callback.update(t);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, String.format("Error fetching data"));
+            }
+        });
     }
 
     /**

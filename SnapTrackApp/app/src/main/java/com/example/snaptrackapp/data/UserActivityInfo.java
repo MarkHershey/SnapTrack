@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class UserActivityInfo {
-    private List<String> categories;
+    private String category;
     private String activity_name;
     private int color;
     private final static String TAG = "UserActivityInfo";
@@ -25,14 +25,14 @@ public class UserActivityInfo {
      */
     public UserActivityInfo(){}
 
-    public UserActivityInfo(List<String> categories, String activity_name, int color) {
-        this.categories = categories;
+    public UserActivityInfo(String category, String activity_name, int color) {
+        this.category = category;
         this.activity_name = activity_name;
         this.color = color;
     }
 
-    public List<String> getCategories() {
-        return categories;
+    public String getCategory() {
+        return category;
     }
 
     @PropertyName("activity_name")
@@ -44,20 +44,20 @@ public class UserActivityInfo {
         return color;
     }
 
-    public static void add(String activityName, List<String> categories, String color) {
-        add(activityName, categories, Color.parseColor(color));
+    public static void add(String activityName, String category, String color) {
+        add(activityName, category, Color.parseColor(color));
     }
 
-    public static void add(String activityName, List<String> categories, int color) {
-        add(activityName, categories, color, DataUtils.GENERATE_ID_TRIES);
+    public static void add(String activityName, String category, int color) {
+        add(activityName, category, color, DataUtils.GENERATE_ID_TRIES);
     }
 
-    private static void add(String activityName, List<String> categories, int color, int tries){
+    private static void add(String activityName, String category, int color, int tries){
         String authID = DataUtils.getCurrentUserAuthID();
         String nfc_id = DataUtils.generateRandomID();
         DatabaseReference activities = FirebaseDatabase.getInstance().getReference();
         activities = activities.child("users").child(authID).child("activities");
-        UserActivityInfo info = new UserActivityInfo(categories, activityName, color);
+        UserActivityInfo info = new UserActivityInfo(category, activityName, color);
         activities.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, nfc_id, info));
     }
 
@@ -85,7 +85,7 @@ public class UserActivityInfo {
                 dbr = dbr.child("users").child(DataUtils.getCurrentUserAuthID()).child("activities").child(nfc_id);
                 dbr.setValue(userActivityInfo);
             } else if (TRIES > 0) {
-                add(userActivityInfo.activity_name, userActivityInfo.categories, userActivityInfo.color, TRIES-1);
+                add(userActivityInfo.activity_name, userActivityInfo.category, userActivityInfo.color, TRIES-1);
             } else {
                 Log.e(TAG, "Failed to add activity " + userActivityInfo.activity_name);
             }

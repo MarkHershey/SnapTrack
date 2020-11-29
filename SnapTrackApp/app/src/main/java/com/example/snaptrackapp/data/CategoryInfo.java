@@ -12,13 +12,20 @@ public class CategoryInfo {
         add(categoryName, Color.parseColor(color));
     }
 
-    public static void add(String categoryName, int color) {
+    public static void add(String categoryName, int color) throws IllegalArgumentException {
+        for (Character c : "./[]$#".toCharArray()){
+            if (categoryName.indexOf(c) >= 0){
+                throw new IllegalArgumentException("Illegal key name given for Firebase Database");
+            }
+        }
+
+
         CategoryInfo info = new CategoryInfo();
         info.color = color;
         String authID = DataUtils.getCurrentUserAuthID();
-        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("users").child(authID);
-        dbref = dbref.child("categories").child(categoryName);
-        dbref.setValue(info);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("users").child(authID);
+        dbRef = dbRef.child("categories").child(categoryName);
+        dbRef.setValue(info);
     }
 
     public int getColor() {
