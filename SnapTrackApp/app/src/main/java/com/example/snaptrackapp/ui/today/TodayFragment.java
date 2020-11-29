@@ -1,6 +1,8 @@
 package com.example.snaptrackapp.ui.today;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,8 @@ public class TodayFragment extends Fragment {
 
     private TodayViewModel todayViewModel;
     FloatingActionButton mFloatingActionButton;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

@@ -149,9 +149,9 @@ public class CreateActivity extends AppCompatActivity{
 
         super.onPause();
         //On pause stop listening
-        if (nfcAdapter != null) {
-            nfcAdapter.disableForegroundDispatch(this);
-        }
+//        if (nfcAdapter != null) {
+//            nfcAdapter.disableForegroundDispatch(this);
+//        }
     }
 
     //New NFC Intent (NFC Card detected)
@@ -262,7 +262,10 @@ public class CreateActivity extends AppCompatActivity{
                 try {
                     mifareUlTag.connect();
                     //Write 1 page (4 bytes)
-                    // UUID: (16 bytes, page 4 to page 7) AID :(16 bytes, page 10 to page 13)
+                    //Storing Convention
+                    //Page 4-7: Signature
+                    //Page 8-11: userID
+                    //Page 12-15: AID
                     mifareUlTag.writePage(4, "UUID".getBytes(Charset.forName("US-ASCII")));
                     mifareUlTag.writePage(5, ":453".getBytes(Charset.forName("US-ASCII")));
                     mifareUlTag.writePage(6, "ijkd".getBytes(Charset.forName("US-ASCII")));
