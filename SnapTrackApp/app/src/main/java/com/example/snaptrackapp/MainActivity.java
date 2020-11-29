@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -72,6 +73,18 @@ public class MainActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+//    Fragment fragment;
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//
+//        // Check if the fragment is an instance of the right fragment
+//        if (fragment instanceof com.example.snaptrackapp.ui.create_activity.create_activity) {
+//            com.example.snaptrackapp.ui.create_activity.create_activity my = (com.example.snaptrackapp.ui.create_activity.create_activity) fragment;
+//            // Pass intent or its data to the fragment's method
+//            my.processNFC(intent.getStringExtra());
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

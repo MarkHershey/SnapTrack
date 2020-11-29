@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SnapTrackApp</string>
+    <string name="create_activity_name">Create Activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,4 +9,10 @@
     <string name="nav_3">Analytics</string>
     <string name="nav_4">Me</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pair_an_nfc_name">Pair an NFC</string>
+    <string name="name_of_activity">Name of Activity*</string>
+    <string name="short_name">Short Name</string>
+    <string name="labels">Labels for filtering (E.g Work,Life)</string>
+    <string name="unique_colour">Unique Hex Colour (E.g #293E53)*</string>
+    <string name="pair_an_nfc_screen_pop_up">Approach an NFC Tag \n Pair an NFC"</string>
 </resources>
