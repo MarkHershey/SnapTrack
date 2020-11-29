@@ -6,27 +6,30 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.snaptrackapp.R;
-import com.example.snaptrackapp.UserActivity;
+import com.example.snaptrackapp.data.UserActivityInfo;
 
 import java.util.ArrayList;
 
 public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.ActivityViewHolder> {
-    private ArrayList<UserActivity> mActivityList;
+    private ArrayList<UserActivityInfo> mActivityList;
 
 
-    public ActivitiesAdapter(ArrayList<UserActivity> activityList){
+    public ActivitiesAdapter(ArrayList<UserActivityInfo> activityList){
         mActivityList = activityList;
     }
 
     public static class ActivityViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
+        public CardView mCardView;
 
         public ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextView = itemView.findViewById(R.id.activityNameTextView);
+            mCardView = itemView.findViewById(R.id.cardView);
         }
     }
 
@@ -40,8 +43,9 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
 
     @Override
     public void onBindViewHolder(@NonNull ActivityViewHolder holder, int position) {
-        UserActivity currentItem = mActivityList.get(position);
-        holder.mTextView.setText(currentItem.getActivity_name());
+        UserActivityInfo currentItem = mActivityList.get(position);
+        holder.mTextView.setText(currentItem.getActivityName());
+        holder.mCardView.setCardBackgroundColor(currentItem.getColor());
 
     }
 

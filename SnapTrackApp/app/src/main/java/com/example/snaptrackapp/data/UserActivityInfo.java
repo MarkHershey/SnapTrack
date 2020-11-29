@@ -19,8 +19,9 @@ public class UserActivityInfo {
 
     public static final String ALL_USER_ACTIVITY_PARENT = "activities";
     private final static String TAG = "UserActivityInfo";
-    private String category;
+
     private String activity_name;
+    private String category;
     private int color;
 
     /**
@@ -28,21 +29,23 @@ public class UserActivityInfo {
      */
     public UserActivityInfo(){}
 
-    public UserActivityInfo(String category, String activity_name, int color) {
-        this.category = category;
+    public UserActivityInfo(String activity_name, String category, int color) {
         this.activity_name = activity_name;
+        this.category = category;
         this.color = color;
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     @PropertyName("activity_name")
     public String getActivityName() {
-        return activity_name;
+        return this.activity_name;
     }
 
+    @PropertyName("category")
+    public String getCategory() {
+        return this.category;
+    }
+
+    @PropertyName("color")
     public int getColor() {
         return color;
     }
@@ -56,6 +59,7 @@ public class UserActivityInfo {
     }
 
     private static void add(String activityName, String category, int color, int tries){
+
         String authID = DataUtils.getCurrentUserAuthID();
         String AID = DataUtils.generateRandomID();
 
@@ -64,7 +68,8 @@ public class UserActivityInfo {
                 .child(UserInfo.ALL_USER_PARENT)
                 .child(authID)
                 .child(ALL_USER_ACTIVITY_PARENT);
-        UserActivityInfo info = new UserActivityInfo(category, activityName, color);
+
+        UserActivityInfo info = new UserActivityInfo(activityName, category, color);
         dbRef.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, AID, info));
 
     }
@@ -77,12 +82,12 @@ public class UserActivityInfo {
      */
     private static class InsertUserActivityOrRetry implements ValueEventListener {
         private final int TRIES;
-        private final String userID;
+        private final String AID;
         private final UserActivityInfo userActivityInfo;
 
         private InsertUserActivityOrRetry(int tries, String userID, UserActivityInfo userActivityInfo) {
             TRIES = tries;
-            this.userID = userID;
+            this.AID = userID;
             this.userActivityInfo = userActivityInfo;
         }
 
@@ -94,12 +99,15 @@ public class UserActivityInfo {
                         .child(UserInfo.ALL_USER_PARENT)
                         .child(DataUtils.getCurrentUserAuthID())
                         .child(ALL_USER_ACTIVITY_PARENT)
-                        .child(userID);
+                        .child(AID);
                 dbRef.setValue(userActivityInfo);
+
             } else if (TRIES > 0) {
                 add(userActivityInfo.activity_name, userActivityInfo.category, userActivityInfo.color, TRIES-1);
+
             } else {
-                Log.e(TAG, "Failed to add activity " + userActivityInfo.activity_name);
+                Log.e(TAG, "Failed to add new activity to Firebase: " + userActivityInfo.activity_name);
+
             }
         }
 
