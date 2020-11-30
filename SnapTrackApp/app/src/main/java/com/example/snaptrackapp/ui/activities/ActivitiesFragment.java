@@ -1,5 +1,6 @@
 package com.example.snaptrackapp.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -48,12 +49,12 @@ public class ActivitiesFragment extends Fragment {
         mRecyclerView = root.findViewById(R.id.recyclerView);
         // set empty adapter to avoid exception
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new ActivitiesAdapter(activityList));
+        mRecyclerView.setAdapter(new ActivitiesAdapter(activityList, getContext()));
 
         activitiesViewModel.getActivityListLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserActivityInfo>>() {
             @Override
             public void onChanged(ArrayList<UserActivityInfo> userActivityInfoList) {
-                mRecyclerViewAdapter = new ActivitiesAdapter(userActivityInfoList);
+                mRecyclerViewAdapter = new ActivitiesAdapter(userActivityInfoList, getContext());
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 mRecyclerView.setAdapter(mRecyclerViewAdapter);
             }

@@ -10,7 +10,10 @@
     android:paddingHorizontal="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
-    app:cardBackgroundColor="@color/cardview_dark_background">
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/cardview_dark_background"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardContentContainer"
