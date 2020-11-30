@@ -29,9 +29,6 @@ public class ActivitiesViewModel extends ViewModel {
 
                 if (activities != null){
                     Log.d(TAG, "Loaded number of UserActivity: " + activities.size());
-                    for (UserActivityInfo u : activities.values()) {
-                        Log.d(TAG, u.getActivityName());
-                    }
                     activityList = new ArrayList<>(activities.values());
                 } else {
                     Log.d(TAG, "Retrieving UserActivityInfo returned null from Firebase");
