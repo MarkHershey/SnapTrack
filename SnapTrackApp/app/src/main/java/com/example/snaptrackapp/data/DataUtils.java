@@ -14,8 +14,10 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -41,13 +43,13 @@ public class DataUtils {
     public static void fetchActivities(Listener<Map<String,UserActivityInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("activities");
-        fetchData(callback, dbRef);
+        fetchDataMap(callback, dbRef, UserActivityInfo.class, false);
     }
 
     public static void fetchActivitiesSingle(Listener<Map<String,UserActivityInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("activities");
-        fetchDataSingle(callback, dbRef);
+        fetchDataMap(callback, dbRef, UserActivityInfo.class, true);
     }
 
     /**
@@ -57,13 +59,13 @@ public class DataUtils {
     public static void fetchEvents(Listener<List<EventInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchData(callback, dbRef);
+        fetchDataList(callback, dbRef, EventInfo.class, false);
     }
 
     public static void fetchEventsSingle(Listener<List<EventInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataSingle(callback, dbRef);
+        fetchDataList(callback, dbRef, EventInfo.class, true);
     }
 
     /**
@@ -75,13 +77,15 @@ public class DataUtils {
     public static void fetchEvents(Listener<List<EventInfo>> callback, Date startTime, Date endTime){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchData(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"));
+        fetchDataList(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"),
+                EventInfo.class, false);
     }
 
     public static void fetchEventsSingle(Listener<List<EventInfo>> callback, Date startTime, Date endTime){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataSingle(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"));
+        fetchDataList(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"),
+                EventInfo.class, true);
     }
 
     /**
@@ -91,13 +95,13 @@ public class DataUtils {
     public static void fetchCategories(Listener<Map<String, CategoryInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("categories");
-        fetchData(callback, dbRef);
+        fetchDataMap(callback, dbRef, CategoryInfo.class, false);
     }
 
     public static void fetchCategoriesSingle(Listener<Map<String, CategoryInfo>> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("categories");
-        fetchDataSingle(callback, dbRef);
+        fetchDataMap(callback, dbRef, CategoryInfo.class, true);
     }
 
     /**
@@ -108,33 +112,64 @@ public class DataUtils {
     public static void fetchUserInfo(Listener<UserInfo> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID());
-        fetchData(callback, dbRef, UserInfo.class);
+        fetchData(callback, dbRef, UserInfo.class, false);
     }
 
     public static void fetchUserInfoSingle(Listener<UserInfo> callback){
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID());
-        fetchDataSingle(callback, dbRef, UserInfo.class);
+        fetchData(callback, dbRef, UserInfo.class, true);
     }
 
-    private static <T> void fetchData(Listener<T> callback, Query q){
-        q.addValueEventListener(new ValueEventListener() {
+    private static <T> void fetchDataMap(Listener<Map<String, T>> callback, Query q, Class<T> t, boolean single){
+        ValueEventListener vel = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                T t;
-                GenericTypeIndicator<T> gti = new GenericTypeIndicator<T>(){};
-                t = snapshot.getValue(gti);
-                callback.update(t);
+                Map<String, T> tMap = new HashMap<>();
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    T value = ds.getValue(t);
+                    tMap.put(ds.getKey(), value);
+                }
+                callback.update(tMap);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Error fetching data");
             }
-        });
+        };
+        if (single){
+            q.addListenerForSingleValueEvent(vel);
+        }else{
+            q.addValueEventListener(vel);
+        }
     }
 
-    private static <T> void fetchData(Listener<T> callback, Query q, Class<T> c){
-        q.addValueEventListener(new ValueEventListener() {
+    private static <T> void fetchDataList(Listener<List<T>> callback, Query q, Class<T> t, boolean single){
+        ValueEventListener vel = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<T> tList = new ArrayList<>();
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    T value = ds.getValue(t);
+                    tList.add(value);
+                }
+                callback.update(tList);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Error fetching data");
+            }
+        };
+
+        if (single){
+            q.addListenerForSingleValueEvent(vel);
+        }else{
+            q.addValueEventListener(vel);
+        }
+    }
+
+    private static <T> void fetchData(Listener<T> callback, Query q, Class<T> c, boolean single){
+        ValueEventListener vel = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 T t;
@@ -145,38 +180,13 @@ public class DataUtils {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Error fetching data");
             }
-        });
-    }
+        };
 
-    private static <T> void fetchDataSingle(Listener<T> callback, Query q){
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                T t;
-                GenericTypeIndicator<T> gti = new GenericTypeIndicator<T>(){};
-                t = snapshot.getValue(gti);
-                callback.update(t);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Error fetching data");
-            }
-        });
-    }
-
-    private static <T> void fetchDataSingle(Listener<T> callback, Query q, Class<T> c){
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                T t;
-                t = snapshot.getValue(c);
-                callback.update(t);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Error fetching data");
-            }
-        });
+        if (single){
+            q.addListenerForSingleValueEvent(vel);
+        }else{
+            q.addValueEventListener(vel);
+        }
     }
 
     /**
