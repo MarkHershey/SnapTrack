@@ -5,7 +5,10 @@ import android.graphics.Color;
 public class DataPopulate {
 
     public static void addDummyUserActivity(){
-        UserActivityInfo.add("Dummy Activity3", "Dummy3", Color.parseColor("#121212"));
-        UserActivityInfo.add("Dummy 4", "Dummy4", Color.parseColor("#121213"));
+        UserActivityInfo.add("Paper Reading", "Study", "#F2FF49");
+        UserActivityInfo.add("Gaming", "Entertainment", "#FF4242");
+        UserActivityInfo.add("Gym", "Life", "#FB62F6");
+        UserActivityInfo.add("Coding Practice", "Study", "#645DD7");
+        UserActivityInfo.add("Algorithm", "Study", "#B3FFFC");
     }
 }

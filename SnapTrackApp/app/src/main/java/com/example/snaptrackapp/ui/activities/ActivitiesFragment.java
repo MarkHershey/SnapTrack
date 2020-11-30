@@ -9,77 +9,81 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.snaptrackapp.R;
+import com.example.snaptrackapp.data.DataUtils;
+import com.example.snaptrackapp.data.Listener;
 import com.example.snaptrackapp.data.UserActivityInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivitiesFragment extends Fragment {
 
-    private ActivitiesViewModel activitiesViewModel;
+    private final String TAG = "ActivitiesFragment";
+
+
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private ActivitiesAdapter mRecyclerViewAdapter;
     private ArrayList<UserActivityInfo> activityList;
+
     FloatingActionButton mFloatingActionButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activitiesViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
+        ActivitiesViewModel activitiesViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_activities, container, false);
 
+        activityList = new ArrayList<>();
+        Log.d(TAG, "Fragment onCreateView");
 
-        activityList = new ArrayList<UserActivityInfo>();
-        activityList.add(new UserActivityInfo("Coding is fun", "Work", Color.parseColor("#F2FF49")));
-        activityList.add(new UserActivityInfo("Debug is pain", "Life", Color.parseColor("#FF4242")));
-        activityList.add(new UserActivityInfo("Automation is awesome", "Work", Color.parseColor("#FB62F6")));
-        activityList.add(new UserActivityInfo("CI/CD is fabulous", "Life", Color.parseColor("#645DD7")));
-        activityList.add(new UserActivityInfo("Testing is important", "Work", Color.parseColor("#B3FFFC")));
-        activityList.add(new UserActivityInfo("Coding is fun", "Work", Color.parseColor("#F2FF49")));
-        activityList.add(new UserActivityInfo("Debug is pain", "Life", Color.parseColor("#FF4242")));
-        activityList.add(new UserActivityInfo("Automation is awesome", "Work", Color.parseColor("#FB62F6")));
-        activityList.add(new UserActivityInfo("CI/CD is fabulous", "Life", Color.parseColor("#645DD7")));
-        activityList.add(new UserActivityInfo("Testing is important", "Work", Color.parseColor("#B3FFFC")));
-        activityList.add(new UserActivityInfo("Coding is fun", "Work", Color.parseColor("#F2FF49")));
-        activityList.add(new UserActivityInfo("Debug is pain", "Life", Color.parseColor("#FF4242")));
-        activityList.add(new UserActivityInfo("Automation is awesome", "Work", Color.parseColor("#FB62F6")));
-        activityList.add(new UserActivityInfo("CI/CD is fabulous", "Life", Color.parseColor("#645DD7")));
-        activityList.add(new UserActivityInfo("Testing is important", "Work", Color.parseColor("#B3FFFC")));
-        activityList.add(new UserActivityInfo("Coding is fun", "Work", Color.parseColor("#F2FF49")));
-        activityList.add(new UserActivityInfo("Debug is pain", "Life", Color.parseColor("#FF4242")));
-        activityList.add(new UserActivityInfo("Automation is awesome", "Work", Color.parseColor("#FB62F6")));
-        activityList.add(new UserActivityInfo("CI/CD is fabulous", "Life", Color.parseColor("#645DD7")));
-        activityList.add(new UserActivityInfo("Testing is important", "Work", Color.parseColor("#B3FFFC")));
-        activityList.add(new UserActivityInfo("Coding is fun", "Work", Color.parseColor("#F2FF49")));
-        activityList.add(new UserActivityInfo("Debug is pain", "Life", Color.parseColor("#FF4242")));
-        activityList.add(new UserActivityInfo("Automation is awesome", "Work", Color.parseColor("#FB62F6")));
-        activityList.add(new UserActivityInfo("CI/CD is fabulous", "Life", Color.parseColor("#645DD7")));
-        activityList.add(new UserActivityInfo("Testing is important", "Work", Color.parseColor("#B3FFFC")));
-
+        // scrolling RecyclerView stuff
         mRecyclerView = root.findViewById(R.id.recyclerView);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new ActivitiesAdapter(activityList);
+        // set empty adapter to avoid exception
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new ActivitiesAdapter(activityList));
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        activitiesViewModel.getActivityListLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserActivityInfo>>() {
+            @Override
+            public void onChanged(ArrayList<UserActivityInfo> userActivityInfoList) {
+                mRecyclerViewAdapter = new ActivitiesAdapter(userActivityInfoList);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
+            }
+        });
 
+
+        // Floating Button stuff
         mFloatingActionButton = root.findViewById(R.id.fab);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("ActivityAdapter","Create activity");
-//                Toast.makeText(getContext(), "Create new activity", Toast.LENGTH_SHORT).show();
+                Log.v(TAG,"User creating new UserActivity");
                 Intent intent = new Intent(getActivity() , com.example.snaptrackapp.ui.create_activity.CreateActivity.class);
                 startActivity(intent);
             }
         });
 
-
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "Fragment onResume");
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(TAG, "Fragment onActivityCreated");
     }
 }

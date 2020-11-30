@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.PropertyName;
 import com.google.firebase.database.ValueEventListener;
 
@@ -71,8 +72,46 @@ public class UserActivityInfo {
                 .child(activityName);
 
         UserActivityInfo info = new UserActivityInfo(activityName, category, color);
-        dbRef.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, AID, info));
+        dbRef.addListenerForSingleValueEvent(new checkExistence(tries, AID, info));
 
+    }
+
+
+    public static class checkExistence implements ValueEventListener {
+        private final int TRIES;
+        private final String AID;
+        private final UserActivityInfo userActivityInfo;
+
+        private checkExistence(int tries, String AID, UserActivityInfo userActivityInfo) {
+            TRIES = tries;
+            this.AID = AID;
+            this.userActivityInfo = userActivityInfo;
+        }
+
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            if (!snapshot.exists()) {
+                // proceed to insert new records
+                String authID = DataUtils.getCurrentUserAuthID();
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                dbRef = dbRef
+                        .child(UserInfo.ALL_USER_PARENT)
+                        .child(authID)
+                        .child(ALL_USER_ACTIVITY_PARENT)
+                        .child(AID);
+
+                dbRef.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(TRIES, AID, userActivityInfo));
+            } else {
+                // duplicated activity names
+                // abort insertion
+                Log.e(TAG, "Aborted insertion: duplicated UserActivity name " + userActivityInfo.getActivityName());
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+            Log.e(TAG, "Unexpected Failure: Something is wrong while trying to insert new UserActivity");
+        }
     }
 
     /**
@@ -104,6 +143,7 @@ public class UserActivityInfo {
                         .child(ALL_USER_ACTIVITY_PARENT)
                         .child(AID);
                 dbRef.setValue(userActivityInfo);
+                Log.d(TAG, "Insert new UserActivity");
 
                 dbRef = FirebaseDatabase.getInstance()
                         .getReference(UserInfo.ALL_USER_PARENT)
@@ -111,9 +151,10 @@ public class UserActivityInfo {
                         .child("activityNames")
                         .child(userActivityInfo.getActivityName());
                 dbRef.setValue(true);
+                Log.d(TAG, "Insert new activity_name into activityNames");
 
             } else if (TRIES > 0) {
-                Log.w(TAG, "trying another time");
+                Log.w(TAG, "Random AID collision: trying another time.");
                 add(userActivityInfo.activity_name, userActivityInfo.category, userActivityInfo.color, TRIES-1);
 
             } else {
