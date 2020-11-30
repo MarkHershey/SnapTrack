@@ -62,12 +62,13 @@ public class UserActivityInfo {
 
         String authID = DataUtils.getCurrentUserAuthID();
         String AID = DataUtils.generateRandomID();
+        Log.d(TAG, "New AID generated: " + AID);
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-        dbRef = dbRef
-                .child(UserInfo.ALL_USER_PARENT)
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
                 .child(authID)
-                .child(ALL_USER_ACTIVITY_PARENT);
+                .child("activityNames")
+                .child(activityName);
 
         UserActivityInfo info = new UserActivityInfo(activityName, category, color);
         dbRef.addListenerForSingleValueEvent(new InsertUserActivityOrRetry(tries, AID, info));
@@ -85,24 +86,34 @@ public class UserActivityInfo {
         private final String AID;
         private final UserActivityInfo userActivityInfo;
 
-        private InsertUserActivityOrRetry(int tries, String userID, UserActivityInfo userActivityInfo) {
+        private InsertUserActivityOrRetry(int tries, String AID, UserActivityInfo userActivityInfo) {
             TRIES = tries;
-            this.AID = userID;
+            this.AID = AID;
             this.userActivityInfo = userActivityInfo;
         }
 
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
+
             if (!snapshot.exists()){
+                String authID = DataUtils.getCurrentUserAuthID();
                 DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
                 dbRef = dbRef
                         .child(UserInfo.ALL_USER_PARENT)
-                        .child(DataUtils.getCurrentUserAuthID())
+                        .child(authID)
                         .child(ALL_USER_ACTIVITY_PARENT)
                         .child(AID);
                 dbRef.setValue(userActivityInfo);
 
+                dbRef = FirebaseDatabase.getInstance()
+                        .getReference(UserInfo.ALL_USER_PARENT)
+                        .child(authID)
+                        .child("activityNames")
+                        .child(userActivityInfo.getActivityName());
+                dbRef.setValue(true);
+
             } else if (TRIES > 0) {
+                Log.w(TAG, "trying another time");
                 add(userActivityInfo.activity_name, userActivityInfo.category, userActivityInfo.color, TRIES-1);
 
             } else {

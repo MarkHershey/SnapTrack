@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import com.example.snaptrackapp.MainActivity;
 import com.example.snaptrackapp.R;
 
+import com.example.snaptrackapp.data.DataPopulate;
+import com.example.snaptrackapp.data.UserActivityInfo;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +38,8 @@ public class MeFragment extends Fragment {
     TextView userNameText;
     TextView userEmailText;
     Button signOutButton;
+    Button devButton;
+    Button devButton2;
 
     public static MeFragment newInstance() {
         return new MeFragment();
@@ -57,6 +62,24 @@ public class MeFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Logging out", Toast.LENGTH_SHORT).show();
                 signOut();
+            }
+        });
+
+
+        // NOTE: following lines are for development debugging, will be removed later
+        devButton = root.findViewById(R.id.devButton);
+        devButton2 = root.findViewById(R.id.devButton2);
+        devButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Dev button pressed", Toast.LENGTH_SHORT).show();
+                DataPopulate.addDummyUserActivity();
+            }
+        });
+        devButton2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Dev button pressed", Toast.LENGTH_SHORT).show();
             }
         });
 

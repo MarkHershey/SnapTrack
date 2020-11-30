@@ -66,8 +66,8 @@ public class UserInfo {
         // generate userID
         String userID = DataUtils.generateRandomID();
 
-        DatabaseReference nfcIdsRef = FirebaseDatabase.getInstance().getReference("userIDs").child(userID);
-        nfcIdsRef.setValue(true, new InsertUserInfoOrRetry(tries, new UserInfo(userName, userID, authID)));
+        DatabaseReference userIdsRef = FirebaseDatabase.getInstance().getReference("userIDs").child(userID);
+        userIdsRef.setValue(true, new InsertUserInfoOrRetry(tries, new UserInfo(userName, userID, authID)));
     }
 
 
