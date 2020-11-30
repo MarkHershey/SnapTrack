@@ -1,5 +1,6 @@
 package com.example.snaptrackapp.ui.create_activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.nfc.FormatException;
@@ -10,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.snaptrackapp.R;
+import com.example.snaptrackapp.data.DataUtils;
+import com.example.snaptrackapp.data.Listener;
+import com.example.snaptrackapp.data.UserInfo;
 import com.example.snaptrackapp.record.NdefMessageParser;
 import com.example.snaptrackapp.record.ParsedNdefRecord;
 
@@ -34,6 +38,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateActivity extends AppCompatActivity{
@@ -308,34 +313,51 @@ public class CreateActivity extends AppCompatActivity{
     }
 
     public void writeTag(MifareUltralight mifareUlTag) {
-                try {
-                    mifareUlTag.connect();
-                    //Write 1 page (4 bytes)
-                    //Page 4-7: Signature
-                    //Page 8-11: userID
-                    //Page 12-15: AID
-                    mifareUlTag.writePage(4, "HHCC".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(5, "JRDL".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(6, "ZY20".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(7, "20ST".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(8, "asdf".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(9, "tqet".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(10, "123s".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(11, "dfas".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(12, "A342".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(13, "sdfs".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(14, "dsds".getBytes(Charset.forName("US-ASCII")));
-                    mifareUlTag.writePage(15, "rqwe".getBytes(Charset.forName("US-ASCII")));
-                } catch (IOException e) {
-                    Log.e("logcat", "IOException while writing MifareUltralight...", e);
-                } finally {
+        final String[] id = {null};
+        DataUtils.fetchUserInfoSingle(new Listener<UserInfo>() {
+            public void update(UserInfo info) {
+                if (info != null) {
+                    id[0] = info.getUserID();
+                    Log.v("getUSERID", id[0]);
+                    Log.v("getUSERID_array", id[0].substring(0,4));
+
                     try {
-                        mifareUlTag.close();
+                        mifareUlTag.connect();
+                        //Write 1 page (4 bytes)
+                        //Page 4-7: Signature
+                        //Page 8-11: userID
+                        //Page 12-15: AID
+
+
+                        //TO DO check if the id is correct and what's its length
+                        if (id[0].length() != 16) {
+                            throw new NullPointerException("id not found");
+                        }
+                        mifareUlTag.writePage(4, "HHCC".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(5, "JRDL".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(6, "ZY20".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(7, "20ST".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(8, id[0].substring(0, 4).getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(9, id[0].substring(4, 8).getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(10, id[0].substring(8, 12).getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(11, id[0].substring(12, 16).getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(12, "A342".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(13, "sdfs".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(14, "dsds".getBytes(Charset.forName("US-ASCII")));
+                        mifareUlTag.writePage(15, "rqwe".getBytes(Charset.forName("US-ASCII")));
                     } catch (IOException e) {
-                        Log.e("logcat", "IOException while closing MifareUltralight...", e);
+                        Log.e("logcat", "IOException while writing MifareUltralight...", e);
+                    } finally {
+                        try {
+                            mifareUlTag.close();
+                        } catch (IOException e) {
+                            Log.e("logcat", "IOException while closing MifareUltralight...", e);
+                        }
                     }
                 }
             }
+        });
+    }
 
     public void eraseTagData(MifareUltralight mifareUlTag) {
         try {
@@ -364,5 +386,17 @@ public class CreateActivity extends AppCompatActivity{
             factor *= 256l;
         }
         return result;
+    }
+
+    private ArrayList<String> stringToPage(String input){
+        ArrayList<String> arr = new ArrayList<String>();
+        int remainder = input.length() % 4;
+        for (int i = 0; i < remainder ;i++){
+            arr.add(input.substring(i*4,(i+4)*4));
+        }
+        if (remainder != 0){
+            arr.add(input.substring(remainder*4));
+        }
+        return arr;
     }
 }

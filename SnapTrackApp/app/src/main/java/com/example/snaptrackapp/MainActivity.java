@@ -14,6 +14,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.snaptrackapp.data.Listener;
 import com.example.snaptrackapp.data.UserInfo;
 import com.example.snaptrackapp.record.NdefMessageParser;
 import com.example.snaptrackapp.record.ParsedNdefRecord;
@@ -171,14 +172,14 @@ public class MainActivity extends AppCompatActivity {
                     byte[] payload_userID = mifareUlTag.readPages(8);
                     byte[] payload_AID = mifareUlTag.readPages(12);
 
-                    signature = new String(payload_signature, Charset.forName("US-ASCII"));
-                    userID = new String(payload_userID, Charset.forName("US-ASCII"));
-                    AID = new String(payload_AID, Charset.forName("US-ASCII"));
+                    signature = new String(payload_signature, Charset.forName("US-ASCII")).trim();
+                    userID = new String(payload_userID, Charset.forName("US-ASCII")).trim();
+                    AID = new String(payload_AID, Charset.forName("US-ASCII")).trim();
 
 
-                    Log.v("payload_userID", signature.trim());
-                    Log.v("payload_userID", userID.trim());
-                    Log.v("payload_userID", AID.trim());
+                    Log.v("payload_signature", signature);
+                    Log.v("payload_userID", userID);
+                    Log.v("payload_AID", AID);
 
                     // Add user id together with this to make it so that only that user can use this tag
                     if (signature.equals("HHCCJRDLZY2020ST")){
