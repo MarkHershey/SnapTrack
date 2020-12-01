@@ -189,7 +189,6 @@ public class CreateActivity extends AppCompatActivity{
                 confirmPopupWindow.dismiss();
             }
         });
-
         //Handler for clicking on the inactive zone of the window
 
         popupView.setOnTouchListener(new View.OnTouchListener() {
