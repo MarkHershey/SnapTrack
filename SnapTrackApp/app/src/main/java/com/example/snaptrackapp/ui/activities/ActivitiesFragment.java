@@ -67,7 +67,7 @@ public class ActivitiesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.v(TAG,"User creating new UserActivity");
-                Intent intent = new Intent(getActivity() , com.example.snaptrackapp.ui.create_activity.CreateActivity.class);
+                Intent intent = new Intent(getActivity() , NewUserActivity.class);
                 startActivity(intent);
             }
         });

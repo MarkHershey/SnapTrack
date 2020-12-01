@@ -24,16 +24,18 @@ public class UserActivityInfo {
     private String activity_name;
     private String category;
     private int color;
+    private String AID;
 
     /**
      * Required for DataSnapshot.getValue()
      */
     public UserActivityInfo(){}
 
-    public UserActivityInfo(String activity_name, String category, int color) {
+    public UserActivityInfo(String activity_name, String category, int color, String AID) {
         this.activity_name = activity_name;
         this.category = category;
         this.color = color;
+        this.AID = AID;
     }
 
     @PropertyName("activity_name")
@@ -49,6 +51,11 @@ public class UserActivityInfo {
     @PropertyName("color")
     public int getColor() {
         return color;
+    }
+
+    @PropertyName("AID")
+    public String getAID() {
+        return AID;
     }
 
     public static void add(String activityName, String category, String color) {
@@ -71,7 +78,7 @@ public class UserActivityInfo {
                 .child("activityNames")
                 .child(activityName);
 
-        UserActivityInfo info = new UserActivityInfo(activityName, category, color);
+        UserActivityInfo info = new UserActivityInfo(activityName, category, color, AID);
         dbRef.addListenerForSingleValueEvent(new checkExistence(tries, AID, info));
 
     }
