@@ -14,10 +14,9 @@
     <string name="short_name">Short Name</string>
     <string name="labels">Labels for filtering (E.g Work,Life)</string>
     <string name="unique_colour">Unique Hex Colour (E.g #293E53)*</string>
-    <string name="pair_an_nfc_screen_pop_up">Approach an NFC Tag \n Pair an NFC</string>
-    <string name="erase_nfc_data_screen_pop_up">Approach an NFC Tag \n  \n Erase NFC Data</string>
+    <string name="pair_an_nfc_screen_pop_up">Approach an NFC Tag</string>
     <string name="are_you_sure_you_want_to_delete"> \n Delete NFC Data?</string>
     <string name="erase_data_in_NFC">Erase NFC</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="erase_data">Erase</string>
+    <string name="cancel">Cancel</string>
 </resources>
