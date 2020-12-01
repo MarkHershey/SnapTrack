@@ -3,20 +3,20 @@ package com.example.snaptrackapp.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.snaptrackapp.R;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class EditUserActivity extends AppCompatActivity {
+import java.util.Date;
+import java.util.Random;
 
-    private static final String TAG = "EditUserActivity";
+public class NewUserActivity extends AppCompatActivity {
+
+    private static final String TAG = "NewUserActivity";
+    Random rand;
     EditText nameEditView;
     EditText categoryEditView;
     SeekBar aBar;
@@ -24,21 +24,21 @@ public class EditUserActivity extends AppCompatActivity {
     SeekBar gBar;
     SeekBar bBar;
     TextView colorDisplay;
-    TextView aidView;
     Button saveButton;
     Button cancelButton;
+
     int intColor;
     int intA;
     int intR;
     int intG;
     int intB;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user_activity);
+        setContentView(R.layout.activity_new_user_activity);
 
+        // get view references
         nameEditView = findViewById(R.id.nameEdit);
         categoryEditView = findViewById(R.id.categoryEdit);
         aBar = findViewById(R.id.aBar);
@@ -46,33 +46,13 @@ public class EditUserActivity extends AppCompatActivity {
         gBar = findViewById(R.id.gBar);
         bBar = findViewById(R.id.bBar);
         colorDisplay = findViewById(R.id.colorDisplay);
-        aidView = findViewById(R.id.aidLabel);
+        saveButton = findViewById(R.id.saveButton);
         cancelButton = findViewById(R.id.cancelButton);
 
-        Intent intent = getIntent();
-        String activityName = intent.getStringExtra("activityName");
-        String category = intent.getStringExtra("category");
-        String color = intent.getStringExtra("color");
-        String AID = intent.getStringExtra("AID");
+        // initiate color slider
+        initRandomColor();
 
-        intColor = Integer.parseInt(color);
-        colorDisplay.setBackgroundColor(intColor);
-
-        intA = (intColor >> 24) & 0xff;
-        intR = (intColor >> 16) & 0xff;
-        intG = (intColor >>  8) & 0xff;
-        intB = (intColor      ) & 0xff;
-
-        nameEditView.setText(activityName);
-        categoryEditView.setText(category);
-
-        aBar.setProgress(intA);
-        rBar.setProgress(intR);
-        gBar.setProgress(intG);
-        bBar.setProgress(intB);
-
-        aidView.setText("Activity ID: " + AID);
-
+        // color slider listeners
         aBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -136,17 +116,40 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Submit new activity to Firebase
+            }
+        });
+
+
+
+
+
+    }
+
+    private void initRandomColor() {
+        rand = new Random(new Date().getTime());
+        int min = 0;
+        int max = 255;
+        int randomR = rand.nextInt((max - min) + 1) + min;
+        int randomG = rand.nextInt((max - min) + 1) + min;
+        int randomB = rand.nextInt((max - min) + 1) + min;
+        intA = 255;
+        intR = randomR;
+        intG = randomG;
+        intB = randomB;
+        updateColorDisplay();
+        aBar.setProgress(intA);
+        rBar.setProgress(intR);
+        gBar.setProgress(intG);
+        bBar.setProgress(intB);
     }
 
     private void updateColorDisplay() {
         intColor = (intA & 0xff) << 24 | (intR & 0xff) << 16 | (intG & 0xff) << 8 | (intB & 0xff);
         colorDisplay.setBackgroundColor(intColor);
     }
-
-
-
-
-
-
 
 }
