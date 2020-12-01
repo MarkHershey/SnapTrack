@@ -88,6 +88,20 @@ public class DataUtils {
                 EventInfo.class, true);
     }
 
+    public static void fetchEvents(Listener<List<EventInfo>> callback, long startTime, long endTime){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        fetchDataList(callback, dbRef.startAt(startTime, "start_time").endAt(endTime, "end_time"),
+                EventInfo.class, false);
+    }
+
+    public static void fetchEventsSingle(Listener<List<EventInfo>> callback, long startTime, long endTime){
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        fetchDataList(callback, dbRef.startAt(startTime, "start_time").endAt(endTime, "end_time"),
+                EventInfo.class, true);
+    }
+
     /**
      * Fetches the Map from Category name to CategoryInfo. Calls callback.update() whenever data changes.
      * @param callback Listener for Category Info Map.
@@ -148,7 +162,8 @@ public class DataUtils {
         ValueEventListener vel = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<T> tList = new ArrayList<>();
+                List
+                        <T> tList = new ArrayList<>();
                 for(DataSnapshot ds : snapshot.getChildren()){
                     T value = ds.getValue(t);
                     tList.add(value);
