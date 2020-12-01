@@ -58,4 +58,10 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
+    // Card view
+    implementation "androidx.cardview:cardview:1.0.0"
+
+    // Recycler view
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+
 }

@@ -7,12 +7,23 @@
 
     <TextView
         android:id="@+id/text_today"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="30sp"
         android:gravity="center_horizontal"
         android:text="@string/hello_blank_fragment" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="632dp" />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
