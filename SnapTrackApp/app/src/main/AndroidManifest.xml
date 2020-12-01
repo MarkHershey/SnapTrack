@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SnapTrackApp">
-        <activity android:name=".ui.activities.EditUserActivity"></activity>
+        <activity
+            android:name=".ui.activities.EditUserActivity"
+            android:label="Edit Activity"
+            ></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
