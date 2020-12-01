@@ -1,1 +1,2 @@
 - [How to hide Floating Action Button when scrolling in Recycler View](http://thetechnocafe.com/how-to-hide-floating-action-button-on-when-scrolling-in-recycler-view/)
+- [Livedata with RecyclerView Example Code](https://github.com/AtifMukhtiar/RecyclerView-Livedata)

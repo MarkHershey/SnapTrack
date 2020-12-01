@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,9 +23,16 @@ import android.widget.Toast;
 import com.example.snaptrackapp.MainActivity;
 import com.example.snaptrackapp.R;
 
+import com.example.snaptrackapp.data.CategoryInfo;
+import com.example.snaptrackapp.data.DataPopulate;
+import com.example.snaptrackapp.data.DataUtils;
+import com.example.snaptrackapp.data.UserActivityInfo;
+import com.example.snaptrackapp.data.UserInfo;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MeFragment extends Fragment {
@@ -34,7 +42,10 @@ public class MeFragment extends Fragment {
 
     TextView userNameText;
     TextView userEmailText;
+    Button resetAccountButton;
     Button signOutButton;
+    Button devButton;
+    Button devButton2;
 
     public static MeFragment newInstance() {
         return new MeFragment();
@@ -49,7 +60,20 @@ public class MeFragment extends Fragment {
         userNameText = root.findViewById(R.id.userNameTextView);
         userEmailText = root.findViewById(R.id.userEmailTextView);
         // get button
+        resetAccountButton = root.findViewById(R.id.resetAccountButton);
         signOutButton = root.findViewById(R.id.signOutButton);
+
+        // perform reset account on click
+        // the clears all user data
+        resetAccountButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                resetCurrentUser();
+                Toast.makeText(getContext(), "You have reset your account", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         // perform sign out on click
         signOutButton.setOnClickListener(new View.OnClickListener(){
@@ -57,6 +81,24 @@ public class MeFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Logging out", Toast.LENGTH_SHORT).show();
                 signOut();
+            }
+        });
+
+
+        // NOTE: following lines are for development debugging, will be removed later
+        devButton = root.findViewById(R.id.devButton);
+        devButton2 = root.findViewById(R.id.devButton2);
+        devButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Dev button pressed", Toast.LENGTH_SHORT).show();
+                DataPopulate.addDummyUserActivity();
+            }
+        });
+        devButton2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Dev button pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -102,6 +144,17 @@ public class MeFragment extends Fragment {
                     }
 
                 });
+    }
+
+    public void resetCurrentUser() {
+        String authID = DataUtils.getCurrentUserAuthID();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(UserInfo.ALL_USER_PARENT).child(authID);
+        DatabaseReference tmpRef = dbRef.child(CategoryInfo.ALL_CATEGORY_PARENT);
+        tmpRef.removeValue();
+        tmpRef = dbRef.child(UserActivityInfo.ALL_USER_ACTIVITY_PARENT);
+        tmpRef.removeValue();
+        tmpRef = dbRef.child("activityNames");
+        tmpRef.removeValue();
     }
 
 }
