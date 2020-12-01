@@ -3,6 +3,7 @@ package com.example.snaptrackapp.ui.create_activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.nfc.FormatException;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ public class CreateActivity extends AppCompatActivity{
     Button buttonPairAnNFC;
     Button buttonEraseNFCData;
 
+
+
     //Load Edittext to CreateActivity
     EditText editNameOfActivity;
     EditText editShortName;
@@ -52,6 +55,12 @@ public class CreateActivity extends AppCompatActivity{
     EditText editColour;
 
     PopupWindow popupWindow;
+    PopupWindow confirmPopupWindow;
+    //PopupButton
+    Button buttonYes;
+    Button buttonNo;
+
+
     TextView text;
 
     // Create NfcAdapter
@@ -107,8 +116,7 @@ public class CreateActivity extends AppCompatActivity{
         buttonEraseNFCData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                journey = "Erase";
-                onButtonShowPopupWindowClick(v);
+                onButtonShowQuestionPopupWindowClick(v);
             }
         });
 
@@ -135,6 +143,54 @@ public class CreateActivity extends AppCompatActivity{
         popupView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    public void onButtonShowQuestionPopupWindowClick(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.question_want_to_erase, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = false; // lets taps outside the popup also dismiss it
+        confirmPopupWindow = new PopupWindow(popupView, width, height, focusable);
+        confirmPopupWindow.setOutsideTouchable(false);
+        confirmPopupWindow.setTouchable(false);
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window token
+        confirmPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        buttonYes = popupView.findViewById(R.id.yes);
+        buttonNo = popupView.findViewById(R.id.no);
+
+        buttonYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                journey = "Erase";
+                onButtonShowPopupWindowClick(v);
+                Log.v("logcat","hi");
+            }
+        });
+        buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmPopupWindow.dismiss();
+            }
+        });
+
+        //Handler for clicking on the inactive zone of the window
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                //Close the window when clicked
                 popupWindow.dismiss();
                 return true;
             }
@@ -285,7 +341,8 @@ public class CreateActivity extends AppCompatActivity{
             // Add user id together with this to make it so that only that user can use this tag
             if (signature.equals("HHCCJRDLZY2020ST")){
                 //TO-DO
-                Toast.makeText(this,"Bring up, pop up to confirm changes",Toast.LENGTH_LONG).show();
+//                Toast.makeText(this,"Bring up, pop up to confirm changes",Toast.LENGTH_LONG).show();
+                onButtonShowQuestionPopupWindowClick(this.getCurrentFocus());
             }
             else {
                 for (int i = 8;i < 36; i+=4) {
@@ -327,20 +384,21 @@ public class CreateActivity extends AppCompatActivity{
                         //Page 4-7: Signature
                         //Page 8-11: userID
                         //Page 12-15: AID
-
-
                         //TO DO check if the id is correct and what's its length
                         if (id[0].length() != 16) {
                             throw new NullPointerException("id not found");
                         }
+                        //write Signature
                         mifareUlTag.writePage(4, "HHCC".getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(5, "JRDL".getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(6, "ZY20".getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(7, "20ST".getBytes(Charset.forName("US-ASCII")));
+                        //write userID
                         mifareUlTag.writePage(8, id[0].substring(0, 4).getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(9, id[0].substring(4, 8).getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(10, id[0].substring(8, 12).getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(11, id[0].substring(12, 16).getBytes(Charset.forName("US-ASCII")));
+                        //write AID
                         mifareUlTag.writePage(12, "A342".getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(13, "sdfs".getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(14, "dsds".getBytes(Charset.forName("US-ASCII")));
@@ -388,15 +446,4 @@ public class CreateActivity extends AppCompatActivity{
         return result;
     }
 
-    private ArrayList<String> stringToPage(String input){
-        ArrayList<String> arr = new ArrayList<String>();
-        int remainder = input.length() % 4;
-        for (int i = 0; i < remainder ;i++){
-            arr.add(input.substring(i*4,(i+4)*4));
-        }
-        if (remainder != 0){
-            arr.add(input.substring(remainder*4));
-        }
-        return arr;
-    }
 }
