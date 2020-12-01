@@ -46,8 +46,6 @@ public class CreateActivity extends AppCompatActivity{
     Button buttonPairAnNFC;
     Button buttonEraseNFCData;
 
-
-
     //Load Edittext to CreateActivity
     EditText editNameOfActivity;
     EditText editShortName;
