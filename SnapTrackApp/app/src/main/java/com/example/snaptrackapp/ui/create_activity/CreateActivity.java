@@ -159,20 +159,85 @@ public class CreateActivity extends AppCompatActivity{
         boolean focusable = false; // lets taps outside the popup also dismiss it
         confirmPopupWindow = new PopupWindow(popupView, width, height, focusable);
         confirmPopupWindow.setOutsideTouchable(false);
-        confirmPopupWindow.setTouchable(false);
+        //Set touchable so that we can click our buttons
+        confirmPopupWindow.setTouchable(true);
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window token
         confirmPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        buttonYes = popupView.findViewById(R.id.yes);
-        buttonNo = popupView.findViewById(R.id.no);
+        buttonYes = (Button) popupView.findViewById(R.id.yes);
+        buttonNo = (Button) popupView.findViewById(R.id.no);
 
-        buttonYes.setOnClickListener(new View.OnClickListener() {
+        buttonYes.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                journey = "Erase";
-                onButtonShowPopupWindowClick(v);
-                Log.v("logcat","hi");
+                if (journey == null) {
+                    journey = "Erase";
+                    onButtonShowPopupWindowClick(view);
+                }
+                if (journey.equals("Add")){
+                    journey = "Erase";
+                    confirmPopupWindow.dismiss();
+                }
+
+            }
+        });
+        buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Wow, popup action button", Toast.LENGTH_SHORT).show();
+                confirmPopupWindow.dismiss();
+            }
+        });
+
+        //Handler for clicking on the inactive zone of the window
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                //Close the window when clicked
+                confirmPopupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    public void onButtonShowQuestionPopupWindowClick(View view,MifareUltralight mifareUlTag) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.question_want_to_erase, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = false; // lets taps outside the popup also dismiss it
+        confirmPopupWindow = new PopupWindow(popupView, width, height, focusable);
+        confirmPopupWindow.setOutsideTouchable(false);
+        //Set touchable so that we can click our buttons
+        confirmPopupWindow.setTouchable(true);
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window token
+        confirmPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        buttonYes = (Button) popupView.findViewById(R.id.yes);
+        buttonNo = (Button) popupView.findViewById(R.id.no);
+
+        buttonYes.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (journey == null) {
+                    journey = "Erase";
+                    onButtonShowPopupWindowClick(view);
+                }
+                if (journey.equals("Add")){
+                    writeTag(mifareUlTag);
+                    confirmPopupWindow.dismiss();
+                    Toast.makeText(popupView.getContext(), "Successfully Paired NFC", Toast.LENGTH_LONG).show();
+
+                }
+
             }
         });
         buttonNo.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +254,7 @@ public class CreateActivity extends AppCompatActivity{
             public boolean onTouch(View v, MotionEvent event) {
 
                 //Close the window when clicked
-                popupWindow.dismiss();
+                confirmPopupWindow.dismiss();
                 return true;
             }
         });
@@ -235,6 +300,11 @@ public class CreateActivity extends AppCompatActivity{
         try {
             //Popup Window must exist before user can scan nfc tag and write, else nothing will happen
             popupWindow.dismiss();
+            try {
+                confirmPopupWindow.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             resolveIntent(intent);
         } catch (Exception e) {
             Log.v("logcat","info has not been keyed in to scan");
@@ -300,7 +370,6 @@ public class CreateActivity extends AppCompatActivity{
             if (tech.equals(MifareUltralight.class.getName())) {
                 MifareUltralight mifareUlTag = MifareUltralight.get(tag);
                 readTag(mifareUlTag, sb);
-                writeTag(mifareUlTag);
             }
         }
         return sb.toString();
@@ -340,7 +409,7 @@ public class CreateActivity extends AppCompatActivity{
             if (signature.equals("HHCCJRDLZY2020ST")){
                 //TO-DO
 //                Toast.makeText(this,"Bring up, pop up to confirm changes",Toast.LENGTH_LONG).show();
-                onButtonShowQuestionPopupWindowClick(this.getCurrentFocus());
+                onButtonShowQuestionPopupWindowClick(this.getCurrentFocus(),mifareUlTag);
             }
             else {
                 for (int i = 8;i < 36; i+=4) {
