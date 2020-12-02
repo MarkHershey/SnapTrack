@@ -115,11 +115,17 @@ public class TodayFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String thisAID = uActivityIDList.get(which);
                         String thisActivityName = uActivityNamesList.get(which);
+                        int thisColor = uActivityList.get(which).getColor();
                         Toast.makeText(getContext(), "Start Tracking: " + thisActivityName, Toast.LENGTH_SHORT).show();
-                        // TODO: Start Timer
+                        // Start Timer
+                        Intent startTrackingIntent = new Intent(getActivity(), TrackingActivity.class);
+                        startTrackingIntent.putExtra("AID", thisAID);
+                        startTrackingIntent.putExtra("activityName", thisActivityName);
+                        startTrackingIntent.putExtra("color", String.valueOf(thisColor));
+                        startActivity(startTrackingIntent);
                     }
                 });
-                // Show Alert Dialog
+                // Show Alert Dialogs
                 activitySelector.show();
             }
         });

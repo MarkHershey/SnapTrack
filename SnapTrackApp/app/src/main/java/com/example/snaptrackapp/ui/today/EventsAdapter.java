@@ -52,10 +52,11 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
         EventInfo currentItem = eventList.get(position);
         holder.activityTextView.setText(currentItem.getUserActivityName());
         holder.durationTextView.setText(String.valueOf(currentItem.getDurationSeconds()));
-        holder.mCardView.setMinimumHeight(25);
         // set card height according to Event duration
+        int heightValue = (int) currentItem.getDurationSeconds() / 36;
+        if (heightValue < 50) heightValue = 50;
         ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
-        params.height = (int) currentItem.getDurationSeconds() / 36;
+        params.height = heightValue;
         holder.mCardView.setLayoutParams(params);
         // set card color according to activity color
         holder.mCardView.setCardBackgroundColor(currentItem.getUserActivityColor());
