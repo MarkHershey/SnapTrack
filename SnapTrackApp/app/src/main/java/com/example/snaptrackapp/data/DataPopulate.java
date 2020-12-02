@@ -55,8 +55,8 @@ public class DataPopulate {
                     ArrayList<String> aidList = new ArrayList<>(stringUserActivityInfoMap.keySet());
                     for (String aid: aidList) {
                         try {
-                            Date sTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2020-12-01 12:10:00");
-                            Date eTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2020-12-01 13:45:00");
+                            Date sTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2020-12-02 13:10:00");
+                            Date eTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2020-12-02 14:45:00");
                             EventInfo info = new EventInfo(aid, sTime, eTime);
                             EventInfo.add(info);
                         } catch (Exception e){
