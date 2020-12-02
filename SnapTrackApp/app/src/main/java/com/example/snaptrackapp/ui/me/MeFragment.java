@@ -26,6 +26,7 @@ import com.example.snaptrackapp.R;
 import com.example.snaptrackapp.data.CategoryInfo;
 import com.example.snaptrackapp.data.DataPopulate;
 import com.example.snaptrackapp.data.DataUtils;
+import com.example.snaptrackapp.data.EventInfo;
 import com.example.snaptrackapp.data.UserActivityInfo;
 import com.example.snaptrackapp.data.UserInfo;
 import com.firebase.ui.auth.AuthUI;
@@ -33,6 +34,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
 
 
 public class MeFragment extends Fragment {
@@ -99,6 +102,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Dev button pressed", Toast.LENGTH_SHORT).show();
+                DataPopulate.addDummyEvents();
             }
         });
 
@@ -154,6 +158,8 @@ public class MeFragment extends Fragment {
         tmpRef = dbRef.child(UserActivityInfo.ALL_USER_ACTIVITY_PARENT);
         tmpRef.removeValue();
         tmpRef = dbRef.child("activityNames");
+        tmpRef.removeValue();
+        tmpRef = dbRef.child(EventInfo.ALL_EVENT_PARENT);
         tmpRef.removeValue();
     }
 

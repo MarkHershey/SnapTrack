@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,10 +38,13 @@ public class ActivitiesFragment extends Fragment {
     private ArrayList<UserActivityInfo> activityList;
 
     FloatingActionButton mFloatingActionButton;
+    ImageView emptyStateView;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ActivitiesViewModel activitiesViewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
         View root = inflater.inflate(R.layout.fragment_activities, container, false);
+        // get empty state image view object
+        emptyStateView = root.findViewById(R.id.activityEmpty);
 
         activityList = new ArrayList<>();
         Log.d(TAG, "Fragment onCreateView");
@@ -54,6 +58,8 @@ public class ActivitiesFragment extends Fragment {
         activitiesViewModel.getActivityListLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<UserActivityInfo>>() {
             @Override
             public void onChanged(ArrayList<UserActivityInfo> userActivityInfoList) {
+                if (userActivityInfoList.size() != 0) emptyStateView.setVisibility(View.INVISIBLE);
+                else emptyStateView.setVisibility(View.VISIBLE);
                 mRecyclerViewAdapter = new ActivitiesAdapter(userActivityInfoList, getContext());
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 mRecyclerView.setAdapter(mRecyclerViewAdapter);

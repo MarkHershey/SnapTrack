@@ -30,7 +30,6 @@ public class AnalyticsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_analytics, container, false);
-        text_analytics = root.findViewById(R.id.text_analytics);
         return root;
     }
 
@@ -39,13 +38,6 @@ public class AnalyticsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         analyticsViewModel = new ViewModelProvider(this).get(AnalyticsViewModel.class);
         // TODO: Use the ViewModel
-        analyticsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>(){
-
-            @Override
-            public void onChanged(String s) {
-                text_analytics.setText(s);
-            }
-        });
     }
 
 }
