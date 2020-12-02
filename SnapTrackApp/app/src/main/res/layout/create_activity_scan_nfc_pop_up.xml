@@ -5,18 +5,17 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="#4D5061">
+    android:background="#92B6B1">
 
     <ImageView
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/nfc_icon"></ImageView>
+        android:src="@drawable/nfc_icon" />
 
     <TextView
+        android:id="@+id/popup_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center"
         android:includeFontPadding="false"
         android:text="@string/pair_an_nfc_screen_pop_up"
