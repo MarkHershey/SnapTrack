@@ -63,7 +63,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
             public void onClick(View v) {
                 Toast.makeText(context, currentItem.getActivityName(), Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Card item '" + currentItem.getActivityName() + "' is clicked");
-                
+
                 Intent intent = new Intent(context, EditUserActivity.class);
                 intent.putExtra("activityName", currentItem.getActivityName());
                 intent.putExtra("category", currentItem.getCategory());
