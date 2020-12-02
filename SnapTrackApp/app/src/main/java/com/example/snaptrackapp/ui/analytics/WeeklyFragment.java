@@ -191,7 +191,7 @@ public class WeeklyFragment extends Fragment {
 
         barDataSet.setStackLabels(week4labels);
         barEntries.add(new BarEntry(2, week4time));
-        
+
     }
 
     private void getData() {

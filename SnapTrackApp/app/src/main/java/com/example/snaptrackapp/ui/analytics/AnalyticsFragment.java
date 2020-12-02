@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +22,15 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class AnalyticsFragment extends Fragment {
+
+
 
     private AnalyticsViewModel analyticsViewModel;
 
@@ -37,6 +41,10 @@ public class AnalyticsFragment extends Fragment {
     private Date endDate;
     private Calendar c = Calendar.getInstance();
 
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    PagerAdapter pagerAdapter;
+
     public static AnalyticsFragment newInstance() {
         return new AnalyticsFragment();
     }
@@ -44,8 +52,10 @@ public class AnalyticsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.daily_fragment, container, false);
-        barChart = root.findViewById(R.id.daily_barChart);
+        View root = inflater.inflate(R.layout.fragment_analytics, container, false);
+        tabLayout = root.findViewById(R.id.tab_layout);
+        Log.v("logccat", String.valueOf(tabLayout.getTabCount()));
+        viewPager = root.findViewById(R.id.pager);
         return root;
     }
 
@@ -54,31 +64,24 @@ public class AnalyticsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         analyticsViewModel = new ViewModelProvider(this).get(AnalyticsViewModel.class);
 
+        pagerAdapter = new PagerAdapter(getChildFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-        Log.v("logcaat","start daily fragment");
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        startDate = c.getTime();
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-        endDate = c.getTime();
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-//        getData();
-        barEntries.add(new BarEntry(4, new float[]{2, 5.5f, 4}));
-        barEntries.add(new BarEntry(5, new float[]{3, 4.3f, 4}));
-        barEntries.add(new BarEntry(6, new float[]{4, 2.3f, 4}));
-        barEntries.add(new BarEntry(7, new float[]{1, 5.6f, 4}));
-        barEntries.add(new BarEntry(8, new float[]{2, 2.4f, 4}));
-        Log.v("logcaat",barEntries.toString());
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "time");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
-        barData = new BarData(barDataSet);
-
-        barChart.setData(barData);
-
+            }
+        });
     }
 
 }
