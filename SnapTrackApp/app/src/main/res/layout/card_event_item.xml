@@ -8,7 +8,7 @@
     android:layout_gravity="center_horizontal"
     android:paddingHorizontal="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="4dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="@color/cardview_dark_background"
@@ -36,7 +36,7 @@
             />
 
         <TextView
-            android:id="@+id/durationTextView"
+            android:id="@+id/startTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -44,8 +44,22 @@
             android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="normal"
-            android:text="Duration"
+            android:text="Start Time"
             app:layout_constraintLeft_toRightOf="@+id/activityTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/durationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:text="Duration"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             />
 

@@ -28,6 +28,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         public TextView activityTextView;
+        public TextView startTimeTextView;
         public TextView durationTextView;
         public CardView mCardView;
 
@@ -35,6 +36,7 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
             activityTextView = itemView.findViewById(R.id.activityTextView);
+            startTimeTextView = itemView.findViewById(R.id.startTimeTextView);
             durationTextView = itemView.findViewById(R.id.durationTextView);
             mCardView = itemView.findViewById(R.id.cardEvent);
         }
@@ -51,7 +53,8 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         EventInfo currentItem = eventList.get(position);
         holder.activityTextView.setText(currentItem.getUserActivityName());
-        holder.durationTextView.setText(String.valueOf(currentItem.getDurationSeconds()));
+        holder.startTimeTextView.setText(currentItem.getStartTimeAsString());
+        holder.durationTextView.setText(String.valueOf(currentItem.getDurationString()));
         // set card height according to Event duration
         int heightValue = (int) currentItem.getDurationSeconds() / 36;
         if (heightValue < 50) heightValue = 50;

@@ -100,6 +100,28 @@ public class EventInfo implements Comparable<EventInfo>{
     }
 
     @Exclude
+    public String getDurationString() {
+        int duration = getDurationSeconds();
+
+        int hours = 0;
+        int minutes = 0;
+        int seconds = 0;
+
+        minutes = duration / 60;
+        hours = minutes / 60;
+        minutes -= hours * 60;
+        seconds = duration % 60;
+
+        if (hours == 0 && minutes == 0) {
+            return seconds + "s";
+        } else if (hours == 0) {
+            return minutes + "m " + seconds + "s";
+        } else {
+            return hours + "h " + minutes + "m";
+        }
+    }
+
+    @Exclude
     public Date getStartTimeAsDateTime(){
         return new Date(start_time);
     }
