@@ -57,9 +57,7 @@ public class EditUserActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
 
     //Create popupWindows and popupButtons
-    PopupWindow popupWindow;
     PopupWindow confirmPopupWindow;
-    PopupWindow erasePopupWindow;
     //PopupButton
     Button cancelButton_pop;
     Button overwriteButton;
