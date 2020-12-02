@@ -10,6 +10,8 @@ import com.example.snaptrackapp.data.DataUtils;
 import com.example.snaptrackapp.data.EventInfo;
 import com.example.snaptrackapp.data.Listener;
 import com.example.snaptrackapp.data.UserActivityInfo;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,22 +25,26 @@ public class TodayViewModel extends ViewModel {
     public TodayViewModel() {
         eventListLive = new MutableLiveData<>();
 
-        DataUtils.fetchEvents(new Listener<List<EventInfo>>() {
-            @Override
-            public void update(List<EventInfo> events) {
+        FirebaseUser userLoggedIn = FirebaseAuth.getInstance().getCurrentUser();
 
-                ArrayList<EventInfo> eventList;
+        if (userLoggedIn != null) {
+            DataUtils.fetchEvents(new Listener<List<EventInfo>>() {
+                @Override
+                public void update(List<EventInfo> events) {
 
-                if (events != null){
-                    Log.d(TAG, "Loaded number of UserActivity: " + events.size());
-                    eventList = new ArrayList<>(events);
-                } else {
-                    Log.d(TAG, "Retrieving EventInfo returned null from Firebase");
-                    eventList = new ArrayList<>();
+                    ArrayList<EventInfo> eventList;
+
+                    if (events != null){
+                        Log.d(TAG, "Loaded number of UserActivity: " + events.size());
+                        eventList = new ArrayList<>(events);
+                    } else {
+                        Log.d(TAG, "Retrieving EventInfo returned null from Firebase");
+                        eventList = new ArrayList<>();
+                    }
+                    eventListLive.setValue(eventList);
                 }
-                eventListLive.setValue(eventList);
-            }
-        });
+            });
+        }
     }
 
     public MutableLiveData<ArrayList<EventInfo>> getEventListLive() {

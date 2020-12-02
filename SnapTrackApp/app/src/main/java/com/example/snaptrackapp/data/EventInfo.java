@@ -1,6 +1,7 @@
 package com.example.snaptrackapp.data;
 
 
+import android.graphics.Color;
 import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
@@ -15,8 +16,8 @@ public class EventInfo {
     public static final String ALL_EVENT_PARENT = "events";
     private static final String TAG = "EventInfo";
     private String user_activity_id;
-    public String user_activity_name;
-    public int user_activity_color;
+    public String user_activity_name = null;
+    public int user_activity_color = Color.parseColor("#FFFFFF");
     private long start_time;
     private long end_time;
     private int duration_seconds;
@@ -38,7 +39,8 @@ public class EventInfo {
                     // get activity name
                     UserActivityInfo thisActivityInfo = stringUserActivityInfoMap.get(info.getUserActivityId());
                     info.user_activity_name = thisActivityInfo.getActivityName();
-                    // TODO to get color
+                    // get activity color
+                    info.user_activity_color = thisActivityInfo.getColor();
                     // add to firebase
                     String authID = DataUtils.getCurrentUserAuthID();
                     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
@@ -58,8 +60,6 @@ public class EventInfo {
         this.start_time = start_time;
         this.end_time = end_time;
         this.duration_seconds = (int) (end_time - start_time) / 1000;
-        this.user_activity_name = null;
-
     }
 
     public EventInfo(String user_activity_id, Date start_time, Date end_time) {
@@ -74,6 +74,11 @@ public class EventInfo {
     @PropertyName("user_activity_name")
     public String getUserActivityName() {
         return user_activity_name;
+    }
+
+    @PropertyName("user_activity_color")
+    public int getUserActivityColor() {
+        return user_activity_color;
     }
 
     @PropertyName("start_time")

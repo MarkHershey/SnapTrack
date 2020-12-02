@@ -57,8 +57,8 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
         ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
         params.height = (int) currentItem.getDurationSeconds() / 36;
         holder.mCardView.setLayoutParams(params);
-        // TODO set card color according to activity color
-        holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+        // set card color according to activity color
+        holder.mCardView.setCardBackgroundColor(currentItem.getUserActivityColor());
 
     }
 
