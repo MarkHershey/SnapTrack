@@ -73,19 +73,28 @@ public class TrackingActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                theChronometer.stop();
-                timeEndMillis = System.currentTimeMillis();
-                trackedTimeSeconds = (int) (timeEndMillis - timeStartMillis) / 1000;
-                Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
-                // create new Event Object
-                thisEvent = new EventInfo(AID, timeStartMillis, timeEndMillis);
-                // Submit Event to Firebase
-                EventInfo.add(thisEvent);
-                // dismiss this activity
-                finish();
+                stopTracking();
             }
         });
 
 
     }
+
+    public void stopTracking(){
+        theChronometer.stop();
+        timeEndMillis = System.currentTimeMillis();
+        trackedTimeSeconds = (int) (timeEndMillis - timeStartMillis) / 1000;
+        Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
+        // create new Event Object
+        thisEvent = new EventInfo(AID, timeStartMillis, timeEndMillis);
+        // Submit Event to Firebase
+        EventInfo.add(thisEvent);
+        // dismiss this activity
+        finish();
+    }
+
+
+
+
+
 }

@@ -9,10 +9,13 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.PropertyName;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 
-public class EventInfo {
+public class EventInfo implements Comparable<EventInfo>{
     public static final String ALL_EVENT_PARENT = "events";
     private static final String TAG = "EventInfo";
     private String user_activity_id;
@@ -104,5 +107,28 @@ public class EventInfo {
     @Exclude
     public Date getEndTimeAsDateTime(){
         return new Date(end_time);
+    }
+
+    @Exclude
+    public String getStartTimeAsString(){
+        Date date = getStartTimeAsDateTime();
+        DateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+        return formatter.format(date);
+    }
+
+    @Exclude
+    public String getEndTimeAsString(){
+        Date date = getEndTimeAsDateTime();
+        DateFormat formatter = new SimpleDateFormat("d MMM yyyy HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("Asia/Singapore"));
+        return formatter.format(date);
+    }
+
+    @Override
+    public int compareTo(EventInfo o) {
+        if (this.start_time < o.start_time) return -1;
+        else if (this.start_time > o.start_time) return 1;
+        return 0;
     }
 }

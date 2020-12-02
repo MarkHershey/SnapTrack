@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -35,8 +36,13 @@ public class TodayViewModel extends ViewModel {
                     ArrayList<EventInfo> eventList;
 
                     if (events != null){
-                        Log.d(TAG, "Loaded number of UserActivity: " + events.size());
+                        Log.d(TAG, "Loaded number of Events: " + events.size());
                         eventList = new ArrayList<>(events);
+                        Collections.sort(eventList);
+                        Collections.reverse(eventList);
+                        for (EventInfo e:eventList) {
+                            Log.d(TAG, e.getEndTimeAsString());
+                        }
                     } else {
                         Log.d(TAG, "Retrieving EventInfo returned null from Firebase");
                         eventList = new ArrayList<>();
