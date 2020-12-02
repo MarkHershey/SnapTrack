@@ -39,6 +39,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
     compile "com.google.guava:guava:16+"
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -52,6 +53,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     // Firebase Products Dependencies
+
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.firebaseui:firebase-ui-auth:7.0.0'
     implementation 'com.google.firebase:firebase-database'
