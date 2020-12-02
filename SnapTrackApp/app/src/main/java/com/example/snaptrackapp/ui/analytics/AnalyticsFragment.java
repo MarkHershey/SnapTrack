@@ -16,11 +16,13 @@ import android.widget.TextView;
 
 import com.example.snaptrackapp.R;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class AnalyticsFragment extends Fragment {
 
     private AnalyticsViewModel analyticsViewModel;
 
-    TextView text_analytics;
 
     public static AnalyticsFragment newInstance() {
         return new AnalyticsFragment();
@@ -38,6 +40,12 @@ public class AnalyticsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         analyticsViewModel = new ViewModelProvider(this).get(AnalyticsViewModel.class);
         // TODO: Use the ViewModel
+        analyticsViewModel.getEventAnalyticsListLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<Map<String, Long>>>() {
+            @Override
+            public void onChanged(ArrayList<Map<String, Long>> maps) {
+                // TODO on change
+            }
+        });
     }
 
 }

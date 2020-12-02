@@ -24,17 +24,8 @@ import java.util.Random;
 
 public class DataUtils {
 
-    public static final int GENERATE_ID_TRIES = 100;
+    public static final int GENERATE_ID_TRIES = 10;
     private static final String TAG = "DataUtils";
-
-    public static void createExampleUser(){
-        UserInfo.add("Example username", "xxxxxx");
-        CategoryInfo.add("work", "#FF8888");
-        CategoryInfo.add("life", "#FF72A2");
-        UserActivityInfo.add("eat", "life", "#88FF88");
-        UserActivityInfo.add("sleep", "life", "#8888FF");
-        UserActivityInfo.add("shitpost", "work", "#FFAA77");
-    }
 
     /**
      * Fetches the Map from Activity ID to UserActivityInfo. Calls callback.update() whenever data changes.
