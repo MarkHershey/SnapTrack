@@ -10,10 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.snaptrackapp.R;
-import com.example.snaptrackapp.data.DataUtils;
-import com.example.snaptrackapp.data.EventInfo;
-import com.example.snaptrackapp.data.Listener;
-import com.example.snaptrackapp.data.UserActivityInfo;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -23,8 +19,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 public class MonthlyFragment extends Fragment {
 
@@ -49,7 +43,7 @@ public class MonthlyFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.monthly_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_tab_monthly, container, false);
 
         barChart = view.findViewById(R.id.monthly_barChart);
 
