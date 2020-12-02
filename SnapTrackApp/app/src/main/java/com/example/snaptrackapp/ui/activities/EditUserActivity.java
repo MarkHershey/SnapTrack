@@ -10,7 +10,6 @@ import com.example.snaptrackapp.data.UserInfo;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
@@ -19,7 +18,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -214,7 +212,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.activity_exisiting_user_activity, null);
+        View popupView = inflater.inflate(R.layout.activity_nfc_write, null);
 
         // create the popup window
         int width = LinearLayout.LayoutParams.MATCH_PARENT;

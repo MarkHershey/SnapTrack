@@ -10,15 +10,16 @@
 
     <ImageView
         android:id="@+id/nfc_icon"
-        android:layout_width="410dp"
-        android:layout_height="451dp"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:src="@drawable/nfc_transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="100dp"
+        android:paddingHorizontal="50dp"
+        />
 
     <TextView
         android:id="@+id/popup_text"
@@ -30,8 +31,10 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/nfc_icon"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="450dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        android:padding="10dp" />
 
     <TextView
         android:id="@+id/aidLabel_pop"
@@ -41,7 +44,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="28dp"
         android:paddingHorizontal="3dp"
-        android:text="Activity ID: xxxxxxxx"
+        android:text="Tag Detected: Pending"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -54,33 +57,34 @@
         android:id="@+id/overwriteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cancelButton_pop"
+        android:layout_marginVertical="20dp"
         android:padding="10dp"
         android:text="@string/overwrite_data"
+        android:background="@drawable/button2"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/aidLabel_pop"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/cancelButton_pop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/button2"
         android:backgroundTint="@color/colorAccent"
         android:padding="10dp"
         android:text="@string/cancel"
         android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@+id/overwriteButton"
         tools:layout_editor_absoluteX="1dp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

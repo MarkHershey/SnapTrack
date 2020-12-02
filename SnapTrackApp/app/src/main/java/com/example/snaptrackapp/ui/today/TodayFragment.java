@@ -31,6 +31,7 @@ import com.example.snaptrackapp.data.Listener;
 import com.example.snaptrackapp.data.UserActivityInfo;
 import com.example.snaptrackapp.ui.activities.ActivitiesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -80,16 +81,20 @@ public class TodayFragment extends Fragment {
         });
 
         // prepare activity list
-        DataUtils.fetchActivitiesSingle(new Listener<Map<String, UserActivityInfo>>() {
-            @Override
-            public void update(Map<String, UserActivityInfo> stringUserActivityInfoMap) {
-                uActivityList.addAll(stringUserActivityInfoMap.values());
-                uActivityIDList.addAll(stringUserActivityInfoMap.keySet());
-                for (String aid: uActivityIDList) {
-                    uActivityNamesList.add(stringUserActivityInfoMap.get(aid).getActivityName());
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            Log.d(TAG, "Prepare UserActivity List in the background.");
+            DataUtils.fetchActivitiesSingle(new Listener<Map<String, UserActivityInfo>>() {
+                @Override
+                public void update(Map<String, UserActivityInfo> stringUserActivityInfoMap) {
+                    uActivityList.addAll(stringUserActivityInfoMap.values());
+                    uActivityIDList.addAll(stringUserActivityInfoMap.keySet());
+                    for (String aid: uActivityIDList) {
+                        uActivityNamesList.add(stringUserActivityInfoMap.get(aid).getActivityName());
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         // Floating Button stuff
         mFloatingActionButton = root.findViewById(R.id.fab);
