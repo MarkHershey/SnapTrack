@@ -2,7 +2,6 @@ package com.example.snaptrackapp.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
 
 public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.ActivityViewHolder> {
     private static final String TAG = "ActivitiesAdapter";
-    private ArrayList<UserActivityInfo> mActivityList;
+    ArrayList<UserActivityInfo> mActivityList;
     Context context;
 
 
@@ -46,9 +45,8 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Ac
     @NonNull
     @Override
     public ActivityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, parent, false);
-        ActivityViewHolder aViewHolder = new ActivityViewHolder(v);
-        return aViewHolder;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_activity_item, parent, false);
+        return new ActivityViewHolder(v);
     }
 
     @Override

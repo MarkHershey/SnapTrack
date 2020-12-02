@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snaptrackapp.R;
+import com.example.snaptrackapp.data.EventInfo;
+import com.example.snaptrackapp.data.UserActivityInfo;
+import com.example.snaptrackapp.ui.activities.ActivitiesAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 
 public class TodayFragment extends Fragment {
 
+    private final String TAG = "TodayFragment";
     private TodayViewModel todayViewModel;
+
+    private RecyclerView mRecyclerView;
+    private ActivitiesAdapter mRecyclerViewAdapter;
+    private ArrayList<EventInfo> eventList;
+
     FloatingActionButton mFloatingActionButton;
 
 
@@ -49,7 +61,7 @@ public class TodayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Start new event", Toast.LENGTH_SHORT).show();
-                // TODO: start new event tracking
+                // TODO: start new event tracking manually
             }
         });
 
