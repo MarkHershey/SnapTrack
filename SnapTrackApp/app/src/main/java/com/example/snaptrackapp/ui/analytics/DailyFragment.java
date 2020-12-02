@@ -1,5 +1,6 @@
 package com.example.snaptrackapp.ui.analytics;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -56,26 +57,48 @@ public class DailyFragment extends Fragment {
 
         barChart = view.findViewById(R.id.daily_barChart);
         Log.v("logcaat","start daily fragment");
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        startDate = c.getTime();
+        barChart.setMaxVisibleValueCount(5);
+        barChart.getDescription().setEnabled(false);
+        barChart.getLegend().setTextColor(Color.WHITE);
+        barChart.getXAxis().setTextColor(Color.WHITE);
+        barChart.getAxisLeft().setTextColor(Color.WHITE);
+        barChart.getAxisRight().setTextColor(Color.WHITE);
 
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-        endDate = c.getTime();
+//        setData(10);
+
+
 
         getData();
         Log.v("logcaat",barEntries.toString());
 
-        barDataSet = new BarDataSet(barEntries, "time");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-
+        barDataSet = new BarDataSet(barEntries, " -> legend");
+        barDataSet.setColors(new int[]{Color.RED,Color.BLUE,Color.GREEN});
+        barDataSet.setStackLabels(new String[]{"Gaming","Meditation","Life"});
         barData = new BarData(barDataSet);
-
         barChart.setData(barData);
 
         return view;
     }
+//    private void setData(int count) {
+//        for (int i = 0; i < count; i++) {
+//            float val1 = (float) (Math.random() * count) + 20;
+//            float val2 = (float) (Math.random() * count) + 20;
+//            float val3 = (float) (Math.random() * count) + 20;
+//            barEntries.add(new BarEntry(i, new float[]{val1, val2, val3}));
+//        }
+//
+//    BarDataSet set1;
+//    set1 = new BarDataSet(barEntries, "Statistics Vienna 2014");
+//    set1.setDrawIcons(false);
+//    set1.setStackLabels(new String[]{"Births", "Divorces", "Marriages"});
+//
+//    BarData data = new BarData(set1);
+//
+//    mChart.setData(data);
+//    mChart.setFitBars(true);
+//    mChart.invalidate();
+//
+//    }
 
 //    private void getActivities() {
 //        DataUtils.fetchEvents(new Listener<List<EventInfo>>() {
