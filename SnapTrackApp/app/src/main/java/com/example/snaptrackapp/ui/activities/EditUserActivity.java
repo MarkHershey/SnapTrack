@@ -196,8 +196,8 @@ public class EditUserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Check if the compulsory fields are completed (To add if the activity is unique
                 if (!nameEditView.getText().toString().isEmpty() && !categoryEditView.getText().toString().isEmpty() ) {
-                    Log.v("logcat","compulsary completed");
-                    Log.v("logcat", "Start to show popup");
+                    Log.v(TAG,"compulsory completed");
+                    Log.v(TAG, "Start to show popup");
                     onButtonShowPopupWindowClick(v);
                 } else {
                     //TO-DO add check if the activity name is unique and category is unique
@@ -212,6 +212,7 @@ public class EditUserActivity extends AppCompatActivity {
         intColor = (intA & 0xff) << 24 | (intR & 0xff) << 16 | (intG & 0xff) << 8 | (intB & 0xff);
         colorDisplay.setBackgroundColor(intColor);
     }
+
 
     public void onButtonShowPopupWindowClick(View view) {
         // inflate the layout of the popup window
@@ -237,6 +238,7 @@ public class EditUserActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void onErasePopupWindow(View view, MifareUltralight mifareUlTag) {
         // inflate the layout of the popup window
@@ -371,7 +373,7 @@ public class EditUserActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        Log.v("logcat",getClass().getName());
+        Log.v(TAG,getClass().getName());
         try {
             //Popup Window must exist before user can scan nfc tag and write, else nothing will happen
             popupWindow.dismiss();
@@ -384,7 +386,7 @@ public class EditUserActivity extends AppCompatActivity {
 
             resolveIntent(intent);
         } catch (Exception e) {
-            Log.v("logcat","info has not been keyed in to scan");
+            Log.v(TAG,"info has not been keyed in to scan");
             e.printStackTrace();
         }
     }
@@ -457,14 +459,14 @@ public class EditUserActivity extends AppCompatActivity {
             }
 
         } catch (IOException e) {
-            Log.e("logcat", "IOException while reading MifareUltralight message...", e);
+            Log.e(TAG, "IOException while reading MifareUltralight message...", e);
         } finally {
 
             if (mifareUlTag != null) {
                 try {
                     mifareUlTag.close();
                 } catch (IOException e) {
-                    Log.e("logcat", "Error closing tag...", e);
+                    Log.e(TAG, "Error closing tag...", e);
                 }
             }
         }
@@ -504,20 +506,20 @@ public class EditUserActivity extends AppCompatActivity {
                         mifareUlTag.writePage(14, AID.substring(8, 12).getBytes(Charset.forName("US-ASCII")));
                         mifareUlTag.writePage(15, AID.substring(12, 16).getBytes(Charset.forName("US-ASCII")));
                     } catch (IOException e) {
-                        Log.e("logcat", "IOException while writing MifareUltralight...", e);
+                        Log.e(TAG, "IOException while writing MifareUltralight...", e);
                     } finally {
                         try {
                             mifareUlTag.close();
                             try {
                                 erasePopupWindow.dismiss();
-                                Toast.makeText(EditUserActivity.this, "Sucessfully Ovewritten NFC", Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditUserActivity.this, "Successfully Overwritten NFC", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(EditUserActivity.this , ActivitiesFragment.class);
                                 startActivity(intent);
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
                         } catch (IOException e) {
-                            Log.e("logcat", "IOException while closing MifareUltralight...", e);
+                            Log.e(TAG, "IOException while closing MifareUltralight...", e);
                         }
                     }
                 }
