@@ -41,14 +41,18 @@ public class DataUtils {
      * @param callback Listener for Activities map.
      */
     public static void fetchActivities(Listener<Map<String,UserActivityInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("activities");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(UserActivityInfo.ALL_USER_ACTIVITY_PARENT);
         fetchDataMap(callback, dbRef, UserActivityInfo.class, false);
     }
 
     public static void fetchActivitiesSingle(Listener<Map<String,UserActivityInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("activities");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(UserActivityInfo.ALL_USER_ACTIVITY_PARENT);
         fetchDataMap(callback, dbRef, UserActivityInfo.class, true);
     }
 
@@ -57,14 +61,18 @@ public class DataUtils {
      * @param callback Listener for Event Info List.
      */
     public static void fetchEvents(Listener<List<EventInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
         fetchDataList(callback, dbRef, EventInfo.class, false);
     }
 
     public static void fetchEventsSingle(Listener<List<EventInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
         fetchDataList(callback, dbRef, EventInfo.class, true);
     }
 
@@ -75,30 +83,38 @@ public class DataUtils {
      * @param endTime End time.
      */
     public static void fetchEvents(Listener<List<EventInfo>> callback, Date startTime, Date endTime){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataList(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"),
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
+        fetchDataList(callback, dbRef.orderByChild("start_time").startAt(startTime.getTime()).endAt(endTime.getTime()),
                 EventInfo.class, false);
     }
 
     public static void fetchEventsSingle(Listener<List<EventInfo>> callback, Date startTime, Date endTime){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataList(callback, dbRef.startAt(startTime.getTime(), "start_time").endAt(endTime.getTime(), "end_time"),
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
+        fetchDataList(callback, dbRef.orderByChild("start_time").startAt(startTime.getTime()).endAt(endTime.getTime()),
                 EventInfo.class, true);
     }
 
     public static void fetchEvents(Listener<List<EventInfo>> callback, long startTime, long endTime){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataList(callback, dbRef.startAt(startTime, "start_time").endAt(endTime, "end_time"),
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
+        fetchDataList(callback, dbRef.orderByChild("start_time").startAt(startTime).endAt(endTime),
                 EventInfo.class, false);
     }
 
     public static void fetchEventsSingle(Listener<List<EventInfo>> callback, long startTime, long endTime){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("events");
-        fetchDataList(callback, dbRef.startAt(startTime, "start_time").endAt(endTime, "end_time"),
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child(EventInfo.ALL_EVENT_PARENT);
+        fetchDataList(callback, dbRef.orderByChild("start_time").startAt(startTime).endAt(endTime),
                 EventInfo.class, true);
     }
 
@@ -107,14 +123,18 @@ public class DataUtils {
      * @param callback Listener for Category Info Map.
      */
     public static void fetchCategories(Listener<Map<String, CategoryInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("categories");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child("categories");
         fetchDataMap(callback, dbRef, CategoryInfo.class, false);
     }
 
     public static void fetchCategoriesSingle(Listener<Map<String, CategoryInfo>> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID()).child("categories");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID())
+                .child("categories");
         fetchDataMap(callback, dbRef, CategoryInfo.class, true);
     }
 
@@ -124,14 +144,16 @@ public class DataUtils {
      */
 
     public static void fetchUserInfo(Listener<UserInfo> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID());
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID());
         fetchData(callback, dbRef, UserInfo.class, false);
     }
 
     public static void fetchUserInfoSingle(Listener<UserInfo> callback){
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = db.getReference("users").child(DataUtils.getCurrentUserAuthID());
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(UserInfo.ALL_USER_PARENT)
+                .child(DataUtils.getCurrentUserAuthID());
         fetchData(callback, dbRef, UserInfo.class, true);
     }
 
