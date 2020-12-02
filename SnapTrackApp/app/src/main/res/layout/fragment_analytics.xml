@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.analytics.AnalyticsFragment">
 
-    <TextView
-        android:id="@+id/text_analytics"
+    <ImageView
+        android:id="@+id/analyticsEmpty"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="30sp"
-        android:gravity="center_horizontal"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingHorizontal="80dp"
+        android:src="@drawable/empty_state"
+        />
 
 </FrameLayout>

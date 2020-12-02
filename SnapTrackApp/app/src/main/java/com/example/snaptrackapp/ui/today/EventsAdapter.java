@@ -1,6 +1,7 @@
 package com.example.snaptrackapp.ui.today;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,15 @@ public class EventsAdapter  extends RecyclerView.Adapter<EventsAdapter.EventView
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
         EventInfo currentItem = eventList.get(position);
-        // TODO
+        holder.activityTextView.setText(currentItem.getUserActivityName());
+        holder.durationTextView.setText(String.valueOf(currentItem.getDurationSeconds()));
+        holder.mCardView.setMinimumHeight(25);
+        // set card height according to Event duration
+        ViewGroup.LayoutParams params = holder.mCardView.getLayoutParams();
+        params.height = (int) currentItem.getDurationSeconds() / 36;
+        holder.mCardView.setLayoutParams(params);
+        // TODO set card color according to activity color
+        holder.mCardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 
     }
 

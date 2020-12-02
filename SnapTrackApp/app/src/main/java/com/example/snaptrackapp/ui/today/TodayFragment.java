@@ -10,11 +10,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,29 +36,41 @@ public class TodayFragment extends Fragment {
     private TodayViewModel todayViewModel;
 
     private RecyclerView mRecyclerView;
-    private ActivitiesAdapter mRecyclerViewAdapter;
+    private EventsAdapter mRecyclerViewAdapter;
     private ArrayList<EventInfo> eventList;
 
     FloatingActionButton mFloatingActionButton;
+    ImageView emptyStateView;
 
 
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         todayViewModel = new ViewModelProvider(this).get(TodayViewModel.class);
-
         View root = inflater.inflate(R.layout.fragment_today, container, false);
+        // get empty state image view object
+        emptyStateView = root.findViewById(R.id.todayEmpty);
 
-        final TextView textView = root.findViewById(R.id.text_today);
+        eventList = new ArrayList<EventInfo>();
 
-        todayViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        // scrolling RecyclerView stuff
+        mRecyclerView = root.findViewById(R.id.eventsRecyclerView);
+        // set empty adapter to avoid exception
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new EventsAdapter(eventList, getContext()));
+
+        todayViewModel.getEventListLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<EventInfo>>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onChanged(ArrayList<EventInfo> eventInfos) {
+                if (eventInfos.size() != 0) emptyStateView.setVisibility(View.INVISIBLE);
+                else emptyStateView.setVisibility(View.VISIBLE);
+                mRecyclerViewAdapter = new EventsAdapter(eventInfos, getContext());
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
             }
         });
 
+
+        // Floating Button stuff
         mFloatingActionButton = root.findViewById(R.id.fab);
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

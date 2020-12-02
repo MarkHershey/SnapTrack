@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context=".ui.activities.ActivitiesFragment">
 
+    <ImageView
+        android:id="@+id/activityEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingHorizontal="80dp"
+        android:src="@drawable/empty_state"
+        />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
