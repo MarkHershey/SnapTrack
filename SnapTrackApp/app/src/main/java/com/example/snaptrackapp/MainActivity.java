@@ -144,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 assert tag != null;
                 startTimer(tag);
             }
-            //For Debugging if NFC has been read
-            Toast.makeText(this,"Successfully Read NFC and Sent to Timer",Toast.LENGTH_LONG).show();
+
         }
 
 

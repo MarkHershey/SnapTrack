@@ -17,6 +17,6 @@
     <string name="pair_an_nfc_screen_pop_up">Approach an NFC Tag</string>
     <string name="are_you_sure_you_want_to_delete"> \n Delete NFC Data?</string>
     <string name="erase_data_in_NFC">Erase NFC</string>
-    <string name="erase_data">Erase</string>
+    <string name="overwrite_data">Overwrite</string>
     <string name="cancel">Cancel</string>
 </resources>

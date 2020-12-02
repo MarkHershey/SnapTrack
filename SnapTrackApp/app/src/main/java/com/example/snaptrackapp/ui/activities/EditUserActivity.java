@@ -57,14 +57,13 @@ public class EditUserActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
 
     //Create popupWindows and popupButtons
-    PopupWindow popupWindow;
     PopupWindow confirmPopupWindow;
-    PopupWindow erasePopupWindow;
     //PopupButton
-    Button buttonYes;
-    Button buttonNo;
+    Button cancelButton_pop;
+    Button overwriteButton;
     //PopupText
     TextView popup_text;
+    TextView aidLabel_pop;
 
     //Activity Information
     String AID = null;
@@ -195,10 +194,8 @@ public class EditUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Check if the compulsory fields are completed (To add if the activity is unique
-                if (!nameEditView.getText().toString().isEmpty() && !categoryEditView.getText().toString().isEmpty() ) {
-                    Log.v(TAG,"compulsory completed");
-                    Log.v(TAG, "Start to show popup");
-                    onButtonShowPopupWindowClick(v);
+                if (!nameEditView.getText().toString().isEmpty() && !categoryEditView.getText().toString().isEmpty()) {
+                    onScanShowExistingDataPopUp(v);
                 } else {
                     //TO-DO add check if the activity name is unique and category is unique
                     Toast.makeText(EditUserActivity.this,"Please specify a unique 'Activity Name' and a 'Category' for activity",Toast.LENGTH_LONG).show();
@@ -213,62 +210,7 @@ public class EditUserActivity extends AppCompatActivity {
         colorDisplay.setBackgroundColor(intColor);
     }
 
-
-    public void onButtonShowPopupWindowClick(View view) {
-        // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.create_activity_scan_nfc_pop_up, null);
-
-        // create the popup window
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
-        int height = LinearLayout.LayoutParams.MATCH_PARENT;
-        boolean focusable = false;
-        popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        //Prevents user from touching screen
-        popupWindow.setTouchable(false);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-//      dismiss the popup window when Triggered
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
-        });
-    }
-
-
-    public void onErasePopupWindow(View view, MifareUltralight mifareUlTag) {
-        // inflate the layout of the popup window
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.create_activity_scan_nfc_pop_up, null);
-
-        // create the popup window
-        int width = LinearLayout.LayoutParams.MATCH_PARENT;
-        int height = LinearLayout.LayoutParams.MATCH_PARENT;
-        boolean focusable = false;
-        erasePopupWindow = new PopupWindow(popupView, width, height, focusable);
-        erasePopupWindow.setOutsideTouchable(false);
-        //Prevents user from touching screen
-        erasePopupWindow.setTouchable(false);
-        erasePopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        journey = "Write";
-//      dismiss the popup window when Triggered
-        popup_text = popupView.findViewById(R.id.popup_text);
-        popup_text.setText("Approach an NFC Tag \n Pair an NFC");
-
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                erasePopupWindow.dismiss();
-                return true;
-            }
-        });
-    }
-
-    public void onScanShowExistingDataPopUp(View view, MifareUltralight mifareUlTag) {
+    public void onScanShowExistingDataPopUp(View view) {
 
         // inflate the layout of the popup window
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -288,50 +230,25 @@ public class EditUserActivity extends AppCompatActivity {
 
 
         //TODO: show information from NFC_AID
-        nameEditView = popupView.findViewById(R.id.nameEdit_pop);
-        categoryEditView = popupView.findViewById(R.id.categoryEdit_pop);
-        aBar = popupView.findViewById(R.id.aBar_pop);
-        rBar = popupView.findViewById(R.id.rBar_pop);
-        gBar = popupView.findViewById(R.id.gBar_pop);
-        bBar = popupView.findViewById(R.id.bBar_pop);
-        colorDisplay = popupView.findViewById(R.id.colorDisplay_pop);
-        aidView = popupView.findViewById(R.id.aidLabel_pop);
-        text = popupView.findViewById(R.id.text);
-        cancelButton = popupView.findViewById(R.id.cancelButton);
-        pairNfcTagButton = popupView.findViewById(R.id.pairNfcTagButton);
+        aidLabel_pop = popupView.findViewById(R.id.aidLabel_pop);
+        popup_text = popupView.findViewById(R.id.popup_text);
+        overwriteButton = popupView.findViewById(R.id.overwriteButton);
+        cancelButton_pop = popupView.findViewById(R.id.cancelButton_pop);
 
        //TODO: Get Activity name, category name and colour from NFC_AID
 
-//        intColor = Integer.parseInt(color);
-//        colorDisplay.setBackgroundColor(intColor);
-//
-//        intA = (intColor >> 24) & 0xff;
-//        intR = (intColor >> 16) & 0xff;
-//        intG = (intColor >>  8) & 0xff;
-//        intB = (intColor      ) & 0xff;
-//
-//        nameEditView.setText(activityName);
-//        categoryEditView.setText(category);
-//
-//        aBar.setProgress(intA);
-//        rBar.setProgress(intR);
-//        gBar.setProgress(intG);
-//        bBar.setProgress(intB);
-//
-        aidView.setText("Activity ID: " + NFC_AID);
-
-
-        buttonYes = (Button) popupView.findViewById(R.id.yes);
-        buttonNo = (Button) popupView.findViewById(R.id.no);
-
-        buttonYes.setOnClickListener(new Button.OnClickListener() {
+        overwriteButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onErasePopupWindow(view,mifareUlTag);
-                confirmPopupWindow.dismiss();
+                journey = "Write";
+                overwriteButton.setVisibility(View.INVISIBLE);
+                cancelButton_pop.setVisibility(View.INVISIBLE);
+                aidLabel_pop.setVisibility(View.INVISIBLE);
+                popup_text.setVisibility(View.VISIBLE);
+                popup_text.setText("Please Tap NFC Again");
             }
         });
-        buttonNo.setOnClickListener(new View.OnClickListener() {
+        cancelButton_pop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //get out of all popups
@@ -376,14 +293,9 @@ public class EditUserActivity extends AppCompatActivity {
         Log.v(TAG,getClass().getName());
         try {
             //Popup Window must exist before user can scan nfc tag and write, else nothing will happen
-            popupWindow.dismiss();
-            try {
-                confirmPopupWindow.dismiss();
-                erasePopupWindow.dismiss();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
+            overwriteButton.setVisibility(View.VISIBLE);
+            cancelButton_pop.setVisibility(View.VISIBLE);
+            aidLabel_pop.setVisibility(View.VISIBLE);
             resolveIntent(intent);
         } catch (Exception e) {
             Log.v(TAG,"info has not been keyed in to scan");
@@ -411,10 +323,15 @@ public class EditUserActivity extends AppCompatActivity {
                 MifareUltralight mifareUlTag = MifareUltralight.get(tag);
                 if (journey == null) {
                     readTag(mifareUlTag, sb);
+                    if (NFC_AID.isEmpty()){
+                        aidLabel_pop.setText("Activity ID: Empty Tag");
+                    }
+                    else {
+                        aidLabel_pop.setText("Activity ID: " + NFC_AID);
+                    }
                 }
                 else{
                     writeTag(mifareUlTag);
-                    erasePopupWindow.dismiss();
                 }
             }
         }
@@ -448,14 +365,13 @@ public class EditUserActivity extends AppCompatActivity {
 
             // Add user id together with this to make it so that only that user can use this tag
             if (NFC_signature.equals("HHCCJRDLZY2020ST")){
-                onScanShowExistingDataPopUp(popupWindow.getContentView(),mifareUlTag);
-                Toast.makeText(this, "Are you sure you want to overwrite existing data?", Toast.LENGTH_SHORT).show();
+                popup_text.setText("Are you sure you want to overwrite existing data?");
+//                onScanShowExistingDataPopUp(popupWindow.getContentView(),mifareUlTag);
+//                Toast.makeText(this, , Toast.LENGTH_SHORT).show();
 
             }
             else{
-                writeTag(mifareUlTag);
-                Toast.makeText(this, "Successfully Paired NFC", Toast.LENGTH_LONG).show();
-                popupWindow.dismiss();
+                popup_text.setText("Important data inside NFC may be overwritten, overwrite?");
             }
 
         } catch (IOException e) {
@@ -511,9 +427,10 @@ public class EditUserActivity extends AppCompatActivity {
                         try {
                             mifareUlTag.close();
                             try {
-                                erasePopupWindow.dismiss();
+                                confirmPopupWindow.dismiss();
+                                journey = null;
                                 Toast.makeText(EditUserActivity.this, "Successfully Overwritten NFC", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(EditUserActivity.this , ActivitiesFragment.class);
+                                Intent intent = new Intent(EditUserActivity.this , MainActivity.class);
                                 startActivity(intent);
                             }catch (Exception e){
                                 e.printStackTrace();
