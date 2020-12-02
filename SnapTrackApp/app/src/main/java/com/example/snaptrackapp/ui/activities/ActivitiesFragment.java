@@ -77,7 +77,6 @@ public class ActivitiesFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         return root;
     }
 

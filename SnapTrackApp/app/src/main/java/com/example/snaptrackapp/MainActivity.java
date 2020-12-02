@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"NO NFC Capabilities",Toast.LENGTH_SHORT).show();
             finish();
         }
+
         //Create a PendingIntent object so the Android system can populate it with the details of the tag when it is scanned.
         pendingIntent = PendingIntent.getActivity(this,0,new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
 
@@ -103,34 +103,12 @@ public class MainActivity extends AppCompatActivity {
         nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);
     }
 
-    //Bring user to wireless_settings if not updated
-    private void showWirelessSettings() {
-        Toast.makeText(this, "You need to enable NFC", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onPause() {
-
-        super.onPause();
-        //On pause stop listening
-//        if (nfcAdapter != null) {
-//            nfcAdapter.disableForegroundDispatch(this);
-//        }
-    }
-
     //New NFC Intent (NFC Card detected)
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         Log.v("logcat",getClass().getName());
-        if (nfcAdapter != null){
-            if (!nfcAdapter.isEnabled()){
-                showWirelessSettings();
-            }
-        }
         try {
             resolveIntent(intent);
         } catch (Exception e) {
@@ -151,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-
 
     private void startTimer(Tag tag) {
         for (String tech : tag.getTechList()) {
@@ -185,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("payload_userID", userID);
                     Log.v("payload_AID", AID);
 
-                    // Add user id together with this to make it so that only that user can use this tag
+                    //Check if NFC contain our unique signature
                     if (signature.equals("HHCCJRDLZY2020ST")){
                         // Toast.makeText(this,"Bring User to timer",Toast.LENGTH_LONG).show();
                         // Get the activity from Firebase
