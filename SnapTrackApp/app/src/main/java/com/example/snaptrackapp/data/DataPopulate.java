@@ -61,8 +61,8 @@ public class DataPopulate {
                 if (stringUserActivityInfoMap != null) {
                     ArrayList<String> aidList = new ArrayList<>(stringUserActivityInfoMap.keySet());
                     for (String aid: aidList) {
-                        // day 1 to  3
-                        for (int day=1; day<4; day++) {
+                        // day 1 to  2
+                        for (int day=1; day<3; day++) {
                             try {
                                 String baseString = "2020-12-0" + day;
                                 int min = 1;

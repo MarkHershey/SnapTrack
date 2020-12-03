@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.snaptrackapp.R;
@@ -50,6 +51,8 @@ public class AnalyticsFragment extends Fragment {
     BarDataSet barDataSet;
     ArrayList<BarEntry> barEntries = new ArrayList<>();
 
+    ImageView emptyStateView;
+
 
     public static AnalyticsFragment newInstance() {
         return new AnalyticsFragment();
@@ -60,6 +63,7 @@ public class AnalyticsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_analytics, container, false);
         barChart = root.findViewById(R.id.barChart);
+        emptyStateView = root.findViewById(R.id.analyticsEmpty);
         return root;
     }
 
@@ -142,6 +146,7 @@ public class AnalyticsFragment extends Fragment {
                     Log.d(TAG, "failed");
                 }
                 barChart.setFitBars(true);
+                emptyStateView.setVisibility(View.INVISIBLE);
                 barChart.invalidate();
 
             }

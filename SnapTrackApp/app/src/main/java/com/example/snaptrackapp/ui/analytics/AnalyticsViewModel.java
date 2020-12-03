@@ -68,7 +68,7 @@ public class AnalyticsViewModel extends ViewModel {
 //            }
 //        });
 
-        Analytics.fetchTotalTimesPastDays(4, new Listener<List<Map<String, Long>>>() {
+        Analytics.fetchTotalTimesPastDays(5, new Listener<List<Map<String, Long>>>() {
             @Override
             public void update(List<Map<String, Long>> maps) {
                 if (maps.size() == 0) return;
