@@ -70,7 +70,7 @@ public class UserActivityInfo {
 
         String authID = DataUtils.getCurrentUserAuthID();
         String AID = DataUtils.generateRandomID();
-        Log.d(TAG, "New AID generated: " + AID);
+        // Log.d(TAG, "New AID generated: " + AID);
 
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference(UserInfo.ALL_USER_PARENT)
@@ -150,7 +150,7 @@ public class UserActivityInfo {
                         .child(ALL_USER_ACTIVITY_PARENT)
                         .child(AID);
                 dbRef.setValue(userActivityInfo);
-                Log.d(TAG, "Insert new UserActivity");
+                // Log.d(TAG, "Insert new UserActivity");
 
                 dbRef = FirebaseDatabase.getInstance()
                         .getReference(UserInfo.ALL_USER_PARENT)
@@ -158,7 +158,7 @@ public class UserActivityInfo {
                         .child("activityNames")
                         .child(userActivityInfo.getActivityName());
                 dbRef.setValue(true);
-                Log.d(TAG, "Insert new activity_name into activityNames");
+                // Log.d(TAG, "Insert new activity_name into activityNames");
 
             } else if (TRIES > 0) {
                 Log.w(TAG, "Random AID collision: trying another time.");

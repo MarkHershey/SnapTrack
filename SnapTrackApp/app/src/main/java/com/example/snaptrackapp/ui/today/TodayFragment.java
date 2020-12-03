@@ -82,7 +82,7 @@ public class TodayFragment extends Fragment {
 
         // prepare activity list
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
-            Log.d(TAG, "Prepare UserActivity List in the background.");
+            // Log.d(TAG, "Prepare UserActivity List in the background.");
             DataUtils.fetchActivitiesSingle(new Listener<Map<String, UserActivityInfo>>() {
                 @Override
                 public void update(Map<String, UserActivityInfo> stringUserActivityInfoMap) {

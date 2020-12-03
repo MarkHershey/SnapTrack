@@ -47,7 +47,7 @@ public class ActivitiesFragment extends Fragment {
         emptyStateView = root.findViewById(R.id.activityEmpty);
 
         activityList = new ArrayList<>();
-        Log.d(TAG, "Fragment onCreateView");
+        // Log.d(TAG, "Fragment onCreateView");
 
         // scrolling RecyclerView stuff
         mRecyclerView = root.findViewById(R.id.recyclerView);
@@ -83,13 +83,13 @@ public class ActivitiesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "Fragment onResume");
+        // Log.d(TAG, "Fragment onResume");
     }
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "Fragment onActivityCreated");
+        // Log.d(TAG, "Fragment onActivityCreated");
     }
 }

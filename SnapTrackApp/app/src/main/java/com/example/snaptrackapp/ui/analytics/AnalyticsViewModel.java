@@ -58,7 +58,7 @@ public class AnalyticsViewModel extends ViewModel {
 //                    names.add(activity.getActivityName());
 //                    AIDs.add(activity.getAID());
 //                    colors.add(activity.getColor());
-//                    Log.d(TAG, activity.getActivityName());
+//                    // Log.d(TAG, activity.getActivityName());
 //                }
 //
 //                nameDataLive.setValue(names);
@@ -86,7 +86,7 @@ public class AnalyticsViewModel extends ViewModel {
                             names.add(activity.getActivityName());
                             AIDs.add(activity.getAID());
                             colors.add(activity.getColor());
-                            Log.d(TAG, activity.getActivityName());
+                            // Log.d(TAG, activity.getActivityName());
                         }
 
                         nameDataLive.setValue(names);
@@ -105,7 +105,7 @@ public class AnalyticsViewModel extends ViewModel {
 
 
                             for (Map.Entry<String,Long> entry : map.entrySet()){
-                                Log.d(TAG, "Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                                // Log.d(TAG, "Key = " + entry.getKey() + ", Value = " + entry.getValue());
                                 int j = AIDs.indexOf((String) entry.getKey());
                                 if (j == -1) {
                                     Log.e(TAG, "Length of AIDs" + AIDs.size());
@@ -138,7 +138,7 @@ public class AnalyticsViewModel extends ViewModel {
 //
 //
 //                    for (Map.Entry<String,Long> entry : map.entrySet()){
-//                        Log.d(TAG, "Key = " + entry.getKey() + ", Value = " + entry.getValue());
+//                        // Log.d(TAG, "Key = " + entry.getKey() + ", Value = " + entry.getValue());
 //                        int j = AIDs.indexOf((String) entry.getKey());
 //                        Log.w(TAG, "Length of AIDs" + AIDs.size());
 //                        if (j == -1) {

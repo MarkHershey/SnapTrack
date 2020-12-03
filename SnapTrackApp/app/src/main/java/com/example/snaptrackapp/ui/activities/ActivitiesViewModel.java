@@ -29,10 +29,10 @@ public class ActivitiesViewModel extends ViewModel {
                 ArrayList<UserActivityInfo> activityList;
 
                 if (activities != null){
-                    Log.d(TAG, "Loaded number of UserActivity: " + activities.size());
+                    // Log.d(TAG, "Loaded number of UserActivity: " + activities.size());
                     activityList = new ArrayList<>(activities.values());
                 } else {
-                    Log.d(TAG, "Retrieving UserActivityInfo returned null from Firebase");
+                    // Log.d(TAG, "Retrieving UserActivityInfo returned null from Firebase");
                     activityList = new ArrayList<>();
                 }
 

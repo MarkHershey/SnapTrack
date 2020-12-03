@@ -104,7 +104,7 @@ public class AnalyticsFragment extends Fragment {
             @Override
             public void onChanged(int[][] ints) {
                 // init bar chart
-                Log.d(TAG, "setMaxVisibleValueCount: " + ints.length);
+                // Log.d(TAG, "setMaxVisibleValueCount: " + ints.length);
                 barChart.setMaxVisibleValueCount(ints.length);
                 barChart.getDescription().setEnabled(false);
                 barChart.getLegend().setTextColor(Color.WHITE);
@@ -121,7 +121,7 @@ public class AnalyticsFragment extends Fragment {
                         v[i] = (float) y[i];
                     }
                     // add bar entries
-                    Log.d(TAG, "add bar entries: " + Arrays.toString(v));
+                    // Log.d(TAG, "add bar entries: " + Arrays.toString(v));
                     barEntries.add(new BarEntry(counter, v));
                     counter++;
                 }
@@ -134,16 +134,16 @@ public class AnalyticsFragment extends Fragment {
                     }
 
                     barDataSet = new BarDataSet(barEntries, "daily");
-                    Log.d(TAG, analyticsViewModel.colors.toString());
+                    // Log.d(TAG, analyticsViewModel.colors.toString());
                     barDataSet.setColors(analyticsViewModel.colors);
 
-                    Log.d(TAG, Arrays.toString(labels));
+                    // Log.d(TAG, Arrays.toString(labels));
                     barDataSet.setStackLabels(labels);
 
                     barData = new BarData(barDataSet);
                     barChart.setData(barData);
                 } else {
-                    Log.d(TAG, "failed");
+                    // Log.d(TAG, "failed");
                 }
                 barChart.setFitBars(true);
                 emptyStateView.setVisibility(View.INVISIBLE);
@@ -232,7 +232,7 @@ public class AnalyticsFragment extends Fragment {
 //            barEntries.add(new BarEntry(counter, v));
 //            counter++;
 //        }
-        
+
 
     }
 

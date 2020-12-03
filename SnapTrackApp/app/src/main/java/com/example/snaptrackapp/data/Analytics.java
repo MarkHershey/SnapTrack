@@ -42,11 +42,8 @@ public class Analytics {
                 List<Map<String, Long>> eventLists = new ArrayList<>();
                 for (int i = 0; i < nDays; ++i){
                     eventLists.add(new HashMap<String, Long>());
-                    Log.d(TAG, "added empty map");
                 }
                 for (EventInfo info : eventInfos){
-                    Log.d(TAG, "hahah");
-
                     String aid = info.getUserActivityId();
                     long startDay = (info.getStartTime() - startTime) / MILLIS_IN_A_DAY;
                     long endDay = (info.getEndTime() - startTime) / MILLIS_IN_A_DAY;
@@ -54,12 +51,12 @@ public class Analytics {
                     long endTimeOfDay = (info.getEndTime() - startTime) % MILLIS_IN_A_DAY;
 
                     if (startDay == endDay){
-                        Log.d(TAG, "startDay: " + String.valueOf((int)startDay));
+                        // Log.d(TAG, "startDay: " + String.valueOf((int)startDay));
                         Map<String, Long> day = eventLists.get((int)startDay);
                         if(!day.containsKey(aid)) day.put(aid, endTimeOfDay-startTimeOfDay);
                         else day.put(aid, day.get(aid) + endTimeOfDay-startTimeOfDay);
                     } else {
-                        Log.d(TAG, "startDay: " + String.valueOf((int)startDay));
+                        // Log.d(TAG, "startDay: " + String.valueOf((int)startDay));
                         Map<String, Long> day = eventLists.get((int)startDay);
                         if(!day.containsKey(aid)) day.put(aid, MILLIS_IN_A_DAY-startTimeOfDay);
                         else day.put(aid, day.get(aid)+ MILLIS_IN_A_DAY-startTimeOfDay);

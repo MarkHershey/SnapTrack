@@ -97,7 +97,7 @@ public class UserInfo {
                 userInfoRef.child("userID").setValue(userInfo.getUserID());
                 userInfoRef.child("authID").setValue(userInfo.getAuthID());
 
-                Log.d(TAG, "Added New User");
+                // Log.d(TAG, "Added New User");
 
             } else {
                 if(TRIES > 1){
@@ -124,11 +124,11 @@ public class UserInfo {
         userProfileRef.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "Got snapshot");
+                // Log.d(TAG, "Got snapshot");
                 if (snapshot.exists()){
-                    Log.d(TAG, "Existing User Logged In");
+                    // Log.d(TAG, "Existing User Logged In");
                 } else {
-                    Log.d(TAG, "New User Logged In");
+                    // Log.d(TAG, "New User Logged In");
                     // create user and userID
                     UserInfo.add(userName, authID);
                     // create default categories for all user
