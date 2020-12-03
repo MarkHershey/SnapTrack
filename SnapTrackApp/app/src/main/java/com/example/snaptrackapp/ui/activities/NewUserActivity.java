@@ -2,6 +2,7 @@ package com.example.snaptrackapp.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.snaptrackapp.R;
+import com.example.snaptrackapp.data.UserActivityInfo;
 
 import android.os.Bundle;
 import android.view.View;
@@ -119,12 +120,20 @@ public class NewUserActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Submit new activity to Firebase
+                // get values
+                String thisActivityName = nameEditView.getText().toString();
+                String thisCategory = categoryEditView.getText().toString();
+                int thisA = aBar.getProgress();
+                int thisR = rBar.getProgress();
+                int thisG = gBar.getProgress();
+                int thisB = bBar.getProgress();
+                int thisColor = (thisA & 0xff) << 24 | (thisR & 0xff) << 16 | (thisG & 0xff) << 8 | (thisB & 0xff);
+                // Submit new activity to Firebase
+                UserActivityInfo.add(thisActivityName, thisCategory, thisColor);
+                // dismiss
+                finish();
             }
         });
-
-
-
 
 
     }

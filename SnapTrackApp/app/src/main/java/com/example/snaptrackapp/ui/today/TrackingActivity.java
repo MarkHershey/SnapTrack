@@ -174,17 +174,7 @@ public class TrackingActivity extends AppCompatActivity {
 
             //Check if NFC contain our unique signature
             if (NFC_signature.equals("HHCCJRDLZY2020ST") && NFC_AID.equals(AID)){
-                theChronometer.stop();
-                timeEndMillis = System.currentTimeMillis();
-                trackedTimeSeconds = (int) (timeEndMillis - timeStartMillis) / 1000;
-                Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
-                // create new Event Object
-                thisEvent = new EventInfo(AID, timeStartMillis, timeEndMillis);
-                // Submit Event to Firebase
-                EventInfo.add(thisEvent);
-                // dismiss this activity
-                Intent intent = new Intent(TrackingActivity.this , MainActivity.class);
-                startActivity(intent);
+                stopTracking();
                 }
             if (NFC_signature.equals("HHCCJRDLZY2020ST") && !NFC_AID.equals(AID)){
                 Toast.makeText(TrackingActivity.this, "Incorrect NFC scanned, please scan the right NFC", Toast.LENGTH_LONG).show();
@@ -210,7 +200,7 @@ public class TrackingActivity extends AppCompatActivity {
         theChronometer.stop();
         timeEndMillis = System.currentTimeMillis();
         trackedTimeSeconds = (int) (timeEndMillis - timeStartMillis) / 1000;
-        Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
+        // Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
         // create new Event Object
         thisEvent = new EventInfo(AID, timeStartMillis, timeEndMillis);
         // Submit Event to Firebase
