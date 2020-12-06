@@ -206,6 +206,8 @@ public class TrackingActivity extends AppCompatActivity {
         // Submit Event to Firebase
         EventInfo.add(thisEvent);
         // dismiss this activity
+        Intent intent = new Intent(TrackingActivity.this , MainActivity.class);
+        startActivity(intent);
         finish();
     }
 

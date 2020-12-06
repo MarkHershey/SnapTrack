@@ -291,9 +291,11 @@ public class EditUserActivity extends AppCompatActivity {
         Log.v(TAG,getClass().getName());
         try {
             //Popup Window must exist before user can scan nfc tag and write, else nothing will happen
-            overwriteButton.setVisibility(View.VISIBLE);
-            cancelButton_pop.setVisibility(View.VISIBLE);
-            aidLabel_pop.setVisibility(View.VISIBLE);
+            if (journey == null) {
+                overwriteButton.setVisibility(View.VISIBLE);
+                cancelButton_pop.setVisibility(View.VISIBLE);
+                aidLabel_pop.setVisibility(View.VISIBLE);
+            }
             resolveIntent(intent);
         } catch (Exception e) {
             Log.v(TAG,"info has not been keyed in to scan");
