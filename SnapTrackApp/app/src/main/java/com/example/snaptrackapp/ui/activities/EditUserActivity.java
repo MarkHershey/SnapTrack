@@ -42,6 +42,7 @@ public class EditUserActivity extends AppCompatActivity {
     TextView colorDisplay;
     TextView aidView;
     TextView text;
+    Button saveButton;
     Button pairNfcTagButton;
     Button cancelButton;
     int intColor;
@@ -88,6 +89,7 @@ public class EditUserActivity extends AppCompatActivity {
         colorDisplay = findViewById(R.id.colorDisplay);
         aidView = findViewById(R.id.aidLabel);
         text = findViewById(R.id.text);
+        saveButton = findViewById(R.id.saveButton);
         cancelButton = findViewById(R.id.cancelButton);
         pairNfcTagButton = findViewById(R.id.pairNfcTagButton);
 
@@ -178,6 +180,13 @@ public class EditUserActivity extends AppCompatActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Non-essential: To be implemented in the future
+            }
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
