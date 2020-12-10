@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int RC_SIGN_IN = 123;
-    private FirebaseAuth mAuth;
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -108,11 +107,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        Log.v("logcat",getClass().getName());
+        Log.v(TAG,getClass().getName());
         try {
             resolveIntent(intent);
         } catch (Exception e) {
-            Log.v("logcat","unable to resolveIntent");
+            Log.v(TAG,"unable to resolveIntent");
             e.printStackTrace();
         }
     }
@@ -194,13 +193,13 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 } catch (IOException e) {
-                    Log.e("logcat", "IOException while reading MifareUltralight message...", e);
+                    Log.e(TAG, "IOException while reading MifareUltralight message...", e);
                 } finally {
                     if (mifareUlTag != null) {
                         try {
                             mifareUlTag.close();
                         } catch (IOException e) {
-                            Log.e("logcat", "Error closing tag...", e);
+                            Log.e(TAG, "Error closing tag...", e);
                         }
                     }
                 }
