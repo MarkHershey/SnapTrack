@@ -1,5 +1,5 @@
 # SnapTrack
 
-Native Android App (Java)
+Native Java Android App 
 
 ![](Docs/imgs/poster.png)

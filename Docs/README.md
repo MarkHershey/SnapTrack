@@ -1,21 +1,26 @@
-# SnapTrack
+# SnapTrack Documentation
+
 50.001 Introduction to Information Systems &amp; Programming - 1D Project
-
-## Design MockUp
-
-- [Figma Edit Link](https://www.figma.com/file/q8oGLAocaAazg4XulfOtYF/50001-SnapTrack?node-id=0%3A1)
 
 ## Scope Of Work
 
-- [x] User sign up and sign in
-- [ ] User create / edit UserActivity
-- [ ] User create / edit Label
-- [ ] User link / unlink NFC tag to UserActivity
-- [ ] User manually start / end Event
-- [ ] NFC tag start / end Event
-- [ ] daily / weekly / monthly Overview
-    - [ ] Group by Activity / Label (Dropdown Selection)
-- [ ] other data analytics
+- General
+    - [x] User sign up and sign in
+    - [x] NFC tag start / end `Event`
+- Today Page 
+    - [x] Today Timeline Overview
+    - [x] User manually start / end `Event`
+- Activities Page
+    - [x] User create `UserActivity`
+    - [ ] User edit `UserActivity`
+    - [x] User link NFC tag to UserActivity
+- Analytics Page
+    - [x] Daily Overview for the past week
+    - [ ] daily / weekly / monthly Overview
+    - [ ] Group by Activity / Category Toggle
+- Me Page
+    - [x] User sign out
+    - [x] User reset account
 
 ## User
 
