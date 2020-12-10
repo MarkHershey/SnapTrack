@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //Enables foreground dispatch which handles NFC intents (waiting for NFC card to be tapped)
-        //The foreground dispatch system allowxs an activity to intercept an intent and
+        //The foreground dispatch system allows an activity to intercept an intent and
         // claim priority over other activities that handle the same intent.
         assert nfcAdapter != null;
         nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);

@@ -20,6 +20,13 @@
         android:layout_height="match_parent"
         android:paddingVertical="2dp">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.36"/>
+
         <TextView
             android:id="@+id/activityTextView"
             android:layout_width="wrap_content"
@@ -39,14 +46,13 @@
             android:id="@+id/startTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:textSize="12sp"
             android:textColor="@color/black"
             android:textStyle="normal"
             android:text="Start Time"
-            app:layout_constraintLeft_toRightOf="@+id/activityTextView"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/guideLine40"
             />
 
         <TextView
