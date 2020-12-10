@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent startTrackingIntent = new Intent(MainActivity.this, TrackingActivity.class);
                                     startTrackingIntent.putExtra("AID", thisActivity.getAID());
                                     startTrackingIntent.putExtra("activityName", thisActivity.getActivityName());
-                                    startTrackingIntent.putExtra("color", String.valueOf(thisActivity.getColor()));
+                                    startTrackingIntent.putExtra("color", thisActivity.getColor());
                                     startActivity(startTrackingIntent);
 
                                 }

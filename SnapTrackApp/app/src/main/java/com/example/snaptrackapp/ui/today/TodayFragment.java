@@ -126,7 +126,7 @@ public class TodayFragment extends Fragment {
                         Intent startTrackingIntent = new Intent(getActivity(), TrackingActivity.class);
                         startTrackingIntent.putExtra("AID", thisAID);
                         startTrackingIntent.putExtra("activityName", thisActivityName);
-                        startTrackingIntent.putExtra("color", String.valueOf(thisColor));
+                        startTrackingIntent.putExtra("color", thisColor);
                         startActivity(startTrackingIntent);
                     }
                 });

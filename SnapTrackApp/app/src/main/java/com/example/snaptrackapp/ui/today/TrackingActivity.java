@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareUltralight;
@@ -38,6 +39,10 @@ import java.nio.charset.Charset;
 
 public class TrackingActivity extends AppCompatActivity {
 
+    private static String TAG = "TrackingActivity";
+
+    SharedPreferences sharedPref;
+
     String activityName;
     String AID;
     int color;
@@ -65,11 +70,11 @@ public class TrackingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
 
+        // get SharedPreferences instance
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
         pendingIntent = PendingIntent.getActivity(this,0,new Intent(this,this.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),0);
-
-
 
         // get view object references
         activityNameTextView = findViewById(R.id.currentTrackingActivity);
@@ -77,26 +82,41 @@ public class TrackingActivity extends AppCompatActivity {
         stopButton = findViewById(R.id.stopTrackingButton);
         backgroundView = (View) activityNameTextView.getParent();
 
-        // start timer
-        theChronometer.start();
-        timeStartMillis = System.currentTimeMillis();
-        // Store data
-        // SharedPreferences sharedPref = TrackingActivity.this.getPreferences(Context.MODE_PRIVATE);
-        // SharedPreferences.Editor editor = sharedPref.edit();
-        // editor.putLong("timeStart", timeStartMillis);
-        // editor.apply();
+        // Check if there is data in shared preference
+        boolean trackingInProgress = sharedPref.getBoolean("trackingInProgress", false);
 
-        // get data from intent
-        Intent intent = getIntent();
-        activityName = intent.getStringExtra("activityName");
-        AID = intent.getStringExtra("AID");
-        color = Integer.parseInt(intent.getStringExtra("color"));
+        // get SharedPreferences editor
+        SharedPreferences.Editor editor = sharedPref.edit();
 
+        if (!trackingInProgress){
+            // start timer
+            theChronometer.start();
+            timeStartMillis = System.currentTimeMillis();
+
+            // get data from intent
+            Intent intent = getIntent();
+            activityName = intent.getStringExtra("activityName");
+            AID = intent.getStringExtra("AID");
+            color = intent.getIntExtra("color", Color.BLACK);
+
+            // Store data
+            editor.putBoolean("trackingInProgress", true);
+            editor.putLong("timeStartMillis", timeStartMillis);
+            editor.putString("activityName", activityName);
+            editor.putString("AID", AID);
+            editor.putInt("color", color);
+            // NOTE: apply() changes the in-memory SharedPreferences object immediately but writes the updates to disk asynchronously.
+            editor.apply();
+
+        } else {
+            // TODO: restore theChronometer
+
+            // TODO: restore UI
+        }
 
         // set views
-        activityNameTextView.setText(activityName);
+        if (activityName != null) activityNameTextView.setText(activityName);
         activityNameTextView.setTextColor(color);
-        // backgroundView.setBackgroundColor(color);
 
         // set OnClickListener for stop button
         stopButton.setOnClickListener(new View.OnClickListener() {
@@ -108,22 +128,32 @@ public class TrackingActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO: check if this behaviour is expected, need to be tested and validated
+        // Invalidate data in SharedPreferences
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("trackingInProgress", false);
+        editor.apply();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         assert nfcAdapter != null;
         nfcAdapter.enableForegroundDispatch(this,pendingIntent,null,null);
     }
 
-    //New NFC Intent (NFC Card detected)
+    // New NFC Intent (NFC Card detected)
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        Log.v("logcat",getClass().getName());
+        Log.v(TAG,getClass().getName());
         try {
             resolveIntent(intent);
         } catch (Exception e) {
-            Log.v("logcat","unable to resolveIntent");
+            Log.v(TAG,"unable to resolveIntent");
             e.printStackTrace();
         }
     }
@@ -138,7 +168,6 @@ public class TrackingActivity extends AppCompatActivity {
             assert tag != null;
             startTimer(tag);
         }
-
     }
 
     private void startTimer(Tag tag) {
@@ -184,23 +213,32 @@ public class TrackingActivity extends AppCompatActivity {
             }
 
         } catch (IOException e) {
-            Log.e("logcat", "IOException while reading MifareUltralight message...", e);
+            Log.e(TAG, "IOException while reading MifareUltralight message...", e);
         } finally {
             if (mifareUlTag != null) {
                 try {
                     mifareUlTag.close();
                 } catch (IOException e) {
-                    Log.e("logcat", "Error closing tag...", e);
+                    Log.e(TAG, "Error closing tag...", e);
                 }
             }
         }
     }
 
+    // stop the timer
+    // submit Event record to firebase
+    // invalidate data in SharedPreferences
     public void stopTracking(){
         theChronometer.stop();
         timeEndMillis = System.currentTimeMillis();
         trackedTimeSeconds = (int) (timeEndMillis - timeStartMillis) / 1000;
         // Toast.makeText(TrackingActivity.this, String.valueOf(trackedTimeSeconds)+"s", Toast.LENGTH_LONG).show();
+
+        // Invalidate data in SharedPreferences
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("trackingInProgress", false);
+        editor.apply();
+
         // create new Event Object
         thisEvent = new EventInfo(AID, timeStartMillis, timeEndMillis);
         // Submit Event to Firebase
@@ -210,9 +248,5 @@ public class TrackingActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
-
-
 
 }

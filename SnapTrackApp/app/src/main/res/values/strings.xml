@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SnapTrackApp</string>
+    <string name="preference_file_key">SnapTrackApp.tracking</string>
     <string name="create_activity_name">Create Activity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
