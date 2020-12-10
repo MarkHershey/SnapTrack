@@ -4,7 +4,7 @@ SnapTrack is an NFC-enabled mobile application that tracks your time spent on di
 
 ![](Docs/imgs/poster.png)
 
-# Developers 
+### Developers 
 
 - [Mark Huang @MarkHershey](https://github.com/MarkHershey)
 - [Daniel Low @nexaitch](https://github.com/nexaitch)
@@ -12,7 +12,7 @@ SnapTrack is an NFC-enabled mobile application that tracks your time spent on di
 - [Sim Jia Ren @amelia-jr](https://github.com/amelia-jr)
 - [Ong Zhi Yi @miyucloud](https://github.com/miyucloud)
 
-# Disclaimers 
+### Disclaimers 
 
 - [MIT License](LICENSE) Copyright (c) 2020
 - This project will not be maintained / serviced. 
