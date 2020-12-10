@@ -52,6 +52,7 @@ public class AnalyticsFragment extends Fragment {
     ArrayList<BarEntry> barEntries = new ArrayList<>();
 
     ImageView emptyStateView;
+    TextView chartTitle;
 
 
     public static AnalyticsFragment newInstance() {
@@ -64,6 +65,7 @@ public class AnalyticsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_analytics, container, false);
         barChart = root.findViewById(R.id.barChart);
         emptyStateView = root.findViewById(R.id.analyticsEmpty);
+        chartTitle = root.findViewById(R.id.chartTitle);
         return root;
     }
 
@@ -71,33 +73,6 @@ public class AnalyticsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         analyticsViewModel = new ViewModelProvider(this).get(AnalyticsViewModel.class);
-        // TODO: Use the ViewModel
-
-//        analyticsViewModel.getAidDataLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-//            @Override
-//            public void onChanged(ArrayList<String> strings) {
-//                //TODO
-//                aids = new ArrayList<>(strings);
-//            }
-//        });
-//
-//        analyticsViewModel.getColorDataLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<Integer>>() {
-//            @Override
-//            public void onChanged(ArrayList<Integer> integers) {
-//                //TODO
-//                colors = new ArrayList<>(integers);
-//
-//            }
-//        });
-//
-//        analyticsViewModel.getNameDataLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
-//            @Override
-//            public void onChanged(ArrayList<String> strings) {
-//                //TODO
-//                names = new ArrayList<>(strings);
-//            }
-//        });
-
 
         // values
         analyticsViewModel.getAnalyticsDataLive().observe(getViewLifecycleOwner(), new Observer<int[][]>() {
@@ -146,7 +121,12 @@ public class AnalyticsFragment extends Fragment {
                     // Log.d(TAG, "failed");
                 }
                 barChart.setFitBars(true);
+
+                // Update UI Visibility
                 emptyStateView.setVisibility(View.INVISIBLE);
+                chartTitle.setVisibility(View.VISIBLE);
+                barChart.setVisibility(View.VISIBLE);
+
                 barChart.invalidate();
 
             }
