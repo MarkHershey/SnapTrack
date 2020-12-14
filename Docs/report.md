@@ -250,7 +250,7 @@ To separate the backend data handling and the frontend UI handling. Making the p
     ```java
     MutableLiveData<ArrayList<EventInfo>> eventListLive;
     ```
-- At ViewModel, we set asynchronous database listeners. 
+- At `ViewModel`, we set asynchronous database listeners. 
 - Data is retrieved from database using our Data Model
 - Data is then put to `MutableLiveData`
 - At View Controller, UI elements get updated due to `OnChange` listener being triggered.
