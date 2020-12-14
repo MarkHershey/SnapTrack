@@ -125,9 +125,8 @@ In our application, users can define their own list of `UserActivities`, so we n
         }
     }
     ```
-- Result Screenshot:
-
     
+      
 
 #### Comparable Interface
 
@@ -289,7 +288,7 @@ For analytics page, we made use of an external library: [MPAndroidChart](https:/
         - Tap NFC → NFC starts timer for paired Activity 
 4. Stop activity tracking 
     - Manual 
-        - Press STOP TIMER
+        - Press STOP TRACKING button
     - Automatic
         - Scan NFC Again
 
