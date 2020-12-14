@@ -23,22 +23,22 @@ effortlessly with a simple tap. With our intuitive data analytics and visualizat
 ## Main Features 
 
 - General
-    - [x] User sign up and sign in
-    - [x] NFC tag tapping to start / end `Event`
+    - User sign up and sign in
+    - NFC tag tapping to start / end `Event`
 - Today Page 
-    - [x] Today Timeline Overview
-    - [x] User manually start / end `Event`
+    - Today Timeline Overview
+    - User manually start / end `Event`
 - Activities Page
-    - [x] User create `UserActivity`
-    - [x] User link NFC tag to UserActivity
+    - User create `UserActivity`
+    - User link NFC tag to UserActivity
 - Analytics Page
-    - [x] Daily Overview for the past week
+    - Daily Overview for the past week
 - Me Page
-    - [x] User sign out
-    - [x] User reset account
+    - User sign out
+    - User reset account
 - For Development Testing and Demo
-    - [x] Dev Button: Add dummy UserActivities
-    - [x] Dev Button: Add dummy tracked Events
+    - Dev Button: Add dummy UserActivities
+    - Dev Button: Add dummy tracked Events
 
 ## System Design and Architecture
 
@@ -48,29 +48,29 @@ effortlessly with a simple tap. With our intuitive data analytics and visualizat
 **User**
 
 Attributes: 
-- (`string`) authID: generated and maintained by Firebase Authentication.
-- (`string`) userID: App generated (specifically) 16-char unique ID.
-- (`string`) userName: user’s name for display 
-- (`string`) email: maintained by Firebase Authentication
-- (`string`) password: maintained by Firebase Authentication
+- `string` authID: generated and maintained by Firebase Authentication.
+- `string` userID: App generated (specifically) 16-char unique ID.
+- `string` userName: user’s name for display 
+- `string` email: maintained by Firebase Authentication
+- `string` password: maintained by Firebase Authentication
 
 **UserActivity** 
 
 `UserActivity` is the user-defined activity (e.g. "Work out", "Study", "CompStruct", "Entertainment", etc) for time tracking.
 
 Attributes: 
-- (`string`) AID: stands for Activity ID, also App generated (specifically) 16-char.
-- (`string`) activityName: name of the user-defined activity, must be unique.
-- (`int`) color: color that ties to this user-defined activity for UI display.
-- (`string`) category: the category of this user-defined activity.
+- `string` AID: stands for Activity ID, also App generated (specifically) 16-char.
+- `string` activityName: name of the user-defined activity, must be unique.
+- `int` color: color that ties to this user-defined activity for UI display.
+- `string` category: the category of this user-defined activity.
 
 **Category** 
 
 `Category` is used to group `UserActivity`.
 
 Attributes: 
-- (`string`) name: name of the category.
-- (`int`) color: color that ties to this category for UI display.
+- `string` name: name of the category.
+- `int` color: color that ties to this category for UI display.
 
 
 **Event** 
@@ -78,11 +78,11 @@ Attributes:
 `Event` is the object being created when a ‘User’ starts doing a `UserActivity`, either using NFC tapping or manual creation. 
 
 Attributes: 
-- (`string`) EID: stands for Event ID, randomly generated unique ID.
-- (`string`) userID: current User’s userID.
-- (`string`) AID: current tracking `UserActivity` AID.
-- (`long`) timeStart: start time of this event.
-- (`long`) timeEnd: end time of this event. 
+- `string` EID: stands for Event ID, randomly generated unique ID.
+- `string` userID: current User’s userID.
+- `string` AID: current tracking `UserActivity` AID.
+- `long` timeStart: start time of this event.
+- `long` timeEnd: end time of this event. 
 
 ### Design Patterns
 
@@ -98,7 +98,7 @@ In our application, users can define their own list of `UserActivities`, so we n
 
 - Each `UserActivity` is presented to user as a `androidx.cardview.widget.CardView` as shown below:
 
-<img src="imgs/card_view.png" style="max-height:100px;display: block; margin-left: auto;margin-right: auto;">
+<img src="imgs/card_view.png" style="max-height:60px;display: block; margin-left: auto;margin-right: auto;">
 
 - This `CardView` serves as a template for items in my `androidx.recyclerview.widget.RecyclerView`.
 - Using Adapter, we can adapt an ArrayList of `UserActivities` into a list of `CardView` which populates the `RecyclerView`.
@@ -200,7 +200,7 @@ We have 4 top-level navigation destinations, namely `Today` , `Activities`, `Ana
 
 We decided to use fragments to achieve the navigation. So, at mainActivity Layout, we have a `BottomNavigationView` at the bottom to serve as the navigation bar. The rest of the screen space is filled with a `fragment` to serve as a fragment-holder / fragment-host. This fragment-host will be the parent of all fragments holding each different app pages.
 
-<img src="imgs/fragments_layout.png" style="max-height:400px;display: block; margin-left: auto;margin-right: auto;">
+<img src="imgs/fragments_layout.png" style="max-height:300px;display: block; margin-left: auto;margin-right: auto;">
 
 #### Model–View–ViewModel (MVVM) Design Pattern
 
@@ -244,7 +244,7 @@ To separate the backend data handling and the frontend UI handling. Making the p
 
 *Implementation Details:*
 
-<img src="imgs/system_arch.png" height=auto width=auto>
+<img src="imgs/system_arch.png" style="margin-top:10px;margin-bottom:30px;display: block; margin-left: auto;margin-right: auto;">
 
 - At View Controller, asynchronous listener is set to listen to changes on `MutableLiveData` object from `ViewModel`. For example, we use `MutableLiveData` to contain the list of `Events`:
     ```java
@@ -254,6 +254,19 @@ To separate the backend data handling and the frontend UI handling. Making the p
 - Data is retrieved from database using our Data Model
 - Data is then put to `MutableLiveData`
 - At View Controller, UI elements get updated due to `OnChange` listener being triggered.
+
+
+#### Analytics
+
+For analytics page, we made use of an external library: [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart).
+
+#### NFC Read / Write
+
+- We defined our own NFC info schema to store user activity on an NFC tag. 
+- We defined our own NFC signature to double-check data validity.  
+- For detailed technical description of NFC implementation, please refer to another document [here](https://github.com/MarkHershey/SnapTrack/blob/master/Docs/NFC.md).
+
+
 
 
 ## User Flow
@@ -284,22 +297,24 @@ To separate the backend data handling and the frontend UI handling. Making the p
 
 Source code is available at [GitHub - MarkHershey / SnapTrack](https://github.com/MarkHershey/SnapTrack).
 
-## Responsibilities
+## Project Responsibilities
 
 | Name | Student ID | Responsibilities |
 | :-: | :-: | :-: |
-| Huang He (Mark) | 1004561 | Development lead, feature ideation, system architecture. Maintained the app repo and managed the inclusion of new features. |
-| Daniel Low Yu Hian | 1004372 | Software Developer, Data Model Implementation, database schematic design, data utilities and more. |
-| Chan Jun Hern, Cawin | 1004487 | Software Developer, Implementation of NFC functionalities (reading / writing) and more. |
-| Sim Jia Ren | 1004401 | Software Developer, UI Implementations, Today Page and more. |
-| Ong Zhi Yi | 1004664 | Software Developer, UI Implementations, Analytics Page and more. |
+| Huang He (Mark) | 1004561 | Lead Developer, Feature ideation, System Architecture Design, Integration and more. |
+| Daniel Low Yu Hian | 1004372 | Software Developer, Data Model Implementation, Database Design, Data Utilities and more. |
+| Chan Jun Hern, Cawin | 1004487 | Software Developer, Implementation of NFC Functionalities (Reading / Writing / Pairing), App Testing and more. |
+| Sim Jia Ren | 1004401 | Software Developer, Feature ideation, UI Implementations, Today Page and more. |
+| Ong Zhi Yi | 1004664 | Software Developer, Feature ideation, UI Implementations, Analytics Page and more. |
 
 
 ##  Future Work
 
-- This app is applicable in many different scenarios and sectors, such as cyber-security through recording door activation timings or food delivery knowing precisely when orders are completed. 
-- Goals and app restriction functions would be a great function for the user to better make time management plans. 
+- The current analytics page is very limited, what we could do in the future is to provide more advanced analytics based on user selection and filtering. We can also derive insights, suggestions from the data we collected, and present those insights to our user.
+- To allow user setting categorical or activity-based time goals. Assist user in achieving their goals.
+- To allow user backup/ download data. 
+- UI/ UX Improvements. 
 
 ## Conclusion
 
-Our project is catered to anyone that needs an easier way to keep track of time as such any professional and student can use this app as a companion to their work.
+The development journey was very fruitful, we have learned various software design patterns and why do we need them, we have also encountered many problems along the way, but we managed to solve most of them. We have gained a great amount of practical development knowledge and experiences, and the end result is a fully functional mobile application that all of us are proud and satisfied. Even though the app is far from perfect and complete, but we also learned how to balance and prioritize during software development. 
